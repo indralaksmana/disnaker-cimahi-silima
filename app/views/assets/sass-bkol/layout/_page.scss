@@ -1,0 +1,138 @@
+#page-hero {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: top center;
+
+  @include media-breakpoint-down(xl) {
+    height: 260px !important;
+  }
+
+  @include media-breakpoint-down(lg) {
+    height: 260px !important;
+  }
+
+  @include media-breakpoint-down(md) {
+    height: 145px !important;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 60px !important;
+  }
+}
+
+.card-blue {
+  background: #f2fafd !important;
+  padding-top: 50px !important;
+}
+
+.card {
+  border-radius: 0 !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.light {
+  font-weight: 400;
+}
+
+.tentang-page {
+  .card {
+    border: none;
+  }
+
+  &_deskripsi {
+    padding-top: 40px;
+    padding-bottom: 50px;
+    padding-left: 150px;
+    padding-right: 150px;
+
+    @include media-breakpoint-down(md) {
+      padding: 10px;
+    }
+
+    font-size: 20px !important;
+    font-weight: 300;
+    color: #3b3d93;
+
+  }
+
+  p {
+    font-size: 14px;
+    margin-top: 20px;
+  }
+
+  &_list {
+    padding-top: 20px;
+    padding-left: 30px;
+
+    li {
+      font-weight: 300;
+      font-size: 14px;
+      margin-bottom: 25px;
+
+      &::before {
+        position: absolute;
+        margin-left: -1.3em;
+        margin-top: -5px;
+        font-weight: bold;
+        font-family: 'FontAwesome';
+        content: "\f00c";
+        color: #00a4de;
+        font-size: 20px !important;
+      }
+    }
+  }
+}
+
+.tentang-page_section {
+  padding-left: 20px !important;
+
+  .title-section {
+    margin-right: 15px;
+  }
+
+  &_right {
+    padding-right: 20px !important;
+
+    .title-section {
+      margin-right: 15px;
+    }
+  }
+}
+
+.no-height {
+  height: auto !important;
+}
+
+#tentang {
+  .title-section {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 30px;
+    letter-spacing: normal;
+  }
+
+  .card {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+    padding: 20px;
+  }
+
+  .hr-theme {
+    .hr-line-big {
+      height: 60px;
+    }
+  }
+}
+
+.list-fitur {
+  padding-top: 50px;
+  padding-bottom: 250px;
+
+  p {
+    font-size: 12px;
+    color: #333333;
+  }
+}

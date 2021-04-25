@@ -1,0 +1,131 @@
+<section id="statistik-box-bkol" class="clearfix" style="background-image: url('{{ base_url() }}/img/bkol01.jpg');">
+	<div class="container">
+		<div class="d-flex flex-row justify-content-center py-sm-5 py-3 px-0">
+			<div class="search-field">
+				<form action="{{path_for('searchbkol')}}" method="GET">
+					<div class="input-group">
+						<input type="text" class="form-control" name="search" id="inlineFormInputGroup"
+							placeholder="Cari lowongan berdasarkan posisi..">
+						<div class="input-group-append">
+							<button class="btn btn-primary px-3 px-sm-4" type="submit">
+								<i class="fa fa-search"></i>&nbsp;<span>CARI</span>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+	<div class="bg-statistik py-sm-5 py-3 px-0">
+		<div class="bg-opacity"></div>
+		<div class="container">
+			<div class="d-flex flex-row justify-content-center">
+				<!-- number -->
+				<div class="col-md-2  col-sm-4 item-list">
+					<div class="no-gutters d-flex align-items-center statistik">
+						<div class="d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2"
+								src="{{ base_url() }}/img/logo-statistik/ico-lowongan-pekerjaan.png"
+								alt="Perusahaan Terdaftar">
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">
+								{{jumlahLowongan}}</h5>
+							<p class="statistik-title mb-0 mt-1">Lowongan<br>Pekerjaan Aktif</p>
+						</div>
+					</div>
+				</div>
+				<!-- /number -->
+
+				<!-- number -->
+				<div class="col-md-2 col-sm-4 item-list">
+					<div class="no-gutters d-flex align-items-center statistik">
+						<div class=" pr-2 d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2" src="{{ base_url() }}/images/icon/stat-pencaker.png"
+								alt="Perusahaan Terdaftar">
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">
+								{{jumlahPencaker}}</h5>
+							<p class="statistik-title mb-0 mt-1">PENCARI KERJA<br>PEMILIK AK1</p>
+						</div>
+					</div>
+				</div>
+				<!-- /number -->
+
+
+				<!-- number -->
+				<div class="col-md-2  col-sm-4 item-list">
+					<div class="no-gutters d-flex align-items-center statistik">
+						<div class="pr-2 d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2" src="{{ base_url() }}/images/icon/stat-perusahaan.png"
+								alt="Perusahaan Terdaftar">
+
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">
+								{{jumlahPerusahaan}}</h5>
+							<p class="statistik-title mb-0 mt-1">PERUSAHAAN<br>TERDAFTAR</p>
+						</div>
+					</div>
+				</div>
+				<!-- /number -->
+
+				<!-- number -->
+				<div class="col-md-2  col-sm-4 item-list">
+					<div class=" no-gutters d-flex align-items-center statistik">
+						<div class="pr-2 d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2" src="{{ base_url() }}/images/icon/stat-bkk.png"
+								alt="BURSA KERJA KHUSUSr">
+
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">
+								{{jumlahBkk}}</h5>
+							<p class="statistik-title mb-0 mt-1">BURSA KERJA KHUSUS<br>(BKK)</p>
+						</div>
+					</div>
+				</div>
+				<!-- /number -->
+
+				<!-- number -->
+				<div class="col-md-2  col-sm-4 item-list">
+					<div class="no-gutters d-flex align-items-center statistik">
+						<div class="pr-2 d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2" src="{{ base_url() }}/images/icon/stat-lpk.png"
+								alt="LEMBAGA PELATIHAN KERJA (LPK)">
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">
+								{{jumlahLpk}}</h5>
+							<p class="statistik-title mb-0 mt-1">LEMBAGA PELATIHAN <br>KERJA (LPK)</p>
+						</div>
+					</div>
+				</div>
+				<!-- /number -->
+
+				<!-- number -->
+				<div class="col-md-2  col-sm-4 item-list">
+					<div class="no-gutters d-flex align-items-center statistik">
+						<div class="pr-2 d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2" src="{{ base_url() }}/images/icon/stat-dikti.png"
+								alt="PENDIDIKAN TINGGI">
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">
+								{{jumlahDikti}}</h5>
+							<p class="statistik-title mb-0 mt-1">PENDIDIKAN TINGGI <br>(DIKTI)</p>
+						</div>
+					</div>
+				</div>
+				<!-- /number -->
+
+				<!-- number -->
+				{# <div class="col-md-3  col-sm-4 item-list">
+					<div class="row no-gutters d-flex align-items-center statistik">
+						<div class="col-4 pr-2 d-sm-none d-md-block statistik-image">
+							<img class="img-fluid mb-2" src="{{ base_url() }}/img/logo-statistik/ico-pelatihan-kerja.png" alt="Perusahaan Terdaftar">
+						</div>
+						<div class="col-8">
+							<h5 class="statistik-value mb-0 display-4" style="font-weight: 900;line-height: 1;">{{jmlPelatihanKerja}}</h5>
+							<p class="statistik-title mb-0 mt-1">Pelatihan<br>Kerja</p>
+						</div>
+					</div>
+				</div> #}
+				<!-- /number -->
+			</div>
+		</div>
+
+
+
+	</div>
+</section>

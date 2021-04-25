@@ -1,0 +1,24 @@
+<div class="col">
+    <div class="dropdown">
+        <button class="btn btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Ubah <i class="fa fa-caret-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <a href="{{ path_for('dashboardpencaker-biodata') }}" class="dropdown-item mb-3" role="button">Data Diri</a>
+            <a href="{{ path_for('resume-pendidikan') }}" class="dropdown-item mb-3" role="button">Pendidikan</a>
+            <a href="{{ path_for('resume-nonformalpendidikan') }}" class="dropdown-item mb-3" role="button">Pendidikan
+                Non
+                Formal</a>
+            <a href="{{ path_for('resume-kompetensi') }}" class="dropdown-item mb-3" role="button">Kompetensi</a>
+            <a href="{{ path_for('resume-pekerjaan') }}" class="dropdown-item mb-3" role="button">Riwayat Pekerjaan</a>
+            <a href="{{ path_for('pelatihanku') }}" class="dropdown-item mb-3" role="button">Riwayat Pelatihan</a>
+            <a href="{{ path_for('pengajuan-ak1')}}" class="dropdown-item mb-3" role="button">Daftar AK-1</a>
+            <a href="{{ path_for('admin-job-proposal')}}" class="dropdown-item mb-3" role="button">Riwayat Lamaran</a>
+        </div>
+    </div>
+</div>
+<div class="col">
+    <a href="{{ path_for('resume-upload') }}" class="btn btn-block" role="button">Dokumen Pendukung <i
+            class="fa fa-upload" aria-hidden="true"></i></a>
+</div>

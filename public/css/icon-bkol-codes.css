@@ -1,0 +1,5 @@
+
+.icon-add-to-favourites:before { content: '\e803'; } /* '' */
+.icon-checked:before { content: '\e805'; } /* '' */
+.icon-building:before { content: '\f0f7'; } /* '' */
+.icon-user-plus:before { content: '\f234'; } /* '' */

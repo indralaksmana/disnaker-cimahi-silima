@@ -1,0 +1,556 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Buat Lowongan Kerja Baru{% endblock %}
+
+{% block header_include %}
+<link rel="stylesheet" href="{{base_url()}}/libraries/select2/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
+<style type="text/css" media="screen">
+    .wilayah {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block page %}
+<div class="px-3 jobs-add">
+    <div class="hr-theme d-flex  align-items-center">
+        <div class="hr-title">
+            <h3 class="title-section">Edit Lowongan Kerja</h3>
+        </div>
+        <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+    </div>
+    <br>
+    <ul class="progressbar d-flex justify-content-between">
+        <li class="step active"><b>Detail Lowongan</b></li>
+        <li class="step"><b>Kualifikasi</b></li>
+        <li class="step"><b>Persyaratan</b></li>
+        <li class="step"><b>Opsi Lowongan</b></li>
+    </ul>
+    <form id="stepForm" action="{{ currentRoute }}" method="POST" role="form">
+
+
+
+
+        <!-- One "tab" for each step in the form: -->
+        <div class="tab">
+            <legend><b>Detail Lowongan</b></legend>
+            <div class="form-group{% if has_error('nama_lowongan') %} has-error{% endif %}">
+                <label for="nama_lowongan">Judul Pekerjaan</label>
+                <input type="text" name="nama_lowongan" class="form-control" id="nama_lowongan" placeholder="Judul Pekerjaan"
+                    value="{% if requestParams.nama_lowongan %}{{requestParams.nama_lowongan}}{% else %}{{post.nama_lowongan}}{% endif %}"
+                    required="required">
+                <span class="help-block">{{ error('nama_lowongan') }}</span>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <label for="">Wilayah Pekerjaan</label>
+                        <select id="wilayahpekerjaan" name="wilayah_pekerjaan" class="form-control">
+                            <option value="{% if requestParams.wilayah_pekerjaan %}{{requestParams.wilayah_pekerjaan}}{% else %}{{post.wilayah_pekerjaan}}{% endif %}">{%
+                                if requestParams.wilayah_pekerjaan %}{{requestParams.wilayah_pekerjaan}}{% else
+                                %}{{post.wilayah_pekerjaan}}{% endif %}</option>
+                            <option id="dalam" value="Dalam Negeri">Dalam Negeri</option>
+                            <option id="luar" value="Luar Negeri">Luar Negeri</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 dalam wilayah">
+                        <div class="form-group ">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="provinsi_id">Provinsi</label>
+                                    <select name="provinsi_id" id="provinsi" class="form-control" {# required="required"
+                                        #}>
+                                        <option value="{{post.provinsi_id}}">{{post.provinsi.lokasi_nama}}</option>
+                                        {% for daerah in daerah %}
+                                        <option value="{{ daerah.id }}" id="{{ daerah.lokasi_provinsi }}" {% if
+                                            requestParams.provinsi_id==daerah.id %}SELECTED{% endif %}>{{
+                                            daerah.lokasi_nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="kabupatenkota_id">Kabupaten/Kota</label>
+                                    <select name="kabupatenkota_id" id="kabupatenkota" class="form-control" {# required="required"
+                                        #}>
+                                        <option value="{{post.kabupatenkota_id}}">{{post.kabupatenkota.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8 luar wilayah">
+                        <label for="nama_negara">Negara</label>
+                        <select name="nama_negara" id="nama_negara" class="form-control" {# required="required" #}>
+                            <option value="">Pilih Negara</option>
+                            <option value="ALL">Seluruh Negara</option>
+                            {% for negara in negara %}
+                            <option name="nama_negara" value="{{ negara.nama_negara }}">{{
+                                negara.nama_negara }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <label for="">Kebutuhan Tenaga Kerja</label>
+                    </div>
+                    <div class="col">
+                        <label class="sr-only" for="kebutuhan_tenaga_pria">Orang</label>
+                        <div class="input-group mb-2">
+                            <input type="number" class="form-control" name="kebutuhan_tenaga_pria" id="kebutuhan_tenaga_pria"
+                                placeholder="" value="{{post.kebutuhan_tenaga_pria}}">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <small>Orang Pria</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="sr-only" for="kebutuhan_tenaga_wanita"></label>
+                        <div class="input-group mb-2">
+                            <input type="number" class="form-control" name="kebutuhan_tenaga_wanita" id="kebutuhan_tenaga_wanita"
+                                placeholder="" value="{{post.kebutuhan_tenaga_wanita}}">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <small>Orang Perempuan</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="jabatan_id">Golongan Jabatan
+                </label>
+                <select name="jabatan_id" id="jenisgoljabatanharapan" class="form-control">
+                    <option value="{{post.jabatan_id}}">{{ post.jabatan.jenis_golongan}}</option>
+                    {% for golonganjabatan in jabatan %}
+                    <option name="jabatan_id" value="{{ golonganjabatan.id }}">{{ golonganjabatan.jenis_golongan }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <label for="gaji_id">Harapan Gaji Minimum
+                            <span class="require">*</span>
+                        </label>
+                        <select name="gaji_id" class="form-control" id="gaji_id">
+                            <option value="{{ post.gaji_id }}">{{ post.gaji.name }}</option>
+                            {% for gaji in gaji %}
+                            <option value="{{ gaji.id }}">{{
+                                gaji.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-12"><label>Apakah Pekerjaan ini Merekrut Disabilitas?</label></div>
+                                <div class="col">
+                                    <label for="">Tidak</label>
+                                    <input type="radio" name="disabilitas" class="form-control" id="disabilitas" value="0"
+                                        {% if post.disabilitas == 0 %}checked {% endif %}>
+                                </div>
+                                <div class="col">
+                                    <label for="">Iya</label>
+                                    <input type="radio" name="disabilitas" class="form-control" id="disabilitas" value="1"
+                                        {% if post.disabilitas == 1 %}checked {% endif %}>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group{% if has_error('deskripsi_pekerjaan') %} has-error{% endif %}">
+                <label for="deskripsi_pekerjaan">Dekripsi Pekerjaan</label>
+                <textarea rows="10" cols="50" name="deskripsi_pekerjaan" class="form-control tinymce" id="deskripsi_pekerjaan" placeholder="Dekripsi Pekerjaan"
+                    required="required">
+                {{post.deskripsi_pekerjaan|raw}}
+            </textarea>
+                <span class="help-block">{{ error('deskripsi_pekerjaan') }}</span>
+            </div>
+
+        </div>
+
+        <div class="tab">
+            <legend><b>Kualifikasi</b></legend>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group{% if has_error('jenis_kelamin') %} has-error{% endif %}">
+                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                            <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
+                                <option value="{{ post.jenis_kelamin}}">{{ post.jenis_kelamin}}</option>
+                                {% for i in ['Pria','Wanita','Pria dan Wanita'] %}
+                                <option value="{{ i }}" {% if requestParams[ 'jenis_kelamin' ]==i %}selected{% endif %}>{{i
+                                    }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('jenis_kelamin') }}</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="usia_maksimal">Usia Maksimal</label>
+                        <div class="input-group mb-2">
+                            <input value="{{post.usia_maksimal}}" type="text" class="form-control" name="usia_maksimal"
+                                id="usia_maksimal" placeholder="">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <small>Tahun</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group{% if has_error('pendidikan_terakhir_id') %} has-error{% endif %}">
+                            <label for="pendidikan_terakhir_id">Pendidikan Terakhir
+                                <span class="require">*</span>
+                            </label>
+                            <select name="pendidikan_terakhir_id" id="kodependidikan" class="form-control" required="required">
+                                <option value="{{ post.pendidikan_terakhir_id }}">{{
+                                    post.pendidikanterakhir.jenis_pendidikan }}</option>
+                                {% for r in jenispendidikan %}
+                                <option name="pendidikan_terakhir_id" value="{{ r.id }}" id="{{ r.kode_pendidikan }}">{{
+                                    r.jenis_pendidikan }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('pendidikan_terakhir_id') }}</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group{% if has_error('jurusan_pendidikan_id') %} has-error{% endif %}">
+                            <label for="jurusan_pendidikan_id">Jurusan
+                                <span class="require">*</span>
+                            </label>
+                            <select name="jurusan_pendidikan_id" id="kodejurusan" class="form-control" {# required="required"
+                                #}>
+                                <option value="{{post.jurusan_pendidikan_id}}">{{
+                                    post.jurusanpendidikan.jenis_pendidikan }}</option>
+                            </select>
+                            <span class="help-block">{{ error('jurusan_pendidikan_id') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group{% if has_error('nilai_minimal') %} has-error{% endif %}">
+                            <label for="pendidikan_terakhir_id">Nilai Minimal Ijazah
+                            </label>
+                            <input value="{{post.nilai_minimal}}" 
+                            type="number" name="nilai_minimal" class="form-control" placeholder="Nilai Minimal Ijasah" />
+                            <span class="help-block">{{ error('nilai_minimal') }}</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group{% if has_error('status_perkawinan') %} has-error{% endif %}">
+                            <label for="status_perkawinan">Status Perkawian
+                            </label>
+                            <select name="status_perkawinan" class="form-control" id="status_perkawinan">
+                                <option value="{{post.status_perkawinan}}">{{post.status_perkawinan}}</option>
+                                {% for i in ['Belum Kawin','Duda','Janda','Kawin'] %}
+                                <option name="status_perkawinan" value="{{ i }}" {% if requestParams[
+                                    'status_perkawinan' ]==i %}selected{% endif %}>{{i
+                                    }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('status_perkawinan') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab">
+            <legend><b>Persyaratan</b></legend>
+            <div class="form-group{% if has_error('kelengkapan_berkas') %} has-error{% endif %}">
+                <label for="kelengkapan_berkas">Berkas Lowongan</label>
+                <textarea rows="10" cols="50" name="kelengkapan_berkas" class="form-control tinymce" id="kelengkapan_berkas" placeholder="Berkas Lowongan">{{ post.kelengkapan_berkas|raw }}</textarea>
+                <span class="help-block">{{ error('kelengkapan_berkas') }}</span>
+            </div>
+            <div class="form-group{% if has_error('persyaratan_umum') %} has-error{% endif %}">
+                <label for="persyaratan_umum">Persyaratan Umum</label>
+                <textarea rows="10" cols="50" name="persyaratan_umum" class="form-control tinymce" id="persyaratan_umum" placeholder="Persyaratan Umum">{{ post.persyaratan_umum|raw }}</textarea>
+                <span class="help-block">{{ error('persyaratan_umum') }}</span>
+            </div>
+        </div>
+
+        <div class="tab">
+            <legend><b>Opsi Lowongan</b></legend>
+            <div class="form-group{% if has_error('category') %} has-error{% endif %}">
+                <label for="category">Kategori</label>
+                <select name="category" id="category" class="form-control" required="required">
+                    <option value="">Pilih Kategori</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if requestParams.category==category.id or post.category_id==category.id
+                        %}SELECTED{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">{{ error('category') }}</span>
+            </div>
+            <div class="form-group{% if has_error('tags') %} has-error{% endif %}">
+                <label for="tags">Tags</label>
+                <select data-placeholder="Choose some Tags..." name="tags[]" id="tags" class="form-control" multiple=""
+                    tabindex="3" required="required">
+                    <option value=""></option>
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}" {% for tempTags in post.tags if tempTags.id==tag.id %}SELECTED{%
+                        endfor %}>{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">{{ error('tags') }}</span>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group{% if has_error('publish_at') %} has-error{% endif %}">
+                            <label for="publish_at">Publish At <span style="font-weight: normal;">({{config['timezone']}})</span></label>
+                            <input type="text" name="publish_at" class="form-control" id="publish_at" placeholder="Publish At"
+                                value="{% if requestParams.publish_at %}{{requestParams.publish_at}}{% else %}{{post.publish_at}}{% endif %}"
+                                required="required">
+                            <span class="help-block">{{ error('publish_at') }}</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group{% if has_error('status') %} has-error{% endif %}">
+                            <label for="status">Status </label>
+                            <br />
+                            <input type="checkbox" name="status" class="form-control" id="status" {% if post.status == 1 %} checked {% elseif post.status == 0 %}{% endif %}>
+                            <span class="help-block">{{ error('status') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <label for="">Batas Waktu</label>
+                    </div>
+                    <div class="col">
+                        <label for="kabupatenkota">Tanggal Pasang</label>
+                        <input value="{{post.tanggal_pasang}}" type="date" class="form-control" name="tanggal_pasang"
+                            id="tanggal_pasang" placeholder="">
+                    </div>
+                    <div class="col">
+                        <label for="kabupatenkota">Tanggal Berakhir</label>
+                        <input value="{{post.tanggal_berakhir}}" type="date" class="form-control" name="tanggal_berakhir"
+                            id="tanggal_berakhir" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" class="btn btn-primary btn-secondary mr-2" id="prevBtn" onclick="nextPrev(-1)">Sebelumnya</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Berikutnya</button>
+            </div>
+        </div>
+        {{ csrf() }}
+    </form>
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+<!-- Select2 Dropdowns -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.1/tinymce.min.js" type="text/javascript"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="{{ asset('dashboard/js/tinymce-init.min.js') }}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $("#jenisgoljabatanharapan, .pendidikan,.jurusan").select2({
+        theme: "classic",
+        width: '100%'
+    });
+    $('#tags').select2({
+        tags: true,
+        width: '100%',
+        theme: "classic",
+        width: '100%'
+    });
+    $('#category').select2({
+        tags: true,
+        width: '100%',
+        theme: "classic",
+        width: '100%'
+    });
+    $('#publish_at').daterangepicker({
+        startDate: '{% if requestParams.publish_at %}{{ requestParams.publish_at }}{% else %}{{ "now"|date("m/d/Y h:i A") }}{% endif %}',
+        singleDatePicker: true,
+        timePicker: true,
+        timePickerIncrement: 1,
+        locale: {
+            format: 'MM/DD/YYYY h:mm A'
+        }
+    });
+    $('#status').bootstrapToggle({
+      on: 'Published',
+      off: 'Draft',
+      width: '100%'
+    });
+
+
+
+
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#provinsi').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kabupatenkota').html(val);
+                }
+            });
+        });
+
+        $('#kabupatenkota').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kecamatan').html(val);
+                }
+            });
+        });
+
+        $('#kodependidikan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/jenispendidikan/kodejurusan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kodejurusan').html(val);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#wilayahpekerjaan").change(function () {
+            $(this).find("option:selected").each(function () {
+                var optionID = $(this).attr("id");
+                if (optionID) {
+                    $(".wilayah").not("." + optionID).hide();
+                    $("." + optionID).show('fast');
+                } else {
+                    $(".wilayah").hide('fast');
+                }
+            });
+        }).change();
+    });
+
+
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+
+    function showTab(n) {
+        // This function will display the specified tab of the form ...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        // ... and fix the Previous/Next buttons:
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Simpan";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "Berikutnya";
+        }
+        // ... and run a function that displays the correct step indicator:
+        fixStepIndicator(n)
+    }
+
+    function nextPrev(n) {
+        // This function will figure out which tab to display
+        var x = document.getElementsByClassName("tab");
+        // Exit the function if any field in the current tab is invalid:
+        if (n == 1 && !validateForm()) return false;
+        // Hide the current tab:
+        x[currentTab].style.display = "none";
+        // Increase or decrease the current tab by 1:
+        currentTab = currentTab + n;
+        // if you have reached the end of the form... :
+        if (currentTab >= x.length) {
+            //...the form gets submitted:
+            document.getElementById("stepForm").submit();
+            return false;
+        }
+        // Otherwise, display the correct tab:
+        showTab(currentTab);
+    }
+
+    function validateForm() {
+        // This function deals with validation of the form fields
+        var x, y, i, valid = true;
+        x = document.getElementsByClassName("tab");
+        y = x[currentTab].getElementsByTagName("input");
+        s = x[currentTab].getElementsByTagName("select");
+        // A loop that checks every input field in the current tab:
+        for (i = 0; i < y.length; i++) {
+            // If a field is empty...
+            if (y[i].value == "" && y[i].hasAttribute('required')) {
+                // add an "invalid" class to the field:
+                y[i].className += " invalid";
+                // and set the current valid status to false:
+                valid = false;
+            }
+        }
+        for (i = 0; i < s.length; i++) {
+            // If a field is empty...
+            if (s[i].value == "" && s[i].hasAttribute('required')) {
+                // add an "invalid" class to the field:
+                s[i].className += " invalid";
+                // and set the current valid status to false:
+                valid = false;
+            }
+        }
+        // If the valid status is true, mark the step as finished and valid:
+        if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+        }
+        return valid; // return the valid status
+    }
+
+    function fixStepIndicator(n) {
+        // This function removes the "active" class of all steps...
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class to the current step:
+        x[n].className += " active";
+    }
+</script>
+{% endblock %}

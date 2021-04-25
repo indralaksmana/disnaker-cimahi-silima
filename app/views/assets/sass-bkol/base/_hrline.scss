@@ -1,0 +1,45 @@
+.hr-theme {
+  display: flex;
+  @include media-breakpoint-down(md) {
+    display: block;
+   }
+  .hr-line {
+
+    position: relative;
+    height: 25px;
+    top: 5px;
+    background-repeat: repeat-x !important;
+    background-size: inherit  !important;
+    &:after {
+      content: '';
+	     display: block;
+       height: 6px;
+       border: 0;
+    }
+  }
+  .hr-line-big {
+    width: 60%;
+    position: relative;
+    height: 23px;
+    top: 5px;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+
+    &:after {
+      content: '';
+	     display: block;
+       height: 6px;
+       border: 0;
+    }
+  }
+  .hr-title {
+    position: relative;
+    .title-section {
+      margin-bottom: 0px !important;
+      margin-right: 10px;
+    }
+  }
+  a.btn {
+    margin-left: 10px !important;
+  }
+}

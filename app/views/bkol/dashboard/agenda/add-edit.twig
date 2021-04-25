@@ -1,0 +1,61 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+
+{% block title %}{{config['site-name']}} || Add New Blog Post{% endblock %}
+
+{% block stylesheets %}
+{% include 'dashboard/css/formcss.twig' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+<link rel="stylesheet" href="{{base_url()}}/libraries/summernote/dist/summernote.css">
+<link rel="stylesheet" href="{{base_url()}}/libraries/summernote/dist/summernote-bs4.css">
+{% endblock %}
+{% block page %}
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">{{TitlePage}}</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+  </div>
+  <br>
+  {% include 'bkol/dashboard/agenda/form.twig' %}
+</div>
+{% endblock %}
+{% block javascript %}
+{% include 'dashboard/scripts/formjs.twig' %}
+<script src="{{base_url()}}/libraries/summernote/dist/summernote.min.js"></script>
+<script src="{{base_url()}}/libraries/summernote/dist/summernote-bs4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script>
+$('#post_content').summernote({
+  airMode: false,
+  height: 500,
+  toolbar: [
+          [ 'style', [ 'style' ] ],
+          [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
+          [ 'fontname', [ 'fontname' ] ],
+          [ 'fontsize', [ 'fontsize' ] ],
+          [ 'color', [ 'color' ] ],
+          [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
+          [ 'table', [ 'table' ] ],
+          [ 'insert', [ 'link'] ],
+          [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
+      ]
+  });
+$('#dateagenda').daterangepicker({
+    startDate: '{% if requestParams.dateagenda %}{{ requestParams.dateagenda }}{% else %}{{ post.dateagenda|date("m/d/Y h:i A") }}{% endif %}',
+    singleDatePicker: true,
+    timePicker: true,
+    timePickerIncrement: 1,
+    locale: {
+        format: 'MM/DD/YYYY h:mm A'
+    }
+});
+
+</script>
+{% endblock %}

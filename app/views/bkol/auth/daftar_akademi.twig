@@ -1,0 +1,107 @@
+{% extends "bkol/bkol.twig" %}
+{% block stylesheets %}
+{% endblock %}
+
+{% block page %}
+<style>
+    .hr-theme .hr-title .title-section {
+            padding-left: 10px;
+    }
+        #tentang .title-section.pencari-kerja {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 24px;
+            letter-spacing: normal;
+            color: #333333;
+            padding-left: 0;
+        }
+        ul.tentang-page_list.pencari-kerja {
+            padding-left: 60px;
+        }
+        ul.tentang-page_list.pencari-kerja li {
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 22px;
+            margin-bottom: 15px;
+        }
+        ul.tentang-page_list.pencari-kerja li::before {
+            position: absolute;
+            margin-top: 5px;
+            font-family: 'icon-bkol';
+            content: '\e805';
+            color: #de8a43;
+            font-size: 35px !important;
+            margin-left: -3.1rem;
+        }
+</style>
+<div id="tentang" class="tentang-page container">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="hr-theme d-flex" style="margin-bottom: 50px;">
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+                    <div class="hr-title">
+                        <h5 class="title-section">Daftar Sebagai Admin Akademi</h5>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tentang-page_section" style="padding-left: 0 !important;">
+                            <div class="hr-theme d-flex">
+                                <div class="hr-title">
+                                    <h3 class="title-section pencari-kerja">Manfaat Mendaftarkan Admin Akademi dalam SILIMA :</h3>
+                                </div>
+                            </div>
+                            <ul class="tentang-page_list pencari-kerja">
+                                <li>Akademi dalam hal ini Bursa Kerja Khusus dan Pendidikan Tinggi di Kota Cimahi memiliki kesempatan untuk menyebarkan informasi terkait kampus yang dikelolanya kepada warga Kota Cimahi.</li>
+                                <li>Dengan tergabung dalam SILIMA maka BKK dan DIKTI dapat mengelola lulusannya untuk mendapatkan informasi yang cepat dan tepat terkait pekerjaan dan pelatihan.</li>
+                                <li>BKK dan DIKTI akan memiliki website sendiri dalam SILIMA ini untuk dapat menginformasikan Profil Kampus, Berita, Kegiatan dan Foto-foto.</li>
+                                <li>Pengajuan pembuatan Kartu AK-1 atau Kartu Daftar Pencari Kerja dapat dilakukan
+                                    online dan juga laporan secara online didalam halaman profile.</li>
+                                <li>Laporan penempatan dapat dilakukan dalam SILIMA agar memudahkan pengelola menginformasikan perkembangan BKK dan DIKTI yang dikelolanya.</li>
+                            </ul>
+                        </div>
+                        							<div class="hr-title" style="text-align:center">
+                                    <h3 class="btn btn-sm btn-block btn-success" style="cursor:default">Silahkan mendaftar dengan menghubungi 022-6631883</h3>
+                                </div>
+                    </div>
+                    <!--
+                    <div class="col-md-6">
+                        <div class="tentang-page_section_right">
+                            <div class="hr-theme d-flex">
+                                <div class="hr-title">
+                                    <h3 class="title-section pencari-kerja">Isi Form Untuk Mendaftar</h3>
+                                </div>
+                            </div>
+                            <br>
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="bkk-tab" data-toggle="pill" href="#bkk" role="tab" aria-controls="bkk" aria-selected="true">Bursa Kerja Khusus</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="dikti-tab" data-toggle="pill" href="#dikti" role="tab" aria-controls="dikti" aria-selected="false">Pendidikan Tinggi</a>
+                            </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="bkk" role="tabpanel" aria-labelledby="bkk-tab">
+                                    {% include 'bkol/auth/daftar_bkk.twig' %}
+                                </div>
+                                <div class="tab-pane fade" id="dikti" role="tabpanel" aria-labelledby="dikti-tab">
+                                    {% include 'bkol/auth/daftar_perguruan_tinggi.twig' %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block javascript %}
+    {{ recaptchaJs() }}
+{% endblock %}

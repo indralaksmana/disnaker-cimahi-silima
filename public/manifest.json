@@ -1,0 +1,21 @@
+{
+    "dir": "ltr",
+    "lang": "en-US",
+    "name": "Bursa Kerja Online Kota Cimahi",
+    "scope": "/",
+    "display": "fullscreen",
+    "start_url": "/",
+    "short_name": "BKOL CIMAHI",
+    "theme_color": "transparent",
+    "description": "Bursa Kerja Online Untuk Warga Kota Cimahi",
+    "orientation": "portrait",
+    "background_color": "transparent",
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/images/favicon.ico",
+            "sizes": "16x16"
+        }
+    ]
+}

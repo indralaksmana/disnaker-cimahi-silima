@@ -1,0 +1,153 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Blog Admin{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('assets/dashboard/plugins/data-table/skin/bootstrap/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/dashboard/plugins/data-table/skin/bootstrap/css/responsive.bootstrap4.min.css') }}" rel="stylesheet">
+<style>
+    .table td, .table th {
+        vertical-align: middle !important;
+        padding: 7px !important;
+        white-space: normal !important;
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+</style>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
+<div id="app">
+    <!-- Exportable Table -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <a href="{{ path_for('admin-blog-add') }}" class="btn bg-teal pull-right waves-effect">
+                        <i class="material-icons">add</i>
+                        <span>Tambah Berita Baru</span>
+                    </a>
+                    <h2>
+                        LIST BERITA
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table width="100%" class="table table-bordered table-striped table-hover dataTable" id="posts-table">
+                            <thead>
+                                <tr>
+                                    <th width="50%">Judul Berita</th>
+                                    <th>Kategori Berita</th>
+                                    <th>Tanggal Di Buat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {% include 'dashboard/scripts/datatables.twig' %}
+
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    <!-- Custom Js -->
+    <script src="{{ asset('assets/dashboard/js/pages/tables/jquery-datatable.js') }}"></script>
+    <script>
+    $(document).ready(function() {
+
+        $('#posts-table').DataTable({
+            responsive: true,
+            stateSave: true,
+            "processing": true,
+            "serverSide": true,
+            columnDefs: [
+                { "width": "120px", "targets": [3] }
+            ],
+            "ajax":{
+               "url": "/dashboard/berita/datatables",
+               "dataType": "json",
+               "type": "GET"
+             },
+            "columns": [
+                { "data": "title" },
+                { "data": "category" },
+                { "data": "publish_at" },
+                {
+                    "data": function( data ){
+                        return data;
+                    },
+                    "orderable": false,
+                    "render": function ( data ) {
+                        var result = "";
+                        {% if auth.hasAccess('blog.edit') %}
+                            var result = result + ' <a href="/dashboard/berita/edit/'+data.id+'" class="btn bg-blue btn-sm waves-effect"><i class="material-icons">edit</i></a>';
+                            if (data.status == 1) {
+                                var result = result + ' <form action="{{ path_for('admin-blog-unpublish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button data-type="confirm" class="btn btn-warning btn-sm waves-effect swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will not be publicly viewable.">'+
+                                        '<i class="material-icons">close</i>'+
+                                    '</button>'+
+                                '</form>';
+                            }else{
+                                var result = result + ' <form action="{{ path_for('admin-blog-publish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button data-type="confirm" class="btn btn-success btn-sm waves-effect swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be published at the specified date/time.">'+
+                                        '<i class="material-icons">check</i>'+
+                                    '</button>'+
+                                '</form>'+
+                                ' <form action="{{ path_for('admin-blog-delete') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button data-type="confirm" class="btn bg-red btn-sm waves-effect swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">'+
+                                        '<i class="material-icons">delete</i>'+
+                                    '</button>'+
+                                '</form>';
+                            }
+                        {% endif %}
+
+                        return result;
+                    }
+                }
+            ],
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if (aData.status) {
+                    $('td', nRow).addClass('success');
+                }else{
+                    $('td', nRow).addClass('danger');
+                }
+            }
+        });
+
+        $('#tags-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+        $('#categories-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% if pelatihan|length == 0 %}
+  <div class="p-3 bg-warning">
+    <h6 class="big">Maaf, Posisi yang anda cari belum tersedia..</h6>
+  </div>
+{% endif %}
+{% for post in pelatihan %}
+<div class="pelatihan-list">
+    <h5 class="card-title job-name">
+      <a href="{{path_for('pelatihan-post', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug,'skema' : post.berbasis})}}">{{post.title}}</a>
+    </h5>
+    <ul class="job-address text-muted">
+    <li>
+      {% if post.start_date is null %}
+      {% endif %}
+      {% if post.start_date is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Tanggal pendaftaran</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{post.start_date|date("d-m-Y")}} - <span>s/d</span> - {{post.end_date|date("d-m-Y")}}
+          </dd>
+        </dl>
+      {% endif %}
+    </li>
+
+    <li>
+      {% if post.tgl_seleksi is null %}
+      {% endif %}
+      {% if post.tgl_seleksi is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Tanggal Seleksi</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{post.tgl_seleksi|date("d-m-Y")}}
+          </dd>
+        </dl>
+      {% endif %}
+    </li>
+
+      <li class="job-location">
+        {% if post.tempat_pelaksanaan is null %}
+        {% endif %}
+      {% if post.tempat_pelaksanaan is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Tempat Pelaksanaan</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{post.tempat_pelaksanaan}}
+          </dd>
+        </dl>
+      {% endif %}
+     </li>
+    <li>
+      {% if post.kuota_peserta is null %}
+      {% endif %}
+      {% if post.kuota_peserta is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Kuota</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{ post.kuota_peserta }} orang Peserta
+          </dd>
+        </dl>
+      {% endif %}
+    </li>
+    <li>
+      {% if post.keterangan is null %}
+      {% endif %}
+      {% if post.keterangan is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Keterangan</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{post.keterangan}}
+          </dd>
+        </dl>
+      {% endif %}
+    </li>
+    <li>
+      {% if post.sasaran is null %}
+      {% endif %}
+      {% if post.sasaran is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Sasaran</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{post.sasaran}}
+          </dd>
+        </dl>
+      {% endif %}
+    </li>
+  
+    <li>
+      {% if post.start_date is null %}
+      {% endif %}
+      {% if post.start_date is not null %}
+        <dl class="row">
+          <dt class="col-lg-4 col-md-5 col-sm-4">
+            <span>Jenis Pelatihan</span>
+          </dt>
+          <dd class="col-lg-8 col-md-7 col-sm-8">
+          {{post.category.name}}
+          </dd>
+        </dl>
+      {% endif %}
+    </li>
+  </ul>
+  <div class="d-flex justify-content-md-end justify-content-sm-start flex-lg-row flex-sm-column flex-column">
+    <a href="{{path_for('pelatihan-post', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug,'skema' : post.berbasis})}}" class="btn btn-small btn-secondary" role="button" style="margin-right: 15px;">LIHAT DETAIL</a>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      {% if post.status == 1 %}
+      {% if auth.check() %}
+      {% if auth.hasAccess('jobseeker.view') %}
+          {% for user in post.peserta if user.user_id == auth.user.id %}
+              <a class="btn btn-small btn-disabled">KAMU SUDAH MENDAFTAR</a>
+          {% else %}
+            {% if auth.user.datapencarikerja.iscimahi == 1 %}
+            <a href="javascript:void(0)" class="openPopup  btn btn-small btn-primary" data-href="{{ path_for('pelatihan-modal-daftar', {'id': post.id, 'slug': post.slug }) }}">DAFTAR SEKARANG</a>
+              {% else %}
+                                          {# warga cimahi yang dapat mendaftar pelatihan #}
+                                      {% endif %}
+          {% endfor %}
+          {% endif %}
+      {% endif %}
+      {% if not auth.check() %}
+          <a href="javascript:void(0)" class="openLogin btn btn-small btn-primary"  data-href="{{ path_for('login-modal')}}">LOGIN UNTUK DAFTAR</a>
+
+      {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endfor %}

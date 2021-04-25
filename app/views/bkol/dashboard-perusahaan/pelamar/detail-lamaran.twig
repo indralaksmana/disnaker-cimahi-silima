@@ -1,0 +1,113 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}}
+|| Comment Details{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style>
+    .list-inline {
+            font-size: 12px;
+        }
+        .card-header{
+            font-weight: 600;
+        }
+    </style>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Detail Lamaran Dari
+                            {{ pelamar.user.datapencarikerja.nama_lengkap }}</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-3">
+            <div class="form-group logo-image">
+                <label for="item-img" class="cabinet center-block">
+                    <img src="{{ pelamar.user.photoprofile }}" class="img-fluid" id="item-img-output" />
+                </label>
+                <a target="_blank" class="btn btn-secondary btn-small w-100 btn-upload" href="{{path_for('pencarikerja-detail',{'username': pelamar.user.username})}}">LIHAT
+                    RESUME</a>
+            </div>
+            <ul class="list-inline fa-ul">
+                <li class="list-inline-item text-muted">
+                    <i class="fa-li" aria-hidden="true">IDR</i>
+                    {{ pelamar.user.datapencarikerja.gaji.name }}</li>
+                <li class="list-inline-item text-muted">
+                    <i class="fa-li fa fa-envelope" aria-hidden="true"></i>
+                    {{ pelamar.user.email }}</li>
+                <li class="list-inline-item text-muted">
+                    <i class="fa-li fa fa-phone" aria-hidden="true"></i>
+                    {{ pelamar.user.datapencarikerja.no_telp }}</li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header" style="background-color: #e5f6fc !important;">Isi Surat Lamaran</div>
+                <div class="card-body">
+                    {{ pelamar.coverletter | raw }}
+                </div>
+            </div>
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header" style="background-color: #e5f6fc !important;">{{ pelamar.post.nama_lowongan }}</div>
+                <div class="card-body">
+                    <p>
+                        <div>
+                            <b>Nama Perusahaan:</b>
+                            {{ pelamar.post.author.username }}</div>
+                        <div>
+                            <b>Deskripsi:</b>
+                            {{ pelamar.post.description }}</div>
+                        <div>
+                            <b>Kategori:</b>
+                            {{ pelamar.post.category.name }}</div>
+                    </p>
+                    {{ pelamar.post.content|raw }}
+                </div>
+            </div>
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-header" style="background-color: #e5f6fc !important;">Dokumen Pendukung</div>
+                <div class="card-body">
+                    <ul class="fa-ul">
+                        {% for r in pelamar.user.datapencarikerja.dokumen if r.nama_file == true %}
+                        <li>
+                            <i class="fa-li fa fa-file-text"></i>
+                            <a target="_blank" href="{{r.upload_file}}">{{r.nama_file}}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+
+        $('#replies-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "bkol/bkol.twig" %}
+{% block stylesheets %}
+<style>
+.leftside .hr-theme{
+  margin-bottom: 25px;
+}
+.bg-dark-blue {
+	background: #004e8c;
+}
+.bg-white .card-outline-light h5 a,
+.card-outline-light h5 a {
+	font-size: 1.125em;
+	color: #333;
+}
+</style>
+{% endblock %}
+
+{% block page %}
+{% include 'bkol/inc/flash.twig' %}
+
+<div class="lembaga-header bg-dark-blue">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				
+				<div class="card mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-center mb-3">
+                            {% if post.logo != ''%}
+                            <img class="img-fluid" src="{{base_url}}{{post.logo}}" alt="">
+                            {% else %}
+                            <img class="img-fluid" src="{{base_url()}}/img/nologo.jpg" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="px-3">
+                                <h3 class="card-title mb-3">{{post.nama_instansi}}</h3>
+                                <dl class="attribute-list">
+                                	<dd><span class="badge badge-light"><strong>Instansi :</strong> {{post.instansi.nama_instansi}}</span></dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+			</div>
+			<div class="col">
+				
+				<div class="card mb-3">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <div class="px-4">
+                                <dl class="attribute-list attribute-list-right">
+                                	<div class="mb-3">
+										<dt class="mb-0">Alamat</dt>
+										<dd>{{post.alamat_instansi}}</dd>
+									</div>
+
+                                	<div class="mb-3">
+									<dt class="mb-0">Hubungi Kami</dt>
+                                	<dd>
+                                		<span><strong>No. Telp :</strong> {{post.no_telp}}</span>
+		                                <span><strong>No. Fax :</strong> {{post.no_fax}}</span>
+		                                <span><strong>Email : </strong> {% if post.email_instansi %}<a href="mailto:{{post.email_instansi}}">{{post.email_instansi}}</a>{% endif %}</span>
+		                                <span>
+		                                	{% if post.website != '' %}
+		                                	<a href="{{post.website}}" target="_blank">{{post.website}}</a>
+		                                	{% endif %}
+		                                </span>
+                                	</dd>
+									</div>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- map here -->
+                            <div id="instansi-map" class="map-profile-box">
+                            	{{post.gmap_embed|raw}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="bg-white">
+<div id="home" class="container pt-5 pb-5">
+
+	<div class="row">
+		<div class="col">
+			<div class="hr-theme d-flex align-items-center">
+				<div class="hr-title"><h5 class="title-section">Lowongan Kerja Magang</h5></div>
+				<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+			</div>
+
+			{% for j in jobs %}
+			<div class="card border-top-0 border-left-0 border-right-0 border-bottom mb-3 card-outline-light">
+				<div class="card-body pl-0 pr-0">
+					<h5 class="card-title mb-1">
+						<a href="{{path_for('job_detail', {'year': j.publish_at|date("Y"), 'month': j.publish_at|date("m"), 'day': j.publish_at|date("d"), 'slug': j.slug})}}">
+							{{j.nama_lowongan}}
+						</a>
+					</h5>
+					<p class="card-text mb-3">{{j.category.name}}</p>
+					<p class="card-text">{{j.kabupatenkota.lokasi_nama}}</p>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+		<div class="col">
+			<div class="hr-theme d-flex align-items-center">
+				<div class="hr-title"><h5 class="title-section">Info Pelatihan</h5></div>
+				<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+			</div>
+
+			{% for r in pelatihans %}
+			<div class="card border-top-0 border-left-0 border-right-0 border-bottom mb-3 card-outline-light">
+				<div class="card-body pl-0 pr-0">
+					<h5 class="card-title mb-1">
+						<a href="{{path_for('pelatihan-post', {'year': r.publish_at|date("Y"), 'month': r.publish_at|date("m"), 'day': r.publish_at|date("d"), 'slug': r.slug})}}">
+							{{r.title}}
+						</a>
+					</h5>
+					<p class="card-text mb-3">{{r.author.pemerintah.nama_instansi}}</p>
+					<p class="card-text">{{r.start_date|date('d F Y')}} - {{r.end_date|date('d F Y')}}</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% include 'bkol/minisite/js.twig' %}	
+{% endblock %}

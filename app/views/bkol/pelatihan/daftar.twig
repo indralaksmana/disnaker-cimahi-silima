@@ -1,0 +1,28 @@
+{% import 'bkol/macros/form.twig' as form %}
+
+<section class="content-item p-4">
+	<div class="row">
+		<div class="col-md-12">
+			{% if auth.check() %}
+                <form action="{{path_for('pelatihan-post', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug,'skema':post.berbasis} )}}" method="post">
+                    <fieldset disabled>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Kamu Yakin akan mendaftar pelatihan ini?</h4>
+                            </div>
+                        </div>  	
+                    </fieldset>
+                    <br>
+                    {{csrf()}}
+                    <input type="submit" name="add_daftar" value="Daftarkan" class="btn btn-normal pull-right" />
+                    <input type="hidden" name="berbasis" value="{{post.berbasis}}" />
+                    <input type="hidden" name="tahun" value="{{post.publish_at|date("Y")}}"/>
+                    <button type="button" class="btn btn-warning pull-left" data-dismiss="modal" aria-label="Close">
+						Batalkan
+					</button>
+                </form>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+</section>

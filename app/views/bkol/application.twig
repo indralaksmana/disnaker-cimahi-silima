@@ -1,0 +1,103 @@
+{% extends "bkol/bkol.twig" %}
+{% block page %}
+<div class="container py-3">
+	<div class="row">
+		<div class="col-lg-4 col-md-4 col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-3 col-sm-3 pb-2">
+							<div class="job-info-header">
+								{% if post.authorCompanies.logo  != "" %}
+								<img id="company_logo" alt="{{post.nama_lowongan}}" data-original="{{post.authorCompanies.logo}}" src="{{post.authorCompanies.logo}}" class="img-responsive" style="max-width: 60px;">
+								{% else %}
+								<img id="company_logo" src="{{ base_url() }}/img/nologo.jpg" class="img-responsive" style="max-width: 60px;">
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-md-9 col-sm-9 pb-2">
+							<h5 class="position-title" id="position_title"><strong>{{ post.nama_lowongan }}</strong> </h5>
+							<span id="company_name"> {{ post.authorCompanies.companyname }}</span>
+						</div>
+					</div>
+					<hr class="py-0">
+					<div class="row">
+						<ul class="fa-ul">
+							<li class="mb-2"><i class="fa-li fa fa-usd"></i>
+								{% if not auth.check() %}
+								<a href="/login" id="salary_login" role="button" data-toggle="modal" data-target="#login-modal">Masuk untuk melihat gaji</a>
+								{% endif %}
+								{% if  auth.check() %}
+								<span class="number">{{post.gaji.name}}</span>
+								{% endif %}
+							</li>
+							<li class="mb-2"><i class="fa-li fa fa-users"></i>
+							<span id="years_of_experience">Jumlah Kebutuhan : {{post.jumlah_kebutuhan_tenaga}} Orang</span></li>
+							<li class="mb-2"><i class="fa-li fa fa-map-marker"></i><span id="single_work_location" class="single_work_location">{{post.wilayah_pekerjaan}}, {{post.provinsi.lokasi_nama}} - {{post.kabupatenkota.lokasi_nama}}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8  col-md-8 col-sm-12">
+			<form action="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}" method="post">
+				<div class="card">
+					<div class="card-body">
+						<div class="resume-summary" id="resume_summary">
+							<div class="media mb-2">
+								<div class="media-left">
+									<img class="resume-photo" id="resume_photo" src="{{ auth.user.photoprofile }}">
+								</div>
+								<div class="media-body">
+									<h3 class="candidate-name" id="candidate_name"> <strong>{{ auth.user.fullname }}</strong> </h3>
+									<ul class="list-inline">
+										<li class="candidate-info" id="candidate_expected_salary">
+											<i class="fa fa-usd" aria-hidden="true"></i>
+											<span class="number">{{ auth.user.expectedsalary }}</span>
+										</li>
+										<li class="candidate-info" id="candidate_email">
+											<i class="fa fa-envelope-open" aria-hidden="true"></i>
+											{{ auth.user.email }}
+										</li>
+										<li class="candidate-info" id="candidate_handphone_no">
+											<i class="fa fa-phone" aria-hidden="true"></i>
+											{{ auth.user.phonenumber }}
+										</li>
+									</ul>
+								</div>
+								{{csrf()}}
+								<p class="resume-action font-weight-normal" id="resume_action">
+									<a id="resume_view" href="#" onclick="window.open('{{ base_url() }}/bursa-kerja-online/jobseeker/{{ auth.user.username }}','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Lihat</a>
+									<span> | </span>
+									<a id="resume_edit" href="#" onclick="window.open('{{ base_url() }}/bursa-kerja-online/resume','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Ubah</a>
+								</p>
+							</div>
+							<hr class="py-0">
+							<div class="resume-attachment" id="resume_attachment">
+								<p class="pull-left"> Resume yang diunggah <span class="text-muted"> - Diunggah pada {{ auth.user.resume.updated_at }}</span></p>
+								<p class="pull-right">
+									<a id="uploaded_resume_view" href="#" onclick="window.open('http://docs.google.com/gview?url={{ auth.user.resume.upload_resume }}','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Lihat</a>
+									<span class="hidden-xs"> | </span>
+									<a class="hidden-xs" id="uploaded_resume_edit" href="#" onclick="window.open('{{ base_url() }}/bursa-kerja-online/resume/resume-upload','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Ubah</a>
+								</p>
+								<div class="clearfix"></div>
+							</div>
+							<div class="bg-info container py-2">
+							<div class="form-group text-light">
+								<label for="coverletter"><h6>Promosikan diri Anda! (Disarankan)</h6></label>
+								<textarea class="form-control" rows="5" name="coverletter" id="coverletter" placeholder="Beritahu perusahaan mengapa Anda paling cocok untuk posisi ini. Sebutkan keterampilan khusus dan bagaimana Anda berkontribusi. Hindari hal generik seperti Saya bertanggung jawab."></textarea>
+							</div>
+							<p class="font-weight-light text-light small">Dengan menekan tombol "Kirim Lamaran", Saya telah membaca dan menyetujui peraturan Bursa Kerja Online (BKOL) Kota Cimahi tentang pemanggilan interview</p>
+							<div class="btn-responsive mx-auto">
+								<input type="submit" name="add_apply" value="Kirim Lamaran" class="btn btn-warning btn-block" />
+								{# <button type="button" class="btn btn-warning btn-block">Kirim Lamaran</button> #}
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	{% endblock %}

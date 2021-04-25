@@ -1,0 +1,100 @@
+{% block stylesheets %}
+<style>
+    .upload_image ul li .delete-image, .upload_image #sortable li .delete-image{
+        top: 0;
+        right: 0;
+        width: auto;
+        height: auto;
+        border-radius: 0; 
+    }
+    .placeholder-image span {
+        position: absolute;
+        left: 45%;
+        top: 45%;
+    }
+</style>
+{% endblock %}
+<form action="{{ currentRoute }}" method="POST" role="form" enctype="multipart/form-data">
+    <div class="row clearfix">
+        <div class="col-md-12">
+            
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group{% if has_error('title') %} has-error{% endif %}">
+                                <label for="title">Judul</label>
+                                <div class="form-line">
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="Judul"
+                                        value="{% if requestParams.title %}{{requestParams.title}}{% else %}{{post.title}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('title') }}</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style='display:inline-block;float:none;vertical-align:top'>Album Photo</label>
+                                <div class="upload_image" style='display:inline-block'>
+                                    <input id="gallery-photos" type="file" name="upload_gallery_photo[]"
+                                        multiple="multiple">
+                                    <div id="multiple-file-preview">
+                                        <ul id="sortable">
+
+                                            {% if imgs %}
+                                            {% for photo in imgs %}
+                                            <li id="photo{{loop.index}}" style="background-image: url({{ photo }})"
+                                                class="thumbnails">
+                                                <input type="hidden" name="gallerys_photo[]" value="{{ photo }}">
+                                                <a href="{{ photo }}" class="images-thumbnails"><a>
+                                                        <a href="" class="btn btn-danger delete-thumbnails delete-image"
+                                                            data-id='{{loop.index}}'><i
+                                                                class="material-icons">delete</i></a>
+                                            </li>
+                                            {% endfor %}
+                                            {% endif %}
+                                            <li>
+                                                <label class="placeholder-image" for="gallery-photos">
+                                                    <span>
+                                                        <i class="material-icons">add</i>
+                                                    </span>
+                                                </label>
+                                            </li>
+                                            <div class="clear-both"></div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               
+        </div>
+        <div class="col-md-12">
+            
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group{% if has_error('publish_at') %} has-error{% endif %}">
+                                <label for="publish_at">Tanggal Publikasi</label>
+                                <div class="form-line">
+                                    <input type="text" name="publish_at" class="form-control" id="publish_at"
+                                        placeholder="Tanggal Publikasi"
+                                        value="{% if requestParams.publish_at %}{{requestParams.publish_at}}{% else %}{{post.publish_at}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('publish_at') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group{% if has_error('status') %} has-error{% endif %}">
+                                <label for="status">Status </label>
+                                <br /><input type="checkbox" name="status" class="form-control" id="status"
+                                    {% if requestParams.status %}checked{% elseif post.status %}checked{% endif %}>
+                                <span class="help-block">{{ error('status') }}</span>
+                            </div>
+                            <div class="form-group">
+                                <a  class="btn btn-danger m-t-15 waves-effect" href="{{ path_for('admin-gallery') }}">KEMBALI</a>
+                                <button type="submit" class="btn btn-primary m-t-15 waves-effect">SIMPAN</button>
+                            </div>
+                        </div>
+                    </div>
+               
+        </div>
+    </div>
+    {{ csrf() }}
+</form>

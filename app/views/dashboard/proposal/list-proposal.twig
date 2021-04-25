@@ -1,0 +1,100 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Blog Comments{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Lamaranku</h1>
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                   Lamaranku
+                </a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-pendidikan" role="tab" aria-controls="nav-pendidikan" aria-selected="false">
+                    Lamaran Sudah Di Baca
+                </a>
+              </div>
+            </nav>
+        </div>
+    </div>
+
+
+        </div>
+        <div class="tab-pane fade" id="nav-pendidikan" role="tabpanel" aria-labelledby="nav-pendidikan-tab">
+            
+        </div>
+        <div class="tab-pane fade" id="nav-nonformal" role="tabpanel" aria-labelledby="nav-nonformal-tab">
+            
+        </div>
+        <div class="tab-pane fade" id="nav-pekerjaan" role="tabpanel" aria-labelledby="nav-pekerjaan-tab">
+           
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        
+        $('#comments-table').DataTable({
+            responsive: true,
+            stateSave: true,
+            "processing": true,
+            "serverSide": true,
+            "ajax":{
+                     "url": "/dashboard/lamaranku/datatables",
+                     "dataType": "json",
+                     "type": "GET"
+                   },
+            "columns": [
+                { "data": "name" },
+                // { "data": "coverletter" },
+                // { "data": "replies_count" },
+                // { "data": "pending_replies_count" },
+                { 
+                    "data": function( data ){
+                        return data;
+                    },
+                    "orderable": false,
+                    "render": function ( data ) {
+                        var result = "";
+                        {% if auth.hasAccess('job.edit') %}
+                            var result = result + ' <a href="/dashboard/lamaranku/'+data.id+'">'+
+                                'Lihat Proposal'+
+                            '</a>';
+                            if (data.status == 1) {
+                                var result = result + '</br><b style="color: green">Lamaran Sudah Di Baca</b>';
+                            }else{
+                                var result = result + ' </br><b style="color: red">Lamaran Belum Di Baca</b>';
+                            }
+                        {% endif %}
+
+                        return result;
+                    }
+                }
+            ],
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if (aData.status) {
+                    $('td', nRow).addClass('success');
+                }else{
+                    $('td', nRow).addClass('danger');
+                }
+            }
+        });
+    });
+    </script>
+{% endblock %}

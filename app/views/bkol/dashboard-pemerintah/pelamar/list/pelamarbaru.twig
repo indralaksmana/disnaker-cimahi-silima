@@ -1,0 +1,56 @@
+<table class="table table-dashboard" id="pelamarbaru">
+    <thead>
+        <tr>
+            <th>Nama Pelamar</th>
+            <th>Judul Lowongan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if pelamar | length == 0 %}
+            <tr class="text-center">
+                <td colspan="4">Belum Ada Pelamar Baru</td>
+            </tr>
+        {% endif %}
+        {% for post in pelamar if (post.status == 0)
+            or(post.status == 1) %}
+            <tr>
+                <td><a href="{{path_for('pencarikerja-detail', {'username': post.user.username})}}" class="author-name title-section">{{post.user.datapencarikerja.nama_lengkap}}</a></td>
+                <td>
+                    <a href="{{path_for('dashboardpemerintah-pelamar-review', {'username': post.user.username, 'id': post.id })}}">{{post.post.nama_lowongan}}</a>
+                </td>
+                <td>
+                    {% if post.status == 0 %}
+                        <span class="status status_belumreview">BELUM DI REVIEW</span>
+                    {% elseif post.status == 1 %}
+                        <span class="status status_sudahreview">SUDAH DI REVIEW</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{{path_for('dashboardpemerintah-pelamar-kandidate')}}" method="post" style="display: inline;">
+                        <input type="hidden" name="apply" value="{{post.id}}"/>
+                        {{csrf()}}
+                        {% if post.status == 0 %}
+                            <button class="btn  btn-sm btn-disabled" disabled="disabled">
+                                <i class="fa fa-fw fa-user-plus"></i>
+                            </button>
+                        {% elseif post.status == 1 %}
+                            <button class="btn btn-third btn-sm swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="Pelamar Ini Akan Dijadikan Kandidat" data-toggle="tooltip" data-placement="top" title="Jadikan Kandidat">
+                                <i class="fa fa-fw fa-user-plus"></i>
+                            </button>
+                        {% endif %}
+                    </form>
+                    <form action="{{path_for('dashboardpemerintah-pelamar-delete')}}" method="post" style="display: inline;">
+                        <input type="hidden" name="apply" value="{{post.id}}"/>
+                        {{csrf()}}
+                        <button class="btn btn-delete btn-sm swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="Hapus Pelamar ini" data-toggle="tooltip" data-placement="top" title="Hapus">
+                            <i class="fa fa-fw fa-close"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </div>
+    {% endfor %}
+</tbody>
+</table>

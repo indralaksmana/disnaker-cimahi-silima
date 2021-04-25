@@ -1,0 +1,281 @@
+<fieldset disabled>
+<div class="row">
+    <div class="col-md-4 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Logo Perusahaan</h4>
+                <div class="forms-sample">
+                    <div class="form-group">
+                        <div class="form-group" id="featured_thumbnail">
+                            {% if requestParams.logo != "" %}
+                            <img src="https://placehold.it/400x210?text=No+Featured+Photo" class="img-responsive" alt="Image" style="width: 100%;"> {% else %}
+                            <img src="{{ bkolperusahaan.userperusahaan.companiesprofile.logo }}" class="img-responsive" alt="Image" style="width: 100%;"> {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span class="fa fa-user"></span>  Info Penanggung Jawab Perusahaan</h4>
+                <div class="forms-sample">
+                    <div class="form-group{% if has_error('first_name') %} has-error{% endif %}">
+                        <label for="first_name">Nama Pertama</label>
+                        <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First Name" value="{% if requestParams.first_name %}{{requestParams.first_name}}{% else %}{{bkolperusahaan.userperusahaan.first_name}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('first_name') }}</span>
+                    </div>
+                    <div class="form-group{% if has_error('last_name') %} has-error{% endif %}">
+                        <label for="last_name">Nama Belakang</label>
+                        <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last name" value="{% if requestParams.last_name %}{{requestParams.last_name}}{% else %}{{bkolperusahaan.userperusahaan.last_name}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('last_name') }}</span>
+                    </div>
+                    <div class="form-group{% if has_error('email') %} has-error{% endif %}">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{% if requestParams.email %}{{requestParams.email}}{% else %}{{bkolperusahaan.userperusahaan.email}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('email') }}</span>
+                    </div>
+                    <div class="form-group{% if has_error('username') %} has-error{% endif %}">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="form-control" id="username" placeholder="Username" value="{% if requestParams.username %}{{requestParams.username}}{% else %}{{bkolperusahaan.userperusahaan.username}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('username') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Gambaran Perusahaan</h4>
+                <div class="form-sample">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('companyname') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Nama Perusahaan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="companyname" class="form-control" id="companyname" placeholder="Nama Perusahaan" value="{% if requestParams.companyname %}{{requestParams.companyname}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.companyname}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('companyname') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="provinsi">Provinsi</label>
+                                <div class="col-sm-8">
+                                    <select name="provinsi" id="provinsi" class="form-control" required="required">
+                                        <option value="{{bkolperusahaan.userperusahaan.companiesprofile.provinsi.lokasi_nama}}">{{bkolperusahaan.userperusahaan.companiesprofile.provinsi.lokasi_nama}}</option>
+                                        {% for daerahs in daerahs %}
+                                        <option name="provinsi" value="{{ daerahs.lokasi_nama }}" id="{{ daerahs.lokasi_provinsi }}">{{ daerahs.lokasi_nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="kabupatenkota">Kabupaten/Kota</label>
+                                <div class="col-sm-8">
+                                    <select name="kabupatenkota" id="kabupatenkota" class="form-control" required="required">
+                                        <option value="{{bkolperusahaan.userperusahaan.companiesprofile.kabupatenkota.lokasi_nama}}">{{bkolperusahaan.userperusahaan.companiesprofile.kabupatenkota.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="kecamatan">Kecamatan</label>
+                                <div class="col-sm-8">
+                                    <select name="kecamatan" id="kecamatan" class="form-control" required="required">
+                                        <option value="{{bkolperusahaan.userperusahaan.companiesprofile.kecamatan}}">{{bkolperusahaan.userperusahaan.companiesprofile.kecamatan.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label" for="kecamatan">Kelurahan</label>
+                                <div class="col-sm-8">
+                                    <select name="kelurahan" id="kelurahan" class="form-control" required="required">
+                                        <option value="{{bkolperusahaan.userperusahaan.companiesprofile.kelurahan}}">{{bkolperusahaan.userperusahaan.companiesprofile.kelurahan.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('companysaddress') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Alamat Perusahaan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="companysaddress" class="form-control" id="companysaddress" placeholder="Alamat Perusahaan" value="{% if requestParams.companysaddress %}{{requestParams.companysaddress}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.companysaddress}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('companysaddress') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('industry') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Bidang Industri</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="industry" class="form-control" id="industry" placeholder="Bidang Industri" value="{% if requestParams.industry %}{{requestParams.industry}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.industry}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('industry') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('phonenumber') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Nomor Telepon</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="phonenumber" class="form-control" id="phonenumber" placeholder="Nomor Telepon" value="{% if requestParams.phonenumber %}{{requestParams.phonenumber}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.phonenumber}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('phonenumber') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('companysize') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Ukuran Perusahaan</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="companysize" class="form-control" id="companysize" placeholder="Ukuran Perusahaan" value="{% if requestParams.companysize %}{{requestParams.companysize}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.companysize}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('companysize') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('workingtime') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Waktu Bekerja</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="workingtime" class="form-control" id="workingtime" placeholder="Waktu Bekerja" value="{% if requestParams.workingtime %}{{requestParams.workingtime}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.workingtime}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('workingtime') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('fashionstyle') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Gaya Berpakaian</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="fashionstyle" class="form-control" id="fashionstyle" placeholder="Gaya Berpakaian" value="{% if requestParams.fashionstyle %}{{requestParams.fashionstyle}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.fashionstyle}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('fashionstyle') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('languageused') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Bahasa yang Digunakan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="languageused" class="form-control" id="languageused" placeholder="Bahasa yang Digunakan" value="{% if requestParams.languageused %}{{requestParams.languageused}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.languageused}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('languageused') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row{% if has_error('website') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label">Website</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="website" class="form-control" id="website" placeholder="website" value="{% if requestParams.website %}{{requestParams.website}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.website}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('website') }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Informasi Perusahaan</h4>
+                <div class="form-sample">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group{% if has_error('about') %} has-error{% endif %}">
+                                <!-- <label for="about">Informasi Perusahaan</label> -->
+                                <textarea name="about" class="form-control " id="about" placeholder="Post Content" required="required" rows="7">{% if requestParams.about %}{{requestParams.about}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.about}}{%
+                                    endif %}
+                                </textarea>
+                                <span class="help-block">{{ error('about') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Mengapa Bergabung Dengan Kami?</h4>
+                <div class="form-sample">
+                    <!-- <p class="card-description">
+                      Personal info
+                  </p> -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group{% if has_error('whyjoinus') %} has-error{% endif %}">
+                                <!-- <label for="whyjoinus">Mengapa Bergabung Dengan Kami</label> -->
+                                <textarea name="whyjoinus" class="form-control pt-0" id="whyjoinus" placeholder="Post Content" rows="7">
+                                    {% if requestParams.whyjoinus %}{{requestParams.whyjoinus}}{% else %}{{bkolperusahaan.userperusahaan.companiesprofile.whyjoinus}}{%
+                                    endif %}
+                                </textarea>
+                                <span class="help-block">{{ error('whyjoinus') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% for post in jobs %}
+				{% set content = post.content|split(' ') %}
+                {% set content = content[0] ~ ' ' ~ content[1] ~ ' ' ~ content[2] ~ ' ' ~ content[3] ~ ' ' ~ content[4] ~ ' ' ~ content[5] ~ ' ' ~ content[6] ~ ' ' ~ content[7] ~ ' ' ~ content[8] ~ '...' %}
+			<div class="col-sm-4 mb-4">
+				<div class="card">
+					<a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}">
+						<div class="card-body text-secondary">
+							<h5 class="card-title text-info">{{post.jobtitle}}</h5>
+							<p class="card-text"><small class="text-muted">{{post.authorCompanies.companyname}}</small></p>
+							<ul class="fa-ul" style="font-size: smaller;">
+								<li class="mb-2">
+									<i class="fa-li fa fa-briefcase"></i><span id="years_of_experience" class="text-dark">Min 2 tahun (Pegawai (non-manajemen non-supervisor))</span>
+								</li>
+								<li class="mb-2">
+									<i class="fa-li fa fa-map-marker"></i><span id="single_work_location" class="text-dark">Indonesia - Jakarta Raya - Jakarta Barat - Jakarta</span>
+								</li>
+								<li class="mb-2">
+									<i class="fa-li fa fa-usd"></i><span href="#" class="text-dark">IDR 3,000,000 - 5,000,000</span>
+								</li>
+							</ul>
+						</div>
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+</fieldset>

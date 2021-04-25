@@ -1,0 +1,226 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+
+{% block title %}{{config['site-name']}} || Edit Resume{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style type="text/css">
+   .item .item-title {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 300;
+        color: #333;
+        line-height: 30px;
+    }
+
+    .item .item-period {
+        float: right;
+        right: 12px;
+        height: 20px;
+        margin-top: -10px;
+        color: #888;
+        font-style: italic;
+    }
+    .item a {
+    margin-bottom: 0px!important;
+    }
+
+    .item .sub-title {
+        color: #08d;
+        font-size: 18px;
+        line-height: 24px
+    }
+
+    .item .desc {
+        font-size: 14px;
+        line-height: 18px;
+        color: #888;
+    }
+</style>
+<div class="container">
+    <div class="row bg-white">
+
+        <div class="col padding-2">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Riwayat Kompetensi</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+            <p>
+                <a class="btn btn-lg btn-primary btn-block" data-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Tambah Riwayat Kompetensi
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <form action="{{ path_for('resume-kompetensi-add') }}" method="POST" role="form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group input-group-sm{% if has_error('jurusan_sertifikat') %} has-error{% endif %}">
+                                    <label for="jurusan_sertifikat">Jurusan</label>
+                                    <input type="text" name="jurusan_sertifikat" class="form-control" id="jurusan_sertifikat" placeholder="Jurusan"
+                                        value="{% if requestParams.jurusan_sertifikat %}{{requestParams.jurusan_sertifikat}}{% else %}{{post.jurusan_sertifikat}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('jurusan_sertifikat') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('no_sertifikat') %} has-error{% endif %}">
+                                    <label for="no_sertifikat">No Sertifikat</label>
+                                    <input type="text" name="no_sertifikat" class="form-control" id="no_sertifikat" placeholder="No Sertifikat"
+                                        value="{% if requestParams.nama_unit %}{{requestParams.no_sertifikat}}{% else %}{{post.no_sertifikat}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('no_sertifikat') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('no_registrasi') %} has-error{% endif %}">
+                                    <label for="no_registrasi">Nomor Registrasi</label>
+                                    <input type="text" name="no_registrasi" class="form-control" id="no_registrasi" placeholder="No Registrasi"
+                                        value="{% if requestParams.no_registrasi %}{{requestParams.no_registrasi}}{% else %}{{post.no_registrasi}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('no_registrasi') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('jenis_kompetensi_id') %} has-error{% endif %}">
+                                    <label for="jenis_kompetensi_id">Skema Sertifikasi</label>
+                                    <select name="jenis_kompetensi_id" class="form-control" required>
+                                        <option value="">- select -</option>
+                                        {% for jk in jks %}
+                                            <option value="{{jk.id}}"{% if requestParams.jenis_kompetensi_id == jk.id or post.jenis_kompetensi_id == jk.id %} selected{% endif %}>{{jk.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('jenis_kompetensi_id') }}</span>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                
+
+                                <div class="form-group input-group-sm{% if has_error('masa_berlaku') %} has-error{% endif %}">
+                                    <label for="masa_berlaku">Masa Berlaku</label>
+
+                                    <div class="row">
+                                        <div class="col input-group">
+                                            <input type="number" name="masa_berlaku" class="form-control" id="masa_berlaku" placeholder="Masa Berlaku"
+                                                value="{% if requestParams.masa_berlaku %}{{requestParams.masa_berlaku}}{% else %}{{post.masa_berlaku}}{% endif %}"
+                                                required="required">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><small>Tahun</small></div>
+                                            </div>
+                                        </div>  
+                                    </div>  
+                                    <span class="help-block">{{ error('masa_berlaku') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('tanggal_terbit') %} has-error{% endif %}">
+                                    <label for="tanggal_terbit">Tanggal Terbit Sertifikat</label>
+                                    <input type="date" name="tanggal_terbit" class="form-control" id="tanggal_terbit" placeholder="Tanggal Terbit Sertifikat"
+                                        value="{% if requestParams.tanggal_terbit %}{{requestParams.tanggal_terbit}}{% else %}{{post.tanggal_terbit}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('tanggal_sertifikat') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('diterbitkan_oleh') %} has-error{% endif %}">
+                                    <label for="diterbitkan_oleh">Diterbitkan Oleh</label>
+                                    <select name="diterbitkan_oleh" class="form-control" required>
+                                        <option value="">- select -</option>
+                                        {% for i in ['BNSP', 'LSP'] %}
+                                            <option value="{{i}}"{% if requestParams.diterbitkan_oleh == i or post.diterbitkan_oleh == i %} selected{% endif %}>{{i}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('diterbitkan_oleh') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('nama_lsp') %} has-error{% endif %}">
+                                    <label for="nama_instansi">Nama Instansi/LSP</label>
+                                    <input type="text" name="nama_lsp" class="form-control" id="nama_lsp"
+                                        placeholder="Nama Instansi/LSP" value="{% if requestParams.nama_lsp %}{{requestParams.nama_lsp}}{% else %}{{post.nama_lsp}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('nama_lsp') }}</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-group input-group-sm">
+                                    <button type="submit" class="btn btn-third">SIMPAN</button>
+                                    <a style="margin-left:10px;font-size:1rem;" data-toggle="collapse" href="#collapseExample"
+                                        role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-third btn-secondary">BATAL</a>
+                                </div>
+                            </div>
+                            {{ csrf() }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 border-top">
+
+            {% for post in posts %}
+            {% if posts|length == 0 %}
+            <span class="text-center">Belum Ada data Riwayat Kompetensi</span>
+            {% endif %}
+            <div class="item">
+                <div class="item-title bold">
+                    {{post.jurusan_sertifikat}}
+                </div>
+                <div class="item-period italic" style="margin-top: 5px">
+                    <a href="{{ path_for('resume-kompetensi-edit', {'id': post.id}) }}" class="btn btn-small btn-third">
+                        Edit <span class="fa fa-fw fa-pencil"></span>
+                    </a>
+                    {% if post.status == 1 %}
+                    <form action="{{ path_for('resume-kompetensi-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button style="margin-left: 15px" class="btn btn-small btn-warning btn-sm swal-confirm"
+                            data-swtitle="Anda Yakin?" data-swmessage="Data ini akan terhapus secara permanen">
+                            Hapus <span class="fa fa-fw fa-close"></span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{{ path_for('resume-kompetensi-publish') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-success btn-sm swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="This gallery post will be published at the specified date/time.">
+                            Publish <span class="fa fa-fw fa-check"></span>
+                        </button>
+                    </form>
+                    <form action="{{ path_for('resume-kompetensi-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-secondary btn-sm swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">
+                            Hapus <span class="fa fa-fw fa-trash"></span>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="sub-title italic">
+                    {{post.companyname}}
+                </div>
+                <div class="desc">
+                    <p class="mb-0">{{post.kompetensi.name}} di {{post.nama_lsp}}</p>
+                    <p class="mb-0">Sertifikat No : {{post.no_sertifikat}}</p>
+                    <p>Tanggal : {{post.tanggal_sertifikat|date('d F Y')}}</p>
+                </div>
+                
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

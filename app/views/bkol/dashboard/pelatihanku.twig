@@ -1,0 +1,88 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+{% block page %}
+<style>
+    .syarat {
+        counter-reset: my-badass-counter;
+    }
+
+    .syarat dd:before {
+        content: counter(my-badass-counter);
+        counter-increment: my-badass-counter;
+    }
+
+    .dataTables_filter,
+    .dataTables_length {
+        display: none;
+    }
+</style>
+<div class="container">
+    <div class="row bg-white">
+        <div class="col-12">
+            <div class="mb-4">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Riwayat Pelatihan</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8181/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 bg-white" style="overflow-x:auto;">
+            <table class="table normal-table" id="pelatihanku">
+                <thead>
+                    <tr>
+                        <th>#Pendaftaran</td>
+                        <th>Nama Pelatihan</th>
+                        <th>Tanggal Pelatihan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if listproposal|length == 0 %}
+                    <tr class="text-center">
+                        <td colspan="4">Belum Ada Pelatihan Baru</td>
+                    </tr>
+                    {% endif %}
+                    {% for post in listproposal %}
+                    <tr>
+                        <td>{{post.nomor_pendaftaran}}</td>
+                        <td><a target="_blank" href="{{path_for('pelatihan-post', {'year': post.post.publish_at|date("Y"), 'month': post.post.publish_at|date("m"), 'day': post.post.publish_at|date("d"), 'slug': post.post.slug})}}">{{post.post.title}}</a></td>
+                        <td>
+                            {{post.start_date|date("d/m/Y")}} s/d {{post.end_date|date("d/m/Y")}}</td>
+                        <td>
+                            {% if post.status == 0 %}
+                            <span class="status status-yellow">BELUM LENGKAP</span>
+                            {% endif %}
+                            {% if post.status == 1 %}
+                            <span class="status status-green">SYARAT LENGKAP</span>
+                            <!-- see _normaltable.scss for reference status-->
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        $('#pelatihanku').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+</script>
+{% endblock %}

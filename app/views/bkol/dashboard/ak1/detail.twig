@@ -1,0 +1,219 @@
+<style>
+    div.row {
+    font-size: 14px !important;
+}
+.ak1 {
+
+    padding: 10px;
+    line-height: 26px;
+    border: 1px solid #ddd;
+    h2,h3 {
+        l
+    }
+
+}
+ol  {
+list-style-type: decimal !important;
+    }
+    .tr {
+        border: 1px solid #ddd;
+        width: 95%;
+        margin: 0 auto;
+    }
+    .td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+</style>
+<div class="card">
+    <div class="card-body ">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <h4 class="modal-title">Detail Kartu Pencari Kerja {{user.fullname}} </h4>
+            <div class="row">
+                <div class="col-md-6 ak1">
+                    <p>Ketentuan</p>
+                    <ol>
+                        <li>Berlaku Nasional</li>
+                        <li>Bila ada perubahan data / Keterangan lain atau telah mendapat pekerjaan harap segera melapor</li>
+                        <li>Apabila pencari kerja yang bersangkutan telah diterima bekerja maka instansi /  perusahaan yang menerima agar mengembalikan AK/I ini kepada Dinas Tenaga Kerja</li>
+                        <li>Kartu ini berlaku selama 2 tahun dengan keharusan melapor setiap 6 bulan sekali bagi pencari kerja yang belum mendapat pekerjaan</li>
+                    </ol>
+                </div>
+                <div class="col-md-6">
+                    <div class="ak1">
+                <div class="row" style="">
+                    <div class="col-md-1 text-right"><img src="/img/logo.png" alt=""></div>
+                    <div class="col-md-10 text-center">
+                        <h6>PEMERINTAH KOTA CIMAHI</h6>
+                        <h5>DINAS SOSIAL TENAGA KERJA DAN TRANSMIGRASI</h5>
+                        <small>Jln. Raden Demang Hardjakusumah Komplek Perkantoran Pemkot Cimahi</small>
+                    </div>
+                    <hr>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center" style="margin-bottom: 5px; border-bottom: 1px solid #ddd">
+
+                    </div>
+                    <div class="col-md-12 text-center" style="font-size: 18px; border: 2px solid #ddd; padding: 2px; width: 90% !important; margin: 0 auto;">
+                        <b>KARTU TANDA BUKTI PENDAFTARAN PENCARI KERJA<b>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">No. Pendaftaran Pencari Kerja</div>
+                    <div class="col-md-6">: {{ user.pengajuanAK1.nomor_pendaftaran }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">No. Induk Kependudukan</div>
+                    <div class="col-md-6">: {{user.datapencarikerja.no_ktp}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="{{ user.photoprofile }}" class="img-fluid img-responsive" alt="Image" style="margin-top: 10px;"></div>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-6">Nama Lengkap</div>
+                            <div class="col-md-6">: {{user.fullname}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Tempat / Tanggal Lahir</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.tempat_lahir}} /
+                                {{user.datapencarikerja.tanggal_lahir}} </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Jenis Kelamin</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.jenis_kelamin}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Agama</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.agama}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Status Perkawinan</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.status_perkawinan}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Alamat</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.alamat_lengkap}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Kecamatan / Kelurahan</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.kecamatan.lokasi_nama }} /
+                                {{user.datapencarikerja.kelurahan.lokasi_nama}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Kodepos</div>
+                            <div class="col-md-6">: {{user.datapencarikerja.kodepos}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6 ak1 table ">
+
+                    <div class="row tr">
+                        <div class="td col-md-2">
+                            LAPORAN
+                        </div>
+                        <div class="td col-md-3">
+                            TGL - BULAN - TAHUN
+                        </div>
+                        <div class="td col-md-7">
+                            Tanda Tangan Pengantar Kerja Petugas Pendaftaran (Cantumkan NIP)
+                        </div>
+                    </div>
+                    <div class="tr row">
+                        <div class="td col-md-2">
+                            Pertama
+                        </div>
+                        <div class="td col-md-3">
+
+                        </div>
+                        <div class="td col-md-7">
+
+                        </div>
+                    </div>
+                    <div class="row tr">
+                        <div class="td col-md-2">
+                            Kedua
+                        </div>
+                        <div class="td col-md-3">
+
+                        </div>
+                        <div class="td col-md-7">
+
+                        </div>
+                    </div>
+                    <div class="row tr ">
+                        <div class="td col-md-2">
+                           Ketiga
+                        </div>
+                        <div class="td col-md-3">
+
+                        </div>
+                        <div class="td col-md-7">
+
+                        </div>
+                    </div>
+                    <br>
+                    <div class="tr row">
+                        <div class="col-md-5">
+                           Diterima di
+                        </div>
+                        <div class="col-md-1">
+                            :
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
+                    <div class="tr row">
+                        <div class="col-md-5">
+                           Terhitung Mulai Tanggal
+                        </div>
+                        <div class="col-md-1">
+                            :
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 ak1">
+                    <h5>PENDIDIKAN FORMAL</h5>
+                    <div class="row">
+                        <div class="col-md-6">{{user.datapencarikerja.pendidikanterakhir.jenis_pendidikan}}</div>
+                        <div class="col-md-3">: {{user.datapencarikerja.nama_instansi_pendidikan}}</div>
+                        <div class="col-md-3">Tahun Lulus:  {{user.datapencarikerja.tahun_lulus}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Jurusan</div>
+                        <div class="col-md-6">: {{user.datapencarikerja.jurusanpendidikan.jenis_pendidikan}}</div>
+                    </div>
+                    <hr>
+                    <h5>KETERAMPILAN</h5>
+                    <div class="row">
+                        <div class="col-md-6">Bahasa Yang Di Kuasai</div>
+                        <div class="col-md-6">:
+                            {% for bahasa in user.datapencarikerja.skillbahasa %}
+                                ({{ bahasa.name }})
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

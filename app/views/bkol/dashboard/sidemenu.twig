@@ -1,0 +1,75 @@
+<style>
+    .list-group-item a span {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+        transition: .3s transform ease-in-out;
+    }
+
+    .list-group-item span {
+        border: solid #222;
+        border-width: 0 1px 1px 0;
+        display: inline;
+        cursor: pointer;
+        padding: 3px;
+        position: absolute;
+        right: 0;
+        margin-top: 5px;
+    }
+
+    .list-group-item a.collapsed span {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        transition: .3s transform ease-in-out;
+    }
+</style>
+<div class="card bkol-side-menu">
+
+    <div class="row sidebar">
+        <div class="col-sm-12 pt-3 pb-1">
+            <ul class="list-group list-group-flush w-100 side-menu-item">
+                <li class="list-group-item px-0">
+                    <div class="hr-theme ">
+                        <div class="hr-title">
+                            <h5 class="title-section">MENU ANDA</h5>
+                        </div>
+                        <div class="hr-line flex-grow-1" style="background-image: url('{{ base_url() }}/img/bkol/line-2.png')"></div>
+                    </div>
+                </li>
+                <li class="list-group-item px-0">
+                    <a href="{{ path_for('dashboardpencaker') }}">Dashboard</a>
+                </li>
+                <li class="list-group-item px-0">
+                    <a data-toggle="collapse" href="#akun-profile" role="button" aria-expanded="true"
+                        aria-controls="akun-profile"> Profil Anda<span class="mr-3"></span></a>
+                    <div  id="akun-profile">
+                        <div class="mt-2">
+                            <a class="list-group-item px-3" href="{{ path_for('dashboardpencaker-biodata') }}">Data
+                                Diri</a>
+                            <a class="list-group-item px-3" href="{{ path_for('resume-pendidikan') }}">Pendidikan
+                                Formal</a>
+                            <a class="list-group-item px-3" href="{{ path_for('resume-nonformalpendidikan') }}">Pendidikan
+                                Non Formal</a>
+                            <a class="list-group-item px-3" href="{{ path_for('resume-kompetensi') }}">Kompetensi</a>
+                            <a class="list-group-item px-3" href="{{ path_for('resume-pekerjaan') }}">Pekerjaan</a>
+                            <a class="list-group-item px-3" href="{{ path_for('pelatihanku') }}">Pelatihan</a>
+                            <a class="list-group-item px-3" href="{{ path_for('resume-upload') }}">Dokumen Pendukung</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item px-0">
+                    <a href="{{ path_for('pengajuan-ak1')}}">Daftar AK-1</a>
+                </li>
+                <li class="list-group-item px-0">
+                    <a href="{{ path_for('admin-job-proposal')}}">Riwayat Lamaran</a>
+                </li>
+                <li class="list-group-item px-0">
+                    <a href="{{ path_for('dashboardpencaker-settings') }}">Pengaturan</a>
+                </li>
+                <li class="list-group-item px-0">
+                    <a href="{{ path_for('logoutbkol') }}">Keluar</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

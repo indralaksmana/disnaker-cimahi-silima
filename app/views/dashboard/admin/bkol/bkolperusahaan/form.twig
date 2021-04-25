@@ -1,0 +1,83 @@
+<!-- form -->
+<form action="{{ currentRoute }}" method="POST" role="form">
+    
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="row clearfix">
+                <div class="col-md-8">
+                    <div class="form-group form-float">
+                        <div class="form-line{% if has_error('companyname') %} error{% endif %}">
+                            <label class="form-label" for="companyname">Nama Perusahaan <span style="color:red;">*</span></label>
+                            <input type="text" name="companyname" class="form-control" id="companyname" value="{% if requestParams.companyname %}{{requestParams.companyname}}{% else %}{{post.companyname}}{% endif %}" required="required">
+                            <label class="error">{{ error('companyname') }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group form-float{% if has_error('flag_perusahaan') %} has-error{% endif %}">
+                        <select name="flag_perusahaan" id="flag_perusahaan" class="form-control" required="required">
+                            <option value="">Lokasi Perusahaan</option>
+                            {% for key, lokasi in [ 'Dalam Kota', 'Luar Kota'] %}
+                            <option value="{{ key + 1 }}" {% if requestParams.flag_perusahaan == key + 1 or post.flag_perusahaan == key + 1 %}selected{% endif %}>
+                                {{ lokasi }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <label class="error">{{ error('flag_perusahaan') }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-float">
+                <div class="form-line{% if has_error('fullname') %} error{% endif %}">
+                    <label class="form-label" for="fullname">Nama Lengkap Admin <span style="color:red;">*</span></label>
+                    <input type="text" name="fullname" class="form-control" id="fullname" value="{% if requestParams.fullname %}{{requestParams.fullname}}{% else %}{{post.userperusahaan.fullname}}{% endif %}" required="required">
+                    <label class="error">{{ error('fullname') }}</label>
+                </div>
+            </div>
+
+            <div class="form-group form-float">
+                <div class="form-line{% if has_error('username') %} error{% endif %}">
+                    <label class="form-label" for="username">Username <span style="color:red;">*</span></label>
+                    <input type="text" name="username" class="form-control" id="username" value="{% if requestParams.username %}{{requestParams.username}}{% else %}{{post.userperusahaan.username}}{% endif %}" required="required">
+                    <label class="error">{{ error('username') }}</label>
+                </div>
+            </div>
+
+            <div class="form-group form-float">
+                <div class="form-line{% if has_error('email') %} error{% endif %}">
+                    <label class="form-label" for="email">Email Admin <span style="color:red;">*</span></label>
+                    <input type="email" name="email" class="form-control" id="email" value="{% if requestParams.email %}{{requestParams.email}}{% else %}{{post.userperusahaan.email}}{% endif %}" required="required">
+                    <label class="error">{{ error('email') }}</label>
+                </div>
+            </div>
+
+            {% if 'edit' != form_state %}
+            <div class="form-group form-float">
+                <div class="form-line{% if has_error('password') %} error{% endif %}">
+                    <label class="form-label" for="password">Password <span style="color:red;">*</span></label>
+                    <input type="password" name="password" class="form-control" id="password" value="{% if requestParams.password %}{{requestParams.password}}{% endif %}" required="required">
+                    <label class="error">{{ error('password') }}</label>
+                </div>
+            </div>
+            <div class="form-group form-float">
+                <div class="form-line{% if has_error('password_confirm') %} error{% endif %}">
+                    <label class="form-label" for="password_confirm">Confirm Password <span style="color:red;">*</span></label>
+                    <input type="password" name="password_confirm" class="form-control" id="password_confirm" value="{% if requestParams.password_confirm %}{{requestParams.password_confirm}}{% endif %}" required="required">
+                    <label class="error">{{ error('password_confirm') }}</label>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="submit" name="submit" class="btn bg-teal form-control">{% if 'add' == form_state %}TAMBAH{% else %}SIMPAN{% endif %}</button>
+            </div>
+        </div>
+    </div>
+
+    {{ csrf() }}
+</form>

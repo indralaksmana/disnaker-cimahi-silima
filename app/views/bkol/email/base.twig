@@ -1,0 +1,386 @@
+{% spaceless %}<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{{title}}</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+    <style>
+      /* -------------------------------------
+          GLOBAL RESETS
+      ------------------------------------- */
+      img {
+        border: none;
+        -ms-interpolation-mode: bicubic;
+        max-width: 100%; }
+
+      body {
+        background-color: #f6f6f6;
+        font-family: 'Open Sans Condensed';
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0; 
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; }
+
+      table {
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        font-family: 'Open Sans Condensed', sans-serif;
+        width: 100%; }
+        table td {
+          font-family: 'Open Sans Condensed', sans-serif;
+          font-size: 14px;
+          vertical-align: top; }
+
+      /* -------------------------------------
+          BODY & CONTAINER
+      ------------------------------------- */
+      
+
+      .body {
+        background-color: #f6f6f6;
+        width: 100%;
+        font-family: 'Open Sans Condensed', sans-serif; }
+
+      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+      .container {
+        display: block;
+        Margin: 0 auto !important;
+        font-family: 'Open Sans Condensed', sans-serif;
+        /* makes it centered */
+        max-width: 600px;
+        padding: 10px;
+        width: 600px; }
+
+      /* This should also be a block element, so that it will fill 100% of the .container */
+      .content {
+        box-sizing: border-box;
+        font-family: 'Open Sans Condensed', sans-serif;
+        display: block;
+        Margin: 0 auto;
+        max-width: 600px;
+        padding: 10px; }
+
+      /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+      .logo {
+        background: #fff;
+        border-radius: 3px;
+        width: 100%; }
+      .main {
+        background: #fff;
+        border-radius: 3px;
+        width: 100%; }
+
+      .wrapper {
+        box-sizing: border-box;
+        padding: 20px; }
+
+      .footer {
+        clear: both;
+        padding-top: 10px;
+        text-align: center;
+        width: 100%; }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+          color: #999999;
+          font-size: 12px;
+          text-align: center; }
+      .title-email {
+        width: 50%;
+        font-size: 24px;
+        padding: 2px;
+        text-align:center;
+        color: #3B3D93;
+        font-weight: bold;
+        width:60%;
+      }
+
+      /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #000000;
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin: 0;
+        Margin-bottom: 30px; }
+
+      h1 {
+        font-size: 35px;
+        font-weight: 300;
+        text-align: center;
+        text-transform: capitalize; }
+
+      p,
+      ul,
+      ol {
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+        Margin-bottom: 15px; }
+        p li,
+        ul li,
+        ol li {
+          list-style-position: inside;
+          margin-left: 5px; }
+
+      a {
+        color: #3498db;
+        text-decoration: underline; }
+
+      /* -------------------------------------
+          BUTTONS
+      ------------------------------------- */
+      .btn {
+        box-sizing: border-box;
+        width: 100%; }
+        .btn > tbody > tr > td {
+          padding-bottom: 15px; }
+        .btn table {
+          width: auto; }
+        .btn table td {
+          background-color: #ffffff;
+          border-radius: 5px;
+          text-align: center; }
+        .btn a {
+          background-color: #ffffff;
+          border: solid 1px #3498db;
+          border-radius: 5px;
+          box-sizing: border-box;
+          color: #3498db;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 14px;
+          font-weight: bold;
+          margin: 0;
+          padding: 12px 25px;
+          text-decoration: none;
+          text-transform: capitalize; }
+
+      .btn-primary table td {
+        background-color: #3498db; }
+
+      .btn-primary a {
+        background-color: #3498db;
+        border-color: #3498db;
+        color: #ffffff; }
+
+      /* -------------------------------------
+          OTHER STYLES THAT MIGHT BE USEFUL
+      ------------------------------------- */
+      .last {
+        margin-bottom: 0; }
+
+      .first {
+        margin-top: 0; }
+
+      .align-center {
+        text-align: center; }
+
+      .align-right {
+        text-align: right; }
+
+      .align-left {
+        text-align: left; }
+
+      .clear {
+        clear: both; }
+
+      .mt0 {
+        margin-top: 0; }
+
+      .mb0 {
+        margin-bottom: 0; }
+
+      .preheader {
+        color: transparent;
+        display: none;
+        height: 0;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        mso-hide: all;
+        visibility: hidden;
+        width: 0; }
+
+      .powered-by a {
+        text-decoration: none; }
+
+      hr {
+        border: 0;
+        border-bottom: 1px solid #f6f6f6;
+        Margin: 20px 0; }
+
+      /* -------------------------------------
+          RESPONSIVE AND MOBILE FRIENDLY STYLES
+      ------------------------------------- */
+      @media only screen and (max-width: 620px) {
+        table[class=body] h1 {
+          font-size: 28px !important;
+          margin-bottom: 10px !important; }
+        table[class=body] p,
+        table[class=body] ul,
+        table[class=body] ol,
+        table[class=body] td,
+        table[class=body] span,
+        table[class=body] a {
+          font-size: 16px !important; }
+        table[class=body] .wrapper,
+        table[class=body] .article {
+          padding: 10px !important; }
+        table[class=body] .content {
+          padding: 0 !important; }
+        table[class=body] .container {
+          padding: 0 !important;
+          width: 100% !important; }
+        table[class=body] .main {
+          border-left-width: 0 !important;
+          border-radius: 0 !important;
+          border-right-width: 0 !important; }
+        table[class=body] .btn table {
+          width: 100% !important; }
+        table[class=body] .btn a {
+          width: 100% !important; }
+        table[class=body] .img-responsive {
+          height: auto !important;
+          max-width: 100% !important;
+          width: auto !important; }}
+
+      /* -------------------------------------
+          PRESERVE THESE STYLES IN THE HEAD
+      ------------------------------------- */
+      @media all {
+        .ExternalClass {
+          width: 100%; }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%; }
+        .apple-link a {
+          color: inherit !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+          text-decoration: none !important; } 
+        .btn-primary table td:hover {
+          background-color: #34495e !important; }
+        .btn-primary a:hover {
+          background-color: #34495e !important;
+          border-color: #34495e !important; } }
+
+    </style>
+  </head>
+  <body class="">
+    <table align="center" cellspacing="0" style="width:100%">
+	<tbody>
+        <tr>
+          <td style="background-color:#C6E5FF">
+            <table cellspacing="0" align="center" style="width:600px; padding-top: 20px; padding-bottom: 20px">
+              <tr>
+                <td style="width:50%;">
+                  <a href="{{base_url()}}"><img alt="Bursa Kerja Cimahi" src="{{base_url()}}/img/logo-bkol-new.png" style="float:left; height:72px; width:267px" /></a>
+                </td>
+                <td style="width:50%; text-align:right; padding-right: 20px;">
+                  <table cellspacing="0" style="width:100%">
+                    <tr>
+                      <td style="width:95%; text-align:right; color: #3B3D93; font-weight: bold; font-seze: 14px; font-family:'Open Sans Condensed'">Jln. Raden Demang HardjakusumahKomplek Perkantoran Pemkot Cimahi</td>
+                      <td style="width:5%;"><img style="width: 80%;" src="{{base_url()}}/img/bkol/icon/maps-and-flags.png"/></td>
+                    </tr>
+                    <tr>
+                      <td style="width:95%; text-align:right; color: #3B3D93; font-weight: bold; font-seze: 14px; font-family:'Open Sans Condensed'"><a href=":telp">+(62)22-6631883</a></td>
+                      <td style="width:5%"><img style="width: 80%;" src="{{base_url()}}/img/bkol/icon/phone-receiver.png"/></td>
+                    </tr>
+                    <tr>
+                      <td style="width:95%; text-align:right; color: #3B3D93; font-weight: bold; font-seze: 14px; font-family:'Open Sans Condensed'"><a href="http://{{settings_domain_bkol}}">BKOL.CIMAHIKOTA.GO.ID</a></td>
+                      <td style="width:5%"><img style="width: 80%;" src="{{base_url()}}/img/bkol/icon/world.png"/></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+		<tr>
+	</tbody>
+</table>
+
+
+    <table border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader">BKOL.KOTACIMAHI.GO.ID</span>
+            <table class="main">
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                
+                <td class="wrapper">
+                <table cellspacing="0" style="width:100%">
+										<tr>
+											<td align="center" style="background-image: url('{{base_url()}}/img/bkol/icon/line.png'); text-align:left; width:20%;"></td>
+											<td align="center" class="title-email">
+												{{judul_email}}
+											</td>
+											<td align="center" style="background-image: url('{{base_url()}}/img/bkol/icon/line.png'); text-align:right; width:20%;"></td>
+										</tr>
+                  </table>
+                  <br>
+                  <br>
+                  <br>
+              
+                {% block content %}
+
+                {% endblock %}
+
+                </td>
+              </tr>
+              <!-- END MAIN CONTENT AREA -->
+              </table>
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td><a href="http://disnaker.cimahikota.go.id" target="_blank"><img alt="" src="http://bkol.cimahikota.go.id/img/bkol/bkol-email.jpg" /></a></td>
+                  <td><a href="http://bkol.cimahikota.go.id" target="_blank"><img alt="" src="http://bkol.cimahikota.go.id/img/bkol/disnaker-email.jpg" /></a></td>
+                  <td><a href="http://cimahikota.go.id" target="_blank"><img alt="" src="http://bkol.cimahikota.go.id/img/bkol/cimahi-email.jpg" /></a></td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="background-color:#ffffff; background:#ffffff; font-family:'Open Sans'; font-size:10px; padding:28px">
+                  <p>Pesan ini (termasuk lampiran apa pun) ditujukan hanya untuk penerima dan mungkin berisi informasi rahasia atau istimewa. Retensi, penggunaan, penyalinan, atau sirkulasi yang tidak sah secara tegas dilarang. Jika Anda bukan penerima yang dituju, segera beri tahu pengirim dengan membalas email ini dan kemudian hapus dari sistem Anda. Dinas Tenaga Kerja Kota Cimahi tidak akan dianggap memberikan atau mengesahkan pandangan pribadi apa pun atau konten tidak resmi dari pengirim dan selanjutnya tidak bertanggung jawab atas virus atau gangguan pada email ini. Terima kasih.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="background-color:#3b3d93; background:#3b3d93; color:#ffffff; font-family:'Open Sans'; font-size:12px; padding:20px; text-align:center">
+                  <p>Copyright 2018 - Dinas Tenaga Kerja Kota Cimahi</p>
+                  </td>
+                </tr>
+              </table>
+
+            <!-- END FOOTER -->
+            
+<!-- END CENTERED WHITE CONTAINER --></div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>{% endspaceless %}

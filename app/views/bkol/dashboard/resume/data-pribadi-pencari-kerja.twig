@@ -1,0 +1,133 @@
+<div class="row">
+                        <h5 class="col-12 font-weight-bold">Data Pribadi Pencari Kerja</h5>
+                        <div class="col-md-6">
+                            <div class="form-group input-group-sm{% if has_error('nama_lengkap') %} has-error{% endif %}">
+                                <label for="no_ktp">Nomor KTP <span class="require">*</span></label>
+                                <input type="text" name="no_ktp" class="form-control" minlength="16" maxlength="16" id="no_ktp" placeholder="Nomor KTP/ NIK"
+                                    value="{% if requestParams.no_ktp %}{{requestParams.no_ktp}}{% else %}{{auth.user.datapencarikerja.no_ktp}}{% endif %}"
+                                    required="required">
+                                <span class="help-block">{{ error('no_ktp') }}</span>
+                            </div>
+                            <div class="form-group input-group-sm{% if has_error('nama_lengkap') %} has-error{% endif %}">
+                                <label for="nama_lengkap">Nama Lengkap <span class="require">*</span></label>
+                                <input type="text" name="nama_lengkap" class="form-control" id="nama_lengkap" placeholder="Nama Lengkap"
+                              value="{% if requestParams.nama_lengkap %}{{requestParams.nama_lengkap}}{% else %}{{auth.user.datapencarikerja.nama_lengkap}}{% endif %}"
+                                    required="required">
+                                <span class="help-block">{{ error('nama_lengkap') }}</span>
+                            </div>
+
+                            <div class="form-group input-group-sm{% if has_error('tempat_lahir') %} has-error{% endif %}">
+                                <label for="tempat_lahir">Tempat Lahir <span class="require">*</span></label>
+                                <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir" placeholder="Tempat Lahir"
+                                    value="{% if requestParams.tempat_lahir %}{{requestParams.tempat_lahir}}{% else %}{{auth.user.datapencarikerja.tempat_lahir}}{% endif %}"
+                                    required="required">
+                                <span class="help-block">{{ error('tempat_lahir') }}</span>
+                            </div>
+
+                            <div class="form-group input-group-sm{% if has_error('tempat_lahir') %} has-error{% endif %}">
+                                <label for="tanggal_lahir">Tanggal Lahir <span class="require">*</span></label>
+                                <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir" placeholder="Tanggal Lahir"
+                                    value="{% if requestParams.tanggal_lahir %}{{requestParams.tanggal_lahir}}{% else %}{{auth.user.datapencarikerja.tanggal_lahir}}{% endif %}"
+                                    required="required">
+                                <span class="help-block">{{ error('tanggal_lahir') }}</span>
+                            </div>
+                            <div class="form-group input-group-sm{% if has_error('jenis_kelamin') %} has-error{% endif %}">
+                                <label for="jenis_kelamin">Jenis Kelamin</label>
+                                <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
+                                    <option value="{{auth.user.datapencarikerja.jenis_kelamin}}">{{auth.user.datapencarikerja.jenis_kelamin
+                                        }}</option>
+                                    {% for i in ['LAKI-LAKI','PEREMPUAN'] %}
+                                    <option value="{{ i }}" {% if requestParams[ 'jenis_kelamin' ]==i %}selected{% endif %}>{{i
+                                        }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ error('jenis_kelamin') }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group input-group-sm{% if has_error('agama') %} has-error{% endif %}">
+                                <label for="agama">Agama</label>
+                                <select name="agama" class="form-control" id="agama">
+                                    <option value="{{auth.user.datapencarikerja.agama}}">{{auth.user.datapencarikerja.agama}}</option>
+                                    {% for i in ['ISLAM','KRISTEN','KATOLIK','BUDHA','HINDU','KHONGHUCU'] %}
+                                    <option value="{{ i }}" {% if requestParams[ 'agama' ]==i %}selected{% endif %}>{{i }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ error('agama') }}</span>
+                            </div>
+                            <div class="form-group input-group-sm{% if has_error('kondisi_fisik') %} has-error{% endif %}">
+                                <label for="kondisi_fisik">Kondisi Fisik / Disabilitas
+
+                                </label>
+                                <select name="kondisi_fisik" class="form-control" id="kondisi_fisik">
+                                    <option value="{{auth.user.datapencarikerja.kondisi_fisik}}">{{auth.user.datapencarikerja.kondisi_fisik}}</option>
+                                    {% for i in ['Non Disabilitas'] %}
+                                    <option value="{{ i }}" {% if requestParams[ 'kondisi_fisik' ]==i %}selected{% endif %}>{{i
+                                        }}</option>
+                                    {% endfor %}
+                                    <optgroup label="DISABILITAS"></optgroup>
+                                    {% for i in ['Tuna Daksa','Tuna Grahita','Tuna Wicara','Tuna Netra','Tuna Rungu','Tuna
+                                    Ganda'] %}
+                                    <option value="{{ i }}" {% if requestParams[ 'kondisi_fisik' ]==i %}selected{% endif %}>{{i
+                                        }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ error('kondisi_fisik') }}</span>
+                            </div>
+                            <div class="form-group input-group-sm{% if has_error('status_perkawinan') %} has-error{% endif %}">
+                                <label for="status_perkawinan">Status Perkawian
+                                    <span class="require">*</span>
+                                </label>
+                                <select name="status_perkawinan" class="form-control" id="status_perkawinan">
+                                    <option value="{{auth.user.datapencarikerja.status_perkawinan}}">{{auth.user.datapencarikerja.status_perkawinan}}</option>
+                                    {% for i in ['Belum Kawin','Duda','Janda','Kawin'] %}
+                                    <option value="{{ i }}" {% if requestParams[ 'status_perkawinan' ]==i %}selected{%
+                                        endif %}>{{i
+                                        }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ error('status_perkawinan') }}</span>
+                            </div>
+                            <div class="form-group input-group-sm">
+                                <!-- <div class="form-group input-group-sm mb-0"> -->
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <label for="">Tinggi / Berat Badan</label>
+                                    </div>
+                                    <div class="col">
+                                        <label class="sr-only" for="jumlah_penerima_org">Orang</label>
+                                        <div class="input-group input-group-sm mb-2">
+                                            <input type="text" class="form-control" name="tinggi_badan" id="tinggi_badan"
+                                                placeholder="" value="{{auth.user.datapencarikerja.tinggi_badan}}">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <small>CM</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label class="sr-only" for="berat_badan"></label>
+                                        <div class="input-group input-group-sm mb-2">
+                                            <input type="text" class="form-control" name="berat_badan" id="berat_badan"
+                                                placeholder="" value="{{auth.user.datapencarikerja.berat_badan}}">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <small>KG</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+
+                                <div class="form-group input-group-sm {% if has_error('no_telp') %} has-error{% endif %}">
+                                    <label for="no_telp">No Telpon / Handphone
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input name="no_telp" class="form-control" type="text"  value="{{auth.user.datapencarikerja.no_telp}}" />
+                                    <span class="help-block">{{ error('no_telp') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>

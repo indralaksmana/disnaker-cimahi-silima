@@ -1,0 +1,214 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || User Management{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/reronsive/2.1.1/css/reronsive.bootstrap4.min.css" rel="stylesheet">
+{% if config['oauth2-enabled'] %}
+<link href="{{ asset('bkol/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endif %}
+{% endblock %}
+
+{% block page %}
+
+<div class="row card card-body">
+
+    <div class="col-lg-12">
+        {# {% include 'dashboard/ak1/data-ak1/filter.twig' %} #}
+
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Data AK1</h1>
+
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="{{ path_for('data-ak1-add') }}" class="btn btn-xs btn-outline-primary"><ran class="fa fa-fw fa-plus"></ran>
+                    Tambah Data AK1</a>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="table-responsive">
+
+
+        <table width="100%" class="table table-striped table-bordered table-hover" id="data-table">
+              <thead>
+                  <tr>
+                  <th>No</th>
+                  <th>Tanggal Daftar</th>
+                  <th>No.Pencaker</th>
+                  <th>nama lengkap</th>
+                  <th>Nomor Induk Kependudukan</th>
+                  <th>alamat_lengkap</th>
+                  <th>Kelurahan</th>
+                  <th>Kecamatan</th>
+                  <th>JK</th>
+                  <th>Usia</th>
+                  <th>No. Tlp</th>
+                  <th>Pendidikan</th>
+                  <th>E-mail</th>
+                  <th>Melamar Ke-</th>
+                  <th>Keahlian</th>
+                  <th>KET</th>
+                  <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody></tbody>
+          </table>
+        </div>
+
+        </div>
+
+
+    </div>
+
+
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {% include 'dashboard/scripts/datatables.twig' %}
+    <script type="text/javascript" src="https://ayokitakerja.kemnaker.go.id/assets/js/front/select2.min.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        $('#tags-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+        $('#categories-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+
+    (function($){
+        var dataTable;
+        var select2Init = function(){
+          $('select').select2({
+            dropdownAutoWidth : true,
+            allowClear: true,
+            width: "100%",
+            placeholder: "Select a grade",
+          });
+        };
+
+        var dataTableInit = function(){
+          dataTable = $('#data-table').DataTable({
+              responsive: true,
+              stateSave: true,
+              "processing": true,
+              "serverSide": true,
+              "ajax":{
+                       "url": "/dashboard/data-ak1/datatables",
+                       "dataType": "json",
+                       "type": "GET"
+                     },
+              "columns": [
+                  { "data": "ak1_id" },
+                  { "data": "tanggal_daftar" },
+                  {
+                      "data": function( data ){
+                          return data;
+                      },
+                      "orderable": false,
+                      "render": function ( data ) {
+                          var result = "";
+                          var result = result + '3277/'+data.tanggal_daftar+'/'+data.nomor_pencaker;
+                          return result;
+                      }
+                  },
+                  { "data": "nama_lengkap" },
+                  { "data": "no_ktp" },
+                  { "data": "alamat_lengkap" },
+                  { "data": "kecamatan.lokasi_nama" },
+                  { "data": "kelurahan.lokasi_nama" },
+                  { "data": "jenis_kelamin" },
+                  { "data": "usia" },
+                  { "data": "no_telp" },
+                  { "data": "pendidikanterakhir" },
+                  { "data": "email" },
+                  { "data": "melamar_ke" },
+                  { "data": "keahlian" },
+                  { "data": "keterangan" },
+                  {
+                      "data": function( data ){
+                          return data;
+                      },
+                      "orderable": false,
+                      "render": function ( data ) {
+                          var result = "";
+                              var result = result + ' <a href="/dashboard/data-ak1/edit/'+data.ak1_id+'" class="btn btn-primary btn-xs">'+
+                                  '<span class="fa fa-fw fa-pencil"></span>'+
+                              '</a>';
+                              if (data.status == 1) {
+                                  var result = result + ' <form action="{{ path_for('admin-blog-unpublish') }}" method="post" style="display: inline;">'+
+                                      '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                      '{{csrf()}}'+
+                                      '<button class="btn btn-warning btn-xs swal-confirm" data-swtitle="Are you sure?" data-swmessage="This blog post will not be publicly viewable.">'+
+                                          '<span class="fa fa-fw fa-close"></span>'+
+                                      '</button>'+
+                                  '</form>';
+                              }else{
+                                  var result = result + ' <form action="{{ path_for('admin-blog-publish') }}" method="post" style="display: inline;">'+
+                                      '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                      '{{csrf()}}'+
+                                      '<button class="btn btn-success btn-xs swal-confirm" data-swtitle="Are you sure?" data-swmessage="This blog post will be published at the specified date/time.">'+
+                                          '<span class="fa fa-fw fa-check"></span>'+
+                                      '</button>'+
+                                  '</form>'+
+                                  ' <form action="{{ path_for('data-ak1-delete') }}" method="post" style="display: inline;">'+
+                                      '<input type="hidden" name="id" value="'+data.id+'" />'+
+                                      '{{csrf()}}'+
+                                      '<button class="btn btn-danger btn-xs swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">'+
+                                          '<span class="fa fa-fw fa-trash"></span>'+
+                                      '</button>'+
+                                  '</form>';
+                              }
+
+                          return result;
+                      }
+                  }
+              ],
+              "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  if (aData.status) {
+                      $('td', nRow).addClass('success');
+                  }else{
+                      $('td', nRow).addClass('danger');
+                  }
+              }
+          });
+        };
+        var dtSearchInit = function(){
+
+          $('#grade').change(function(){
+            dtSearchAction( $(this))
+          });
+          $('#two_grade').change(function(){
+            dtSearchAction( $(this));
+          });
+
+        };
+        dtSearchAction = function(selector,columnId){
+            var fv = selector.val();
+            if( (fv == '') || (fv == null) ){
+              dataTable.api().column(columnId).search('', true, false).draw();
+            } else {
+              dataTable.api().column(columnId).search(fv, true, false).draw();
+            }
+        };
+      	$(document).ready(function(){
+          select2Init();
+          dataTableInit();
+          dtSearchInit();
+      	});
+
+      })(jQuery);
+    </script>
+{% endblock %}

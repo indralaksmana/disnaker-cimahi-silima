@@ -1,0 +1,60 @@
+
+
+<section class="bkol">
+    <div class="container bg-white p-3">
+        <div class="row">
+             <div class="col-md-12">
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                      <h5>Laporkan Apakah Kamu sudah Bekerja</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ currentRoute }}" method="POST" role="form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                <div class="form-group input-group-sm">
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" name="status_pekerjaan" type="radio" id="belum" value="Belum Bekerja">
+                                  <label class="form-check-label" for="belum">Belum Bekerja</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input"  name="status_pekerjaan"  type="radio" id="sudah" value="Sudah Bekerja">
+                                  <label class="form-check-label" for="sudah">Sudah Bekerja</label>
+                                </div>
+                                </div>
+                                <div class="form-group input-group-sm" id="sudahkerja">
+                                  <div class="form-group">
+                                    <label>Di Terima Di Perusahaan</label>
+                                    <input type="text" class="form-control" name="diterima_di" placeholder="Di Terima Di Perusahaan">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Domisili Perusahaan (kota/kab)</label>
+                                    <input type="text" class="form-control" name="domisili_perusahaan" placeholder="Domisili Perusahaan (kota/kab)">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Terhitung Mulai Tanggal</label>
+                                    <input required type="date" name="terhitung_mulai_tanggal" class="form-control">
+                                  </div>
+                                </div>
+
+
+
+                                    <div class="form-group">
+                                        {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+                                          <button type="submit" class="btn btn-primary form-control">Update AK-1</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {{ csrf() }}
+                                <input type="hidden" name="user_id" value="{{user.id}}" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

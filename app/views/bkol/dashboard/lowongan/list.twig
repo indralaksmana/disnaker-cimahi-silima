@@ -1,0 +1,170 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || List Lowongan Kerja{% endblock %}
+
+{% block header_include %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">List Lowongan Kerja</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+  </div>
+  <table class="table table-dashboard" data-jplist-group="lists-lowongan">
+    <thead>
+      <tr>
+        <th>Tgl Publikasi</th>
+        <th>Judul Pekerjaan</th>
+        <th>Kategori</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in posts %}
+      <tr data-jplist-item>
+        <td>{{r.publish_at|date("m/d/Y")}}</td>
+        <td><a href="{{path_for('job_detail', {'year': r.publish_at|date("Y"), 'month': r.publish_at|date("m"), 'day': r.publish_at|date("d"), 'slug': r.slug})}}"><b>{{r.nama_lowongan}}</b></a></td>
+        <td>{{r.category.name}}</td>
+        <td>
+          {% if r.status == 1 %}
+          <span class="status bg-green">Publish</span>
+          {% else %}
+          <span class="status badge-secondary">Draft</span>
+          {% endif %}
+        </td>
+         {% if auth.hasAccess('companies.view') %}
+        <td>
+          <a href="{{path_for('dashboardperusahaan-lowongan-edit', {'id': r.id })}}" class="btn btn-small btn-third btn-xs"
+            data-toggle="tooltip" data-placement="top" title="Edit"><span class="fa fa-fw fa-pencil"></span></a>
+          {% if r.status == 1 %}
+          <form action="{{ path_for('dashboardperusahaan-lowongan-unpublish') }}" method="post" style="display: inline;">
+            <input type="hidden" name="post_id" value="{{r.id}}'" />
+            {{csrf()}}
+            <button class="btn btn-warning btn-delete btn-small btn-xs swal-confirm" data-swtitle="Anda Yakin?"
+              data-swmessage="Status Lowongan Pekerjaan ini akan Berubah Menjadi Draft." data-toggle="tooltip"
+              data-placement="top" title="Pindah ke Draft">
+              <span class="fa fa-fw fa-close"></span>
+            </button>
+          </form>
+          {% else %}
+          <form action="{{ path_for('dashboardperusahaan-lowongan-publish') }}" method="post" style="display: inline;">
+            <input type="hidden" name="post_id" value="{{r.id}}" />
+            {{csrf()}}
+            <button class="btn btn-small btn-success btn-xs swal-confirm" data-toggle="tooltip" data-placement="top"
+              title="Publikasi" data-swtitle="Anda Yakin?" data-swmessage="Publikasikan Lowongan Kerja Ini.">
+              <span class="fa fa-fw fa-check"></span>
+            </button>
+          </form>
+          <form action="{{ path_for('dashboardperusahaan-lowongan-delete') }}" method="post" style="display: inline;">
+            <input type="hidden" name="post_id" value="{{r.id}}" />
+            {{csrf()}}
+            <button class="btn btn-small btn-delete btn-xs swal-confirm" data-toggle="tooltip" data-placement="top"
+              title="Hapus" data-swtitle="Anda Yakin?" data-swmessage="Data ini akan dihapus secara permanen.">
+              <span class="fa fa-fw fa-trash"></span>
+            </button>
+          </form>
+          {% endif %}
+        </td>
+        {% endif %}
+         {% if auth.hasAccess('pemerintah.view') %}
+        <td>
+          <a href="{{path_for('dashboardpemerintah-lowongan-edit', {'id': r.id })}}" class="btn btn-small btn-third btn-xs"
+            data-toggle="tooltip" data-placement="top" title="Edit"><span class="fa fa-fw fa-pencil"></span></a>
+          {% if r.status == 1 %}
+          <form action="{{ path_for('dashboardpemerintah-lowongan-unpublish') }}" method="post" style="display: inline;">
+            <input type="hidden" name="post_id" value="{{r.id}}'" />
+            {{csrf()}}
+            <button class="btn btn-warning btn-delete btn-small btn-xs swal-confirm" data-swtitle="Anda Yakin?"
+              data-swmessage="Status Lowongan Pekerjaan ini akan Berubah Menjadi Draft." data-toggle="tooltip"
+              data-placement="top" title="Pindah ke Draft">
+              <span class="fa fa-fw fa-close"></span>
+            </button>
+          </form>
+          {% else %}
+          <form action="{{ path_for('dashboardpemerintah-lowongan-publish') }}" method="post" style="display: inline;">
+            <input type="hidden" name="post_id" value="{{r.id}}" />
+            {{csrf()}}
+            <button class="btn btn-small btn-success btn-xs swal-confirm" data-toggle="tooltip" data-placement="top"
+              title="Publikasi" data-swtitle="Anda Yakin?" data-swmessage="Publikasikan Lowongan Kerja Ini.">
+              <span class="fa fa-fw fa-check"></span>
+            </button>
+          </form>
+          <form action="{{ path_for('dashboardpemerintah-lowongan-delete') }}" method="post" style="display: inline;">
+            <input type="hidden" name="post_id" value="{{r.id}}" />
+            {{csrf()}}
+            <button class="btn btn-small btn-delete btn-xs swal-confirm" data-toggle="tooltip" data-placement="top"
+              title="Hapus" data-swtitle="Anda Yakin?" data-swmessage="Data ini akan dihapus secara permanen.">
+              <span class="fa fa-fw fa-trash"></span>
+            </button>
+          </form>
+          {% endif %}
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    <!-- no results control -->
+    <tfoot class="p-3 bg-warning" data-jplist-control="no-results" data-group="lists-lowongan" data-name="no-results">
+      <tr>
+        <td colspan="5" class"text-center">
+          <h6 class="big">Lowongan Belum di Buat</h6>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <nav data-jplist-control="pagination" data-group="lists-lowongan" data-items-per-page="10" data-current-page="0"
+    data-disabled-class="disabled" data-selected-class="active" data-jump="top" data-name="pagination1" class="mb-2 mr-3">
+    <!-- first and previous buttons -->
+    <ul class="pagination d-inline-flex">
+      <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="first">
+        <a class="page-link" href="#">«</a>
+      </li>
+      <li class="page-item" data-type="prev">
+        <a class="page-link" href="#">‹</a>
+      </li>
+    </ul>
+    <!-- pages buttons -->
+    <ul class="pagination d-none d-sm-none d-lg-inline-flex" data-type="pages">
+      <li class="page-item" data-type="page">
+        <a class="page-link" href="#">{pageNumber}</a>
+      </li>
+    </ul>
+    <!-- next and last buttons -->
+    <ul class="pagination d-inline-flex">
+      <li class="page-item" data-type="next">
+        <a class="page-link" href="#">›</a>
+      </li>
+      <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="last">
+        <a class="page-link" href="#">»</a>
+      </li>
+    </ul>
+    <!-- information labels -->
+    <span data-type="info" class="d-none d-sm-none d-md-inline-flex badge badge-secondary ml-3 p-2">
+      {startItem} - {endItem} of {itemsNumber}
+    </span>
+  </nav>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<!-- IE / Edge babel polyfill -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+<!-- jPList Library -->
+<script src="{{ asset('/js/jplist/1.2.0/jplist.min.js') }}"></script>
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+  jplist.init({
+    deepLinking: true
+  });
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+{% endblock %}

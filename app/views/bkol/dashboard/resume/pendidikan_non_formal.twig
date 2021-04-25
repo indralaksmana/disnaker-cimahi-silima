@@ -1,0 +1,243 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+{% block title %}{{config['site-name']}} || Edit Resume{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style type="text/css">
+    .item .item-title {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 300;
+        color: #333;
+        line-height: 30px;
+    }
+
+    .item .item-period {
+        float: right;
+        right: 12px;
+        height: 20px;
+        margin-top: -10px;
+        color: #888;
+        font-style: italic;
+    }
+    .item a {
+    margin-bottom: 0px!important;
+    }
+
+    .item .sub-title {
+        color: #08d;
+        font-size: 18px;
+        line-height: 24px
+    }
+
+    .item .desc {
+        font-size: 14px;
+        line-height: 18px;
+        color: #888;
+    }
+</style>
+<div class="container">
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Pendidikan Non-Formal</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row my-1">
+                <div class="col-12 col-sm-6">
+                    <a class="btn btn-lg btn-primary btn-block" data-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        TAMBAH PENDIDIKAN NON-FORMAL
+                    </a>
+                </div>
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <form action="{{ path_for('resume-nonformalpendidikan-add') }}" method="POST" role="form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group{% if has_error('nameofeducation') %} has-error{% endif %}">
+                                    <label for="nameofeducation">Nama Instansi</label>
+                                    <input type="text" name="nameofeducation" class="form-control" id="nameofeducation"
+                                        placeholder="Nama Instansi" value="{% if requestParams.nameofeducation %}{{requestParams.nameofeducation}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('nameofeducation') }}</span>
+                                </div>
+                                <div class="form-group input-group-sm">
+                                    <label >Jenis Keterampilan</label>
+                                    <select name="jenis_keterampilan" class="form-control" id="bidang" required>
+                                        <option>Pilih Jenis Keterampilan</option>
+                                        {% for k in k %}
+                                        <option  value="{{ k.jenis_kursus }}" id="{{ k.kode_bidang }}">{{
+                                        k.jenis_kursus }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group{% if has_error('startingmonth') %} has-error{% endif %}">
+                                    <label for="startingmonth">Mulai Bulan</label>
+                                    <select name="startingmonth" class="form-control" id="startingmonth" required="required">
+                                        <option value="">Mulai Bulan </option>
+                                        {% for i in [
+                                        'Januari',
+                                        'Februari',
+                                        'Maret',
+                                        'April',
+                                        'Mei',
+                                        'Juni',
+                                        'Juli',
+                                        'Agustus',
+                                        'September',
+                                        'Oktober',
+                                        'November',
+                                        'Desember'
+                                        ]
+                                        %}
+                                        <option value="{{ i }}" {% if requestParams.startingmonth %} selected {% endif
+                                            %}>
+                                            {{i }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('startingmonth') }}</span>
+                                </div>
+                                <div class="form-group{% if has_error('startyear') %} has-error{% endif %}">
+                                    <label for="startyear">Mulai Tahun</label>
+                                    <select name="startyear" class="form-control" required="required">
+                                        <option value="0">Mulai tahun</option>
+                                        {% for i in 2020..1950 %}
+                                        <option value="{{ i }}" {% if requestParams.startyear %}selected{% endif %}>{{
+                                            i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('startingyear') }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-group{% if has_error('finishedmonth') %} has-error{% endif %}">
+                                    <label for="finishedmonth">Selesai Bulan</label>
+                                    <select name="finishedmonth" class="form-control" id="finishedmonth" required="required">
+                                        <option value="">- select -</option>
+                                        {% for i in [
+                                        'Januari',
+                                        'Februari',
+                                        'Maret',
+                                        'April',
+                                        'Mei',
+                                        'Juni',
+                                        'Juli',
+                                        'Agustus',
+                                        'September',
+                                        'Oktober',
+                                        'November',
+                                        'Desember'
+                                        ]
+                                        %}
+                                        <option value="{{ i }}" {% if requestParams.finishedmonth %} selected {% endif
+                                            %}>
+                                            {{i }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('finishedmonth') }}</span>
+                                </div>
+                                <div class="form-group{% if has_error('finishedyear') %} has-error{% endif %}">
+                                    <label for="finishedyear">Selesai Tahun</label>
+                                    <select name="finishedyear" class="form-control" required="required">
+                                        <option value="0">Selesai Tahun</option>
+                                        {% for i in 2020..1950 %}
+                                        <option value="{{ i }}" {% if requestParams.finishedyear %}selected{% endif %}>{{
+                                            i
+                                            }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('finishedyear') }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 pt-2">
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-third btn-block">SIMPAN</button>
+                                    </div>
+                                    <div class="col">
+                                        <a data-toggle="collapse" href="#collapseExample"
+                                            role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-third btn-secondary btn-block" style="font-size: 16px;">BATAL</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ csrf() }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 border-top">
+            {% for post in posts %}
+            {% if posts|length == 0 %}
+            <span class="text-center">Belum Ada data Riwayat Pendidikan Non Formal</span>
+            {% endif %}
+            <div class="item">
+                <div class="item-title bold">
+                    {{post.nameofeducation}} - {{post.jenis_keterampilan}}
+                </div>
+                <div class="item-period italic" style="margin-top: 5px">
+                    <a href="/dashboard/pencarikerja/resume/pendidikannoformal/edit/{{post.id}}" class="btn btn-small btn-third">
+                        Edit <span class="fa fa-fw fa-pencil"></span>
+                    </a>
+                    {% if post.status == 1 %}
+                    <form action="{{ path_for('resume-nonformalpendidikan-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button style="margin-left: 15px" class="btn btn-small btn-warning btn-sm swal-confirm"
+                            data-swtitle="Are you sure?" data-swmessage="Pendidikan Non Formal ini akan di hapus">
+                            Hapus <span class="fa fa-fw fa-close"></span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{{ path_for('resume-nonformalpendidikan--publish') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-success btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will be published at the specified date/time.">
+                            Publish <span class="fa fa-fw fa-check"></span>
+                        </button>
+                    </form>
+                    <form action="{{ path_for('resume-nonformalpendidikan-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">
+                            Hapus <span class="fa fa-fw fa-trash"></span>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="sub-title italic">
+                    {{post.companyname}}
+                </div>
+                <div class="desc">
+                    {# {{post.numberofdiplomas}} #}
+                    <p>
+                        <span class="start italic">{{post.startmonth}} {{post.startyear}} - {{post.finishedmonth}}
+                            {{post.finishedyear}}</span>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

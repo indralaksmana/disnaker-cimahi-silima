@@ -1,0 +1,303 @@
+<script>
+// CHIMASISTAKER
+$(document).ready(function() {
+    $('#users_table').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/datatables",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "roles",
+                "orderable": false,
+                "render": function ( data, type, full, meta ) {
+                    var roles = [];
+                        $.each(data, function( key, value ) {
+                            roles.push(value.name);
+                        });
+
+                    return roles.join(', ');
+                }
+            },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit/'+data+'" class="btn bg-blue btn-sm">'+
+                        '<i class="material-icons">edit</i>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn bg-red btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+    });
+});
+
+// PENCARI KERJA
+$(document).ready(function() {
+    $('#users_pencarikerja').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/pencarikerja",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit/'+data+'" class="btn bg-blue btn-sm">'+
+                        '<i class="material-icons">edit</i>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn bg-red btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+    });
+});
+
+// Perusahaan
+$(document).ready(function() {
+    $('#users_perusahaan').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/perusahaan",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit/'+data+'" class="btn bg-blue btn-sm">'+
+                        '<i class="material-icons">edit</i>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn bg-red btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+    });
+});
+
+// BKK
+$(document).ready(function() {
+
+    $('#users_bkk').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/bkk",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit-bkk/'+data+'" class="btn bg-blue btn-sm waves-effect">'+
+                        '<i class="material-icons">edit</i>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn bg-red btn-sm waves-effectswal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+    });
+});
+
+// LPK
+$(document).ready(function() {
+
+    $('#users_lpk').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/lpk",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit-lpk/'+data+'" class="btn bg-blue btn-sm waves-effect">'+
+                        '<i class="material-icons">edit</i>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn bg-red btn-sm waves-effectswal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+    });
+});
+
+$(document).ready(function () {
+    $('#pencarikerja, #perusahaan').DataTable({
+        responsive: true,
+        stateSave: true
+    });
+    /*$('.tab-content').hide();
+    $('.tab-content:first-child').show();
+    $('.tabs-list-link').click(function (e) {
+        e.preventDefault();
+        const $this = $(this),
+            TABGROUP = '#' + $this.parents('.tabs').data('tabgroup'),
+            OTHERS = $this.parents('.tabs-list').siblings().find('.tabs-list-link'),
+            IS_TARGET = $this.attr('href'),
+            IS_ACTIVE = 'is-active',
+            JS_TAB_CONTENT = '.tab-content';
+
+        OTHERS.removeClass(IS_ACTIVE);
+        $this.addClass(IS_ACTIVE);
+        $(TABGROUP).find(JS_TAB_CONTENT).hide();
+        $(IS_TARGET).show();
+    })*/
+});
+
+// Perguruan Tinggi
+$(document).ready(function() {
+    $('#users_pt').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/pt",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit/'+data+'" class="btn bg-blue btn-sm waves-effect">'+
+                        '<i class="material-icons">edit</i>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn bg-red btn-sm waves-effectswal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<i class="material-icons">delete</i>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+    });
+});
+
+</script>

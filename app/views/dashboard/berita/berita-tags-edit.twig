@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Edit Tag - {{tag.name}}{% endblock %}
+
+{% block page %}
+<div id="app">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        EDIT TAGS BERITA - {{tag.name}}
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <form action="{{ currentRoute }}" method="POST" role="form">
+                                <div class="col-md-12">
+
+                                    <div class="form-group form-float{% if has_error('tag_name') %} has-error{% endif %}">
+                                        <div class="form-line">
+                                            <label class="form-label" for="tag_name">Nama Tags <span style="color:red;">*</span></label>
+                                            <input type="text" name="tag_name" class="form-control" id="tag_name" value="{{tag.name}}" required="required">
+                                            <span class="help-block">{{ error('tag_name') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group form-float{% if has_error('tag_slug') %} has-error{% endif %}">
+                                        <div class="form-line">
+                                            <label class="form-label" for="tag_slug">Slug Tags <span style="color:red;">*</span></label>
+                                            <input type="text" name="tag_slug" class="form-control" id="tag_slug" value="{{tag.slug}}" required="required">
+                                            <span class="help-block">{{ error('tag_slug') }}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="form-group{% if has_error('tag_slug') %} has-error{% endif %}">
+                                                <label for="tag_slug">Slug Tags</label>
+                                                <input type="text" name="tag_slug" class="form-control" id="tag_slug" placeholder="Slug Tags"
+                                                    value="{{tag.slug}}" required="required">
+                                                <span class="help-block">{{ error('tag_slug') }}</span>
+                                            </div> -->
+
+                                    <!-- <div class="form-group{% if has_error('tag_name') %} has-error{% endif %}">
+                                                <label for="tag_name">Nama Tags</label>
+                                                <input type="text" name="tag_name" class="form-control" id="tag_name" placeholder="Nama Tags"
+                                                    value="{{tag.name}}" required="required">
+                                                <span class="help-block">{{ error('tag_name') }}</span>
+                                            </div> -->
+
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <a class="btn bg-red m-t-15 waves-effect" href="{{ path_for('admin-blog-tags-add') }}">KEMBALI</a>
+                                        <button type="submit" class="btn bg-blue m-t-15 waves-effect">SIMPAN</button>
+                                    </div>
+                                </div>
+                                {{ csrf() }}
+                                <input type="hidden" name="tag_id" value="{{tag.id}}" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

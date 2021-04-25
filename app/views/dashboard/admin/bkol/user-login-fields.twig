@@ -1,0 +1,41 @@
+<div class="row clearfix">
+	<div class="col-md-12">
+	    <h4>Data Admin</h4>
+	    <div class="form-group form-float{% if has_error('username') %} has-error{% endif %}">
+	        <div class="form-line">
+	            <label class="form-label" for="username">Username <span style="color:red;">*</span></label>
+	            <input type="text" name="username" class="form-control" id="username"
+	                value="{% if requestParams.username %}{{requestParams.username}}{% else %}{{user.username}}{% endif %}" required="required">
+	            <span class="help-block">{{ error('username') }}</span>
+	        </div>
+	    </div>
+	    <div class="form-group form-float{% if has_error('email') %} has-error{% endif %}">
+	        <div class="form-line">
+	            <label class="form-label" for="email">Email <span style="color:red;">*</span></label>
+	            <input type="email" name="email" class="form-control" id="email" value="{% if requestParams.email %}{{requestParams.email}}{% else %}{{user.email}}{% endif %}"
+	                required="required">
+	            <span class="help-block">{{ error('email') }}</span>
+	        </div>
+	    </div>
+	    <div class="form-group form-float{% if has_error('password') %} has-error{% endif %}">
+	        <div class="form-line">
+	            <label class="form-label" for="password">Password <span style="color:red;">*</span></label>
+	            <input type="password" name="password" class="form-control" id="password"
+	                value="{% if requestParams.password %}{{requestParams.password}}{% endif %}" required="required">
+	            <span class="help-block">{{ error('password') }}</span>
+	        </div>
+	    </div>
+	    <div class="form-group form-float{% if has_error('password_confirm') %} has-error{% endif %}">
+	        <div class="form-line">
+	            <label class="form-label" for="password_confirm">Confirm Password <span style="color:red;">*</span></label>
+	            <input type="password" name="password_confirm" class="form-control" id="password_confirm"
+	                 value="{% if requestParams.password_confirm %}{{requestParams.password_confirm}}{% endif %}" required="required">
+	            <span class="help-block">{{ error('password_confirm') }}</span>
+	        </div>
+	    </div>
+
+	    {% if user.id %}
+	    	<input type="hidden" name="user_id" value="{{ user.id }}">
+	    {% endif %}
+	</div>
+</div>

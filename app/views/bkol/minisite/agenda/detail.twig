@@ -1,0 +1,71 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% block seo %}
+	<title>{{ post.jobtitle }}</title>
+	<meta name="page-title" content="{{ post.agendatitle }}" />
+	<meta name="description" content="{{ post.description }}" />
+	<meta name="author" content="{{ post.author.username }}"/>
+	{# Open Graph #}
+	<meta property="og:title" content="{{ post.agendatitle }}" />
+	<meta property="og:type" content="{% if player_url %}video.other{% else %}article{% endif %}" />
+	<meta property="og:url" content="https://{{ config['domain'] }}{{ currentRoute }}" />
+	<meta property="og:image" content="{{ post.featured_image }}" />
+	<meta property="og:description" content="{{ post.description }}" /> 
+	<meta property="og:site_name" content="{{ config['site-name'] }}" />
+	{% if player_url %}
+	<meta property="og:video" content="{{ player_url }}" />
+	{% endif %}
+	{# Twitter Card #}
+	<meta name="twitter:card" content="{% if player_url %}player{% else %}summary_large_image{% endif %}">
+	<meta name="twitter:title" content="{{ post.title }}">
+	<meta name="twitter:description" content="{{ post.description }}">
+	<meta name="twitter:image" content="{{ post.featured_image }}">
+	{% if player_url %}
+	<meta property="twitter:player" content="{{ player_url }}" />
+	<meta property="twitter:player:stream" content="{{ player_url }}" />
+    <meta property="twitter:player:height" content="450" />
+    <meta property="twitter:player:width" content="800" />
+	{% endif %}
+	{# Google+ #}
+	<meta itemprop="name" content="{{ post.title }}">
+	<meta itemprop="description" content="{{ post.description }}">
+	<meta itemprop="image" content="{{ post.featured_image }}">
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block page %}
+	<div class="container">
+		<div class="row">
+			<!-- Blog Entries Column -->
+			<div class="col-md-12">
+			    <div class="card p-4">
+			    	<div class="card-body">
+				    	<a>
+				    		<h4 class="card-title mb-0">{{post.agendatitle}}</h4>
+				    	</a>
+			    	</div>
+                    {% if post.featured_image %}
+						<a href="">
+							<img alt="Card image cap" class="card-img-top img-responsive" src="{{post.featured_image}}">
+						</a>
+                    {% endif %}
+					<div class="card-body">
+						<p class="card-text mt-4" style="font-weight: 500;">{{post.description}}</p>
+						<p class="card-text">{{post.content|raw}}</p>
+					</div>
+					
+				</div>
+
+				
+			</div><!-- Sidebar Widgets Column -->
+			
+		</div><!-- /.row -->
+	</div><!-- /.container -->
+{% endblock %}
+
+{% block javascript %}
+    {{ recaptchaJs() }}
+{% endblock %}

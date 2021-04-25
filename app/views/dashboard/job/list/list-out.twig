@@ -1,0 +1,47 @@
+<table id="listout" class="table">
+	<thead>
+		<tr>
+			<th>Photo</th>
+			<th>Nama Pelamar</th>
+			<th>Judul Lowongan</th>
+			<th>Status</th>
+			{# <th>action</th> #}
+		</tr>
+	</thead>
+	<tbody>
+		{% if listout|length == 0 %}
+			<tr class="text-center">
+				<td colspan="4">Belum Ada Calon Candidate</td>
+			</tr>
+		{% endif %}
+		{% for post in listout  %}
+			{% set content = post.coverletter|split(' ') %}
+            {% set content = content[0] ~ ' ' ~ content[1] ~ ' ' ~ content[2] ~ ' ' ~ content[3] ~ ' ' ~ content[4] ~ ' ' ~ content[5] ~ ' ' ~ content[6] ~ ' ' ~ content[7] ~ ' ' ~ content[8] ~ '...' %}
+            <tr>
+            	<td width="100px"><img width="100px" style="object-fit: cover" src="{{post.user.photoprofile}}"></td>
+            	<td><a href="{{path_for('admin-job-apply-author', {'username': post.user.username})}}">{{post.user.datapencarikerja.nama_lengkap}}</a></td>
+            	<td><a href="/dashboard/job/pelamar/{{post.id}}">{{post.post.nama_lowongan}}</a></td>
+            	<td>{{post.status}}</td>
+            	{# <td>
+            		<form action="/dashboard/job/pelamar/applyreceived" method="post" style="display: inline;">
+	                    <input type="hidden" name="apply" value="{{post.id}}" />
+	                    {{csrf()}}
+	                    <button class="btn btn-warning btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="Terima Lamaran ini">
+	                      Terima Lamaran
+	                    </button>
+                	</form>
+                	<br/>
+                	<form action="/dashboard/job/pelamar/delete" method="post" style="display: inline;">
+	                    <input type="hidden" name="apply" value="{{post.id}}" />
+	                    {{csrf()}}
+	                    <button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="Hapus Lamaran ini">
+	                     Batalkan jadi Candidate
+	                    </button>
+                	</form>
+            	</td> #}
+
+            </tr>
+		</div>
+		{% endfor %}
+	</tbody>
+</table>

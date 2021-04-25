@@ -1,0 +1,36 @@
+{% import 'bkol/macros/form.twig' as form %}
+{% block page %}
+<div class="login-form"  >
+        <div class="panel py-3 bg-white" style="border-top: 10px solid #00ccff;">
+          <img class="img-fluid" src="{{base_url()}}/img/logo-silima.png">
+        </div>
+    <div class="p-sm-4 p-3 text-white ">
+        <form action="{{ path_for('login') }}" method="POST" id="Login" autocomplete="off">
+            <div class="form-group login-form-group row">
+                <span class="input-group-addon col-2"><i class="fa fa-user"></i></span>
+                <input name="login" value="" id="inputEmail" class="col-10 form-control login-form-control" type="text" placeholder="Nama User atau Email" autocomplete="off">
+            </div>
+            <div class="form-group login-form-group row">
+                <span class="input-group-addon col-2"><i class="fa fa-lock"></i></span>
+                <input name="password" value="" id="inputPassword" type="password" class="col-10 form-control login-form-control"  placeholder="Password">
+            </div>
+            <div class="forgot">
+              <div class="checkbox d-flex justify-content-between align-items-top mb-3">
+                <label>
+                  <input type="checkbox" name="remember"> Ingat Saya
+                </label>
+                <a class="white"href="{{path_for('forgot-password')}}">Lupa Password</a>
+              </div>
+              <div class="mx-auto">
+                {{ form.custom('recaptcha', recaptcha()) }}
+                {{ csrf() }}
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: #ff9933;">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+    {{ recaptchaJs() }}
+{% endblock %}

@@ -1,0 +1,13 @@
+.status {
+  border-radius: 20px !important;
+  padding: 5px 10px !important;
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  &_belumreview {
+    background: #dec600;
+  }
+  &_sudahreview {
+    background: #0a9300;
+  }
+}

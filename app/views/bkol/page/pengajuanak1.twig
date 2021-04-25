@@ -1,0 +1,105 @@
+{% extends "bkol/bkol-dashboard.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% block page %}
+
+<section class="bkol">
+    <div class="container bg-white p-3">
+        {% include 'dashboard/inc/flash.twig' %}
+        <div class="row">
+             <div class="col-md-12">
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                    <h5>Pengajuan AK1 Online</h5>
+                    {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Nomor Pendaftaran</th>
+                            <th>Status AK1</th>
+                            <th>Masa Berlaku</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</td>
+                            <td>{{ auth.user.pengajuanAK1.status_pengajuan }}</td>
+                            <td>{{ auth.user.pengajuanAK1.exp_date }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    {% endif %}
+                    </div>
+
+                    <div class="card-body">
+
+
+                      Pengajuan AK1 Secara Online ini upaya kami untuk memberikan pelayanan publik sebaik-baiknya
+
+                    <br>
+                    <h6>
+                      Cara Pengajuan Sebagai Berikut :
+                    </h6>
+                    <br>
+                      Anda terlebih harus mengisi kelengkapan data pada menu <a href="{{ path_for('my-account') }}"><b>'profil Akun'</b></a>
+                      <br>
+                      <br>
+                      Setelah Kelengkapan Data anda sudah Lengkap, anda Bisa Membuat Pengajuan AK1 ini dengan Menekan Tombol AJUKAN AK1 Di bawah ini
+                      <br>
+                      <br>
+                      Anda Akan Mendapatkan Kode Pendaftaran yang harus di catat dan di bawa ke Kantor Disnaker Kota Cimahi di  Jln. Raden Demang Hardjakusumah Komplek Perkantoran Pemkot Cimahi
+                      <br>
+                      Untuk Bisa Men Cetak Kartu Pencari Kerja (AK1)
+                      <br>
+                    <h5>Persyaratan Dan Kelengkapan Dokumen</h5>
+                    <ul>
+                        <li>Foto Copy KTP</li>
+                        <li>Foto Copy Ijasah terakhir </li>
+                        <li>Pas Foto 3x4 : 2 Buah </li>
+                    </ul>
+                        <div class="card alert alert-success text-center">
+                            <h5 class="card-header">Nomor Pendaftaran Ajuan AK-1 Anda Saat Ini</h5>
+                            <div class="card-body">
+                                <span class="label label-info">
+                                    {% if auth.user.pengajuanAK1.nomor_pendaftaran == '' %}
+                                    Anda Belum Mengajukan Pembuatan AK-1
+                                    {% elseif auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+
+                                    <h1>{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</h1>
+                                    {% else %} Belum Mengajukan Pembuatan AK-1 {% endif %} </span>
+                            </div>
+                        </div>
+                        <form action="{{ currentRoute }}" method="POST" role="form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {% if auth.user.pengajuanAK1.nomor_pendaftaran == '' %}
+                                        {{ form.custom('recaptcha', recaptcha()) }}
+                                        <button type="submit" class="btn btn-primary form-control">Ajukan AK-1</button>
+                                        {% elseif auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+                                        {# <button type="submit" class="btn btn-primary form-control">Update AK-1</button> #}
+                                        {% else %}
+                                          {{ form.custom('recaptcha', recaptcha()) }}
+                                        <button type="submit" class="btn btn-primary form-control">Ajukan AK-1</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {{ csrf() }}
+                                <input type="hidden" name="user_id" value="{{user.id}}" />
+                            </div>
+                        </form>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
+{% block javascript %}
+{{ recaptchaJs() }}
+{% endblock %}

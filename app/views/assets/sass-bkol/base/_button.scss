@@ -1,0 +1,99 @@
+.btn {
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: bold !important;
+}
+
+
+.btn-primary {
+  background: #f68633 !important;
+  border: none !important;
+
+  &:hover {
+    background: #00A4DE !important;
+  }
+}
+
+.btn-third {
+  background: #00A4DE !important;
+  border: none !important;
+  color: #fff;
+
+  &:hover {
+    background: #f68633 !important;
+  }
+}
+
+.btn-secondary {
+  background: #3b3d93 !important;
+}
+
+.btn-orange {
+  background: #f68633;
+}
+
+.search-btn {
+  background: #f68633 !important;
+}
+
+.btn-disabled {
+  background: #cccccc !important;
+  cursor: not-allowed !important;
+}
+
+.btn-wrap {
+  .btn {
+    font-weight: bold;
+  }
+}
+
+.btn-daftar {
+  background: #f68633 !important;
+}
+
+.bnt-not-login {
+  background: #f68633 !important;
+  border: none !important;
+}
+
+.btn-detail {
+  background: #3b3d93 !important;
+}
+
+.btn-pencari-kerja {
+  background: #de8a43 !important;
+
+  &:hover {
+    background: #eeab57 !important;
+  }
+
+  span {
+    color: #fff !important;
+    text-align: left;
+  }
+
+  .icon {
+    font-size: 40px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  &_text {
+    line-height: 20px;
+
+    b {
+      font-size: 30px;
+
+      @include media-breakpoint-down(md) {
+        font-size: 24px !important;
+      }
+    }
+  }
+}
+
+.btn-perusahaan {
+  background: #eeab57 !important;
+
+  &:hover {
+    background: #de8a43 !important;
+  }
+}

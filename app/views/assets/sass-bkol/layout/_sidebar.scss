@@ -1,0 +1,75 @@
+.sidebar {
+  background: #cccccc !important;
+  padding: 1px !important;
+  .title-section {
+    font-size: 18px;
+  }
+  .hr-theme {
+    margin-bottom: 30px;
+  }
+  &_ak1 {
+    font-family: $open-sans;
+    padding: 20px;
+    color: #fff;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+    h3 {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+  .kategori-list {
+    li {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #3b3d93;
+      margin-bottom: 10px;
+      font-size: 14px;
+      a {
+        color: #000;
+      }
+      .badge {
+        background: #3b3d93 !important;
+        padding: 3px;
+        font-size: 12px;
+      }
+    }
+  }
+  .pelatihan-list {
+    border-bottom: 1px solid #3b3d93;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    &_title {
+      color:#000;
+      h5 {
+        font-size: 18px !important;
+      }
+    }
+    &_info {
+      margin-top: 5px;
+    }
+    &_status {
+      margin-top: 5px;
+      text-align: left;
+      label {
+
+      }
+      span.span-status {
+        color: #fff;
+        border-radius: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+    }
+  }
+}
+.status-buka {
+  background: #3b933b;
+}
+.status-tutup {
+  background: #933b3b;
+}
+.status-seleksi {
+  background: #00a4de;
+}

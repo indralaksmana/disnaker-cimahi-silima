@@ -1,0 +1,532 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Profile BKK{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+{% endblock %}
+
+{% block page %}
+
+<form action="{{ currentRoute }}" method="POST" id="form" role="form" enctype="multipart/form-data">
+    <div class="px-3">
+        <div class="hr-theme d-flex  align-items-center">
+            <div class="hr-title">
+            <h3 class="title-section">Profil BKK</h3>
+            </div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+            <button type="submit" class="btn btn-sm btn-warning">SIMPAN PERUBAHAN</button>
+        </div>
+        <br> 
+
+        <div class="row" style="border-bottom: 2px solid #5c85e8;margin-bottom: 30px;">
+            <div class="col-md-12 d-flex align-items-stretch grid-margin">
+                <div class="container">
+                    <div class="row flex-grow">
+                        <h4>Data BKK</h4>
+                        <div class="col-12">
+                            <div class="form-group {% if has_error('nama_bkk') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Nama BKK</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="nama_bkk" class="form-control" placeholder="Nama bkk" value="{{ bkk.nama_bkk }}">
+                                    <span class="help-block">{{ error('nama_bkk') }}</span>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="form-group {% if has_error('slug') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Slug</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="slug" class="form-control" placeholder="Slug" value="{{ bkk.slug }}">
+                                    <span class="help-block">{{ error('slug') }}</span>
+                                </div>
+                            </div>
+                            -->
+                            <div class="form-group row{% if has_error('akreditasi') %} has-error{% endif %}">
+                                <label for="akreditasi" class="col-sm-4 col-form-label">Akreditasi</label>
+                                <div class="col-sm-8">
+                                    <select id="akreditasi"  name="akreditasi" class="form-control" required>
+                                        <option value="{{bkk.akreditasi}}">{{bkk.akreditasi}}</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="Belum">Belum</option>
+                                    </select>
+                                    <span class="help-block">{{ error('akreditasi') }}</span>
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group {% if has_error('no_izin') %} has-error{% endif %} row">
+                                <label for="no_izin" class="col-sm-4 col-form-label">Nomor Izin</label>
+                                <div class="col-sm-8">
+                                    <input value="{{ bkk.no_izin}}" type="text" name="no_izin" class="form-control" id="no_izin"
+                                        placeholder="Nomor Izin">
+                                    <span class="help-block">{{ error('no_izin') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group {% if has_error('tanggal_izin_dari') %} has-error{% endif %} row">
+                                        <label for="" class="col-sm-11 col-form-label">Dari Tanggal</label>
+                                        <input value="{{ bkk.tanggal_izin_dari}}" type="date" name="tanggal_izin_dari"
+                                            class="col-sm-11 form-control" id="tanggal_izin_dari" placeholder="Tanggal Izin Dari">
+                                        <span class="help-block">{{ error('tanggal_izin_dari') }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group {% if has_error('tanggal_izin_sampai') %} has-error{% endif %} row">
+                                        <label for="" class="col-sm-11 col-form-label">Sampai Tanggal</label>
+                                        <input value="{{ bkk.tanggal_izin_sampai}}" type="date" name="tanggal_izin_sampai"
+                                            class="col-sm-11 form-control" id="tanggal_izin_sampai" placeholder="Tanggal Izin Sampai">
+                                        <span class="help-block">{{ error('tanggal_izin_sampai') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Pimpinan BKK</h4>
+                        <div class="col-12">
+                            <div class="form-group {% if has_error('nama_kepala_bkk') %} has-error{% endif %} row">
+                                <label for="no_izin" class="col-sm-4 col-form-label">Nama Ketua BKK</label>
+                                <div class="col-sm-8">
+                                    <input value="{{ bkk.nama_kepala_bkk}}" type="text" name="nama_kepala_bkk" class="form-control"
+                                        id="nama_kepala_bkk" placeholder="Nama Ketua BKK">
+                                    <span class="help-block">{{ error('nama_kepala_bkk') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group {% if has_error('no_telp_kepala_bkk') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">No Tlp Ketua BKK</label>
+                                <div class="col-sm-8">
+                                    <input value="{{ bkk.no_telp_kepala_bkk }}" type="number" name="no_telp_kepala_bkk"
+                                        class="form-control" id="no_telp_kepala_bkk" placeholder="Nomor Telepon">
+                                    <span class="help-block">{{ error('no_telp_kepala_bkk') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group {% if has_error('email_kepala_bkk') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Email Ketua BKK</label>
+                                <div class="col-sm-8">
+                                    <input value="{{ bkk.email_kepala_bkk }}" type="email" name="email_kepala_bkk" class="form-control"
+                                        id="email_kepala_bkk" placeholder="Email Ketua BKK">
+                                    <span class="help-block">{{ error('email_kepala_bkk') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 d-flex align-items-stretch grid-margin">
+                <div class="container">
+                    <div class="row flex-grow">
+                        <h4>Data Kontak BKK</h4>
+                        <div class="col-12">
+                            <div class="form-group row">
+                                <label for="provinsi" class="col-sm-4 col-form-label">Provinsi</label>
+                                <div class="col-sm-8">
+                                    <select name="provinsi_id" id="provinsi" class="form-control" required="required">
+                                        <option value="{{bkk.provinsi_id}}">{{bkk.provinsi.lokasi_nama}}</option>
+                                        {% for daerahs in daerahs %}
+                                        <option name="provinsi" value="{{ daerahs.id }}" id="{{ daerahs.lokasi_provinsi }}">{{
+                                            daerahs.lokasi_nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="kabupatenkota" class="col-sm-4 col-form-label">Kabupaten/Kota</label>
+                                <div class="col-sm-8">
+                                    <select name="kabupatenkota_id" id="kabupatenkota" class="form-control" required="required">
+                                        <option value="{{bkk.kabupatenkota_id}}">{{bkk.kabupatenkota.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="kecamatan" class="col-sm-4 col-form-label">Kecamatan</label>
+                                <div class="col-sm-8">
+                                    <select name="kecamatan_id" id="kecamatan" class="form-control" required="required">
+                                        <option value="{{bkk.kecamatan_id}}">{{bkk.kecamatan.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="kelurahan" class="col-sm-4 col-form-label">Kelurahan</label>
+                                <div class="col-sm-8">
+                                    <select name="kelurahan_id" id="kelurahan" class="form-control" required="required">
+                                        <option value="{{bkk.kelurahan_id}}">{{bkk.kelurahan.lokasi_nama}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group {% if has_error('alamat') %} has-error{% endif %} row">
+                                <label for="alamat" class="col-sm-4 col-form-label">Alamat Kantor</label>
+                                <div class="col-sm-8">
+                                    <textarea name="alamat" class="form-control">{{ bkk.alamat }}</textarea>
+                                    <span class="help-block">{{ error('alamat') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row{% if has_error('gmap_embed') %} has-error{% endif %}">
+                                <label class="col-sm-4 col-form-label" for="gmap_embed">Embed Google Map</label>
+                                <div class="col-sm-8">
+                                    <textarea name="gmap_embed" class="form-control">{{ bkk.gmap_embed }}</textarea>
+                                    <span class="help-block">{{ error('gmap_embed') }}</span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group {% if has_error('no_telp') %} has-error{% endif %} row">
+                                <label for="no_tlp" class="col-sm-4 col-form-label">Nomor Telepon</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="no_telp" class="form-control" id="no_telp" placeholder="Nomor Telepon"
+                                        value="{{ bkk.no_telp}}">
+                                    <span class="help-block">{{ error('no_telp') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group {% if has_error('fax') %} has-error{% endif %} row">
+                                <label for="fax" class="col-sm-4 col-form-label">Fax</label>
+                                <div class="col-sm-8">
+                                    <input value="{{ bkk.fax}}" type="number" name="fax" class="form-control" id="fax"
+                                        placeholder="Fax">
+                                    <span class="help-block">{{ error('fax') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group {% if has_error('email') %} has-error{% endif %} row">
+                                <label for="email" class="col-sm-4 col-form-label">Email</label>
+                                <div class="col-sm-8">
+                                    <input value="{{ bkk.email }}" type="email" name="email" class="form-control" id="email"
+                                        placeholder="Email">
+                                    <span class="help-block">{{ error('email') }}</span>
+                                </div>
+                            </div>
+
+
+                            <!--
+                        <div class="card" style="margin-top: 40px;">
+                            <div class="card-body">
+                                <div class="form-group{% if has_error('keterangan') %} has-error{% endif %}">
+                                    <label for="">Keterangan</label>
+                                    <textarea name="keterangan" class="form-control">
+                                    {{ bkk.keterangan }}
+                                    </textarea>
+                                    <span class="help-block">{{ error('keterangan') }}</span>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="border-bottom: 2px solid #5c85e8;margin-bottom: 30px;">
+            <div class="col-md-3">
+                <h4 class="mb-3">Logo BKK</h4>
+                <div class="form-group logo-image">
+                <label for="item-img" class="placeholder-image center-block">
+                    {% if bkk.logo != '' %}
+                    <img src="" class="thumbnails gambar img-fluid" id="item-img-output" style='width:100%; ' />
+                    {% else %}
+                        <img src="" class="thumbnails gambar img-fluid" id="item-img-output" style='width:100%;' />
+                        <span>
+                            <i class="menu-icon mdi mdi-plus-circle" style='width:100%;'></i>
+                        </span>
+                    {% endif %}
+                </label>
+                <input id="logo" hidden="hidden" name="logo_upload">
+                <input id="item-img" hidden="hidden" accept=".png, .jpg, .jpeg" type="file" class="item-img file center-block" />
+                <input type="hidden" value="{{ bkk.logo }}" name="logo">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h4 class="mb-3">Profil Singkat BKK</h4>
+                <div class="form-group{% if has_error('profile_bkk') %} has-error{% endif %}">
+                    <textarea name="profile_bkk" class="simple-editor form-control">{{ bkk.profile_bkk }}</textarea>
+                    <span class="help-block">{{ error('profile_bkk') }}</span>
+                </div>
+
+                <!-- <h4 class="mb-3">Jurusan</h4>
+                <div class="form-group{% if has_error('jurusan_bkk') %} has-error{% endif %}">
+                    <textarea name="jurusan_bkk" class="simple-editor form-control">{{ bkk.jurusan_bkk }}</textarea>
+                    <span class="help-block">{{ error('jurusan_bkk') }}</span>
+                </div> -->
+                <h4 class="mb-3">Fasilitas</h4>
+            <div class="form-group{% if has_error('fasilitas_bkk') %} has-error{% endif %}">
+                    <textarea name="fasilitas_bkk" class="simple-editor form-control">{{ bkk.fasilitas_bkk}}</textarea>
+                    <span class="help-block">{{ error('fasilitas_bkk') }}</span>
+                </div>
+
+            </div>
+            {{ csrf() }}
+            <br>
+             <button type="submit" class="btn  btn-block btn-warning">SIMPAN PERUBAHAN</button>
+            <br>
+        </div>
+
+    </div>
+    
+</form>
+
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+        <div id="upload-demo" class="center-block"></div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+{% include 'bkol/js/texteditor.twig' %}
+<script src="{{base_url()}}/libraries/croppie/croppie.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#provinsi').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kabupatenkota').html(val);
+                }
+            });
+        });
+        $('#kabupatenkota').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kecamatan').html(val);
+                }
+            });
+        });
+        $('#kecamatan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kelurahan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kelurahan').html(val);
+                }
+            });
+        });
+    });
+
+
+    $('#gallery-photos').change(function (e) {
+        var available_image = $("#multiple-file-preview li").length / 1 - 1;
+        var files = e.target.files;
+        var o = available_image;
+        for (var i = 0; i <= files.length; i++) {
+            // when i == files.length reorder and break
+            if (i == files.length) {
+                // need timeout to reorder beacuse prepend is not done
+                setTimeout(function () {
+                    reorderImages();
+                }, 100);
+                break;
+            }
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = (function (file) {
+                return function (event) {
+                    o += 1;
+                    $('#sortable').prepend('<li style="background-image: url(' + event.target.result +
+                        ')" id="photo' + o +
+                        '" class="thumbnails ui-state-default" data-order=0 data-id="' + file.lastModified +
+                        '"><a href="' + event.target.result +
+                        '" class="images-thumbnails"></a><a href="" class="delete-thumbnails delete-image" data-id="' +
+                        (o / 1) +
+                        '"><i class="menu-icon mdi mdi-window-close"></i></a><input type="hidden" name="gallery_photos_name[]" value="' +
+                        file.name + '"></li>');
+
+                    $('.images-thumbnails').magnificPopup({
+                        gallery: {
+                            enabled: true,
+                        },
+                        type: 'image',
+                    });
+
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+    var element_delete;
+
+    $(document).on('click', 'a.delete-image', function (event) {
+        event.preventDefault();
+        var clicked = $(this); // jQuery wrapper for clicked element
+        // ... click-specific code goes here ...
+        $('#photo' + clicked.data('id')).remove();
+    });
+
+    $('#sortable').sortable();
+
+    $("#delete-confirm").on('click', function () {
+        var deleted_element = $(element_delete);
+        var for_delete = typeof deleted_element.attr('for') ? deleted_element.attr('for') : '';
+        if (for_delete == 'logo') {
+            $("label.placeholder-image[for='logo']").html("<span><i class=\"icon-add-circle\" ></i></span>");
+        } else {
+            deleted_element.parent().remove();
+        }
+        $('#modal-confirmation').hide();
+    });
+
+    $(".close-button,.btn-close").click(function () {
+        $('#modal-confirmation').hide();
+    });
+</script>
+<script type="text/javascript">
+  function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    var blob = new Blob(byteArrays, {
+      type: contentType
+    });
+    return blob;
+  }
+
+  // Start upload preview image
+  $(".gambar").attr("src", "{{ bkk.logo }}");
+  var $uploadCrop,
+    tempFilename,
+    rawImg,
+    imageId;
+
+  function readFile(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('.upload-demo').addClass('ready');
+        $('#cropImagePop').modal('show');
+        rawImg = e.target.result;
+      }
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      swal("Sorry - you're browser doesn't support the FileReader API");
+    }
+  }
+  $uploadCrop = $('#upload-demo').croppie({
+    viewport: {
+      width: 200,
+      height: 200
+    },
+    boundary: {
+      width: 300,
+      height: 300
+    },
+    enforceBoundary: false,
+    enableExif: true
+  });
+  $('#cropImagePop').on('shown.bs.modal', function () {
+    // alert('Shown pop');
+    $uploadCrop.croppie('bind', {
+      url: rawImg
+    }).then(function () {
+      console.log('jQuery bind complete');
+    });
+  });
+
+  $('.item-img').on('change', function () {
+    imageId = $(this).data('id');
+    tempFilename = $(this).val();
+    $('#cancelCropBtn').data('id', imageId);
+    readFile(this);
+  });
+  $('#cropImageBtn').on('click', function (ev) {
+    $uploadCrop.croppie('result', {
+      type: 'base64',
+      format: 'jpeg',
+      size: {
+        width: 200,
+        height: 200
+      }
+    }).then(function (resp) {
+      $('#logo').val(resp);
+      $("#form").submit(function (e) {
+        e.preventDefault();
+        appendFileAndSubmit();
+      });
+      $('#item-img-output').attr('src', resp);
+      $('#cropImagePop').modal('hide');
+      function appendFileAndSubmit() {
+        var form = document.getElementById("form");
+        var ImageURL = resp;
+        // Split the base64 string in data and contentType
+        var block = ImageURL.split(";");
+        // Get the content type
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "iVBORw0KGg...."
+        // Convert to blob
+        var blob = b64toBlob(realData, contentType);
+        // Create a FormData and append the file
+        var fd = new FormData(form);
+        fd.append("logo_upload", blob);
+        // Submit Form and upload file
+        $.ajax({
+          url: "{{currentRoute}}",
+          data: fd, // the formData function is available in almost all new browsers.
+          type: "POST",
+          contentType: false,
+          processData: false,
+          cache: false,
+          // Change this according to your response from the server.
+          error: function (err) {
+            console.error(err);
+            location.reload(true);
+          },
+          complete: function () {
+            console.log("Request finished.");
+            location.reload(true);
+          }
+        });
+      }
+    });
+  });
+  // End upload preview image
+</script>
+{% endblock %}

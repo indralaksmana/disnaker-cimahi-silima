@@ -1,0 +1,234 @@
+<style>
+    :root {
+        --main-blue-color: rgba(34, 37, 124, 1);
+        --soft-white-color: rgba(255, 255, 255, .8);
+    }
+
+    .sub-menu-sub {
+        padding-left: 5px !important;
+    }
+
+    .sidebar-menu-title {
+        font-size: 18px;
+    }
+
+    .content-wrapper {
+        padding: 15px;
+        background: #E8E7E3;
+    }
+
+    .sidebar .nav .nav-item .nav-link {
+        color: rgba(255, 255, 255, .8);
+    }
+
+    .sidebar .nav .nav-item .nav-link:hover {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .sidebar .nav .nav-item .nav-link i.menu-arrow:before {
+        color: rgba(255, 255, 255, .8);
+    }
+
+    .sidebar .nav .nav-item.active>.nav-link {
+        color: #fff;
+        background: rgba(255, 255, 255, .1);
+    }
+
+    .sidebar .nav .nav-item .nav-link .menu-icon {
+        color: rgba(255, 255, 255, .8);
+    }
+
+    .sidebar .nav:not(.sub-menu)>.nav-item:hover:not(.nav-profile)>.nav-link {
+        background: rgba(255, 255, 255, .1);
+        color: #fff;
+    }
+
+
+    /*sidebar*/
+    .dashboard-sidebar,
+    .dashboard-sidebar .sidebar .nav {
+        background-color: var(--main-blue-color);
+    }
+
+    .dashboard-sidebar .sidebar .nav.sub-menu {
+        background: var(--main-blue-color);
+        padding-left: 3rem;
+    }
+
+    .dashboard-sidebar .sidebar .nav.sub-menu .nav-item:hover>.nav-link {
+        color: var(--white);
+    }
+
+    .dashboard-sidebar .sidebar .nav.sub-menu .nav-item .nav-link {
+        color: var(--soft-white-color);
+        line-height: 1.2;
+    }
+
+    .dashboard-sidebar .sidebar .nav .nav-item .nav-link[aria-expanded="true"] {
+        background: rgba(34, 37, 124, .1);
+    }
+</style>
+<div class="dashboard-sidebar">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar" style="background: transparent;">
+        <ul class="nav flex-column" style="margin-top: 20px;">
+
+            {% if auth.hasAccess('AdminWeb.view') %}
+            <li class="nav-item">
+                <a class="nav-link" style="padding-bottom: 0px;padding-left: 20px;">
+                    <h4>ADMIN BKOL</h4>
+                </a>
+            </li>
+            <li class="nav-item" style="margin-right: 0px;">
+                <a class="nav-link {% if currentRoute == '/dashboard' %}active{% endif %}" href="{{ path_for('dashboard')}}"
+                    href="{{ path_for('bkol-pencarikerja') }}"><i class="menu-icon mdi mdi-television"></i><span class="menu-title">Dashboard</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#dashboard-job" aria-expanded="false" aria-controls="dashboard-job"><i
+                        class="menu-icon mdi mdi-newspaper"></i><span class="menu-title">Lowongan Kerja</span><i class="menu-arrow"></i></a>
+                <div class="collapse" id="dashboard-job">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path_for('admin-job-add')}}">
+                                <i class="menu-icon mdi mdi-plus-circle"></i> Buat Lowongan Kerja
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path_for('admin-job')}}">
+                                <i class="menu-icon mdi mdi-format-list-bulleted"></i> List Lowongan Kerja
+                            </a>
+                        </li>
+                        {# <li class="nav-item" style="margin-right: 0px;">
+                            <a class="nav-link {% if currentRoute starts with '/dashboard/job/pelamar' %}active{% endif %}"
+                                href="{{ path_for('admin-job-apply') }}"><i class="menu-icon mdi mdi-account-check"></i>
+                                <span class="menu-title">List Pelamar Kerja</span></a>
+                        </li> #}
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item" style="margin-right: 0px;">
+                <a class="nav-link {% if currentRoute starts with '/dashboard/admin/bkol/pencarikerja' %}active{% endif %}"
+                    href="{{ path_for('bkol-pencarikerja') }}"><i class="menu-icon mdi mdi-account-search"></i><span
+                        class="menu-title">Member Perorangan</span></a>
+            </li>
+
+            <li class="nav-item" style="margin-right: 0px;">
+                <a class="nav-link " href="{{ path_for('bkol-perusahaan') }}"><i class="menu-icon mdi mdi-domain"><span
+                            class="menu-title"></i>Member Perusahaan</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="padding-bottom: 0px;padding-left: 20px;">
+                    <h4>PENGATURAN</h4>
+                </a>
+            </li>
+
+            {% if auth.hasAccess('email.view') %}
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#dashboard-email" aria-expanded="false" aria-controls="dashboard-email"><i
+                        class="menu-icon mdi mdi-email"></i><span class="menu-title">Email</span><i class="menu-arrow"></i></a>
+                <div class="collapse" id="dashboard-email">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="{{ path_for('admin-email')}}">Sent Emails</a></li>
+                        {% if auth.hasAccess('email.templates.view') %}
+                        <li class="nav-item"> <a class="nav-link" href="{{ path_for('admin-email-template')}}">Templates
+                                Email</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+
+
+            {# <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#data-user-management" aria-expanded="false"
+                    aria-controls="data-user-management"><i class="menu-icon mdi mdi-notification-clear-all"></i><span
+                        class="menu-title">User Management<span><i class="menu-arrow"></i></a>
+                <div class="collapse" id="data-user-management">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="{{ path_for('admin-users') }}">List Users</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path_for('ganti-password') }} ">
+                                <i class="menu-icon mdi mdi-textbox-password"></i><span class="menu-test">Ganti Kata
+                                    Sandi</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li> #}
+            {# <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="menu-icon mdi mdi-textbox-password"></i><span class="menu-test">Edit Profil</span>
+                </a>
+            </li> #}
+            <li class="nav-item" style="margin-right: 0px;">
+                <a class="nav-link" href="{{ path_for('settings-global') }}"><i class="menu-icon mdi mdi-notification-clear-all"></i>
+                    Site Settings</a>
+            </li>
+
+            <li class="nav-item" style="margin-right: 0px;">
+                <a class="nav-link" href="{{ path_for('logout') }}"><i class="menu-icon fa fa-power-off fa-fw"></i>
+                    Keluar</a>
+            </li>
+            {% endif %}
+
+
+            {% if auth.hasAccess('companies.view')%}
+            {# <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#dashboard-job" aria-expanded="false" aria-controls="dashboard-job"><i
+                        class="menu-icon mdi mdi-newspaper"></i><span class="menu-title">Lowongan Kerja</span><i class="menu-arrow"></i></a>
+                <div class="collapse" id="dashboard-job">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path_for('admin-job-add')}}">
+                                <i class="menu-icon mdi mdi-plus-circle"></i> Buat Lowongan Kerja
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path_for('admin-job')}}">
+                                <i class="menu-icon mdi mdi-format-list-bulleted"></i> List Lowongan Kerja
+                            </a>
+                        </li>
+                        <li class="nav-item" style="margin-right: 0px;">
+                            <a class="nav-link {% if currentRoute starts with '/dashboard/job/pelamar' %}active{% endif %}"
+                                href="{{ path_for('admin-job-apply') }}"><i class="menu-icon mdi mdi-account-check"></i>
+                                <span class="menu-title">List Pelamar Kerja</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if currentRoute starts with '/dashboard/my-companies' %}active{% endif %}" href="{{ path_for('my-companies') }}"><i
+                        class="menu-icon fa fa-gear fa-fw"></i> Profil Perusahaan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if currentRoute starts with '/dashboard/my-companies' %}active{% endif %}" href="{{ path_for('shortlist-admin') }}">
+                    Pencaker Favorite</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">
+                    <h4>Pengaturan</h4>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path_for('ganti-password') }} ">
+                    <i class="menu-icon mdi mdi-textbox-password"></i><span class="menu-test">Ganti Kata Sandi</span>
+                </a>
+            </li> #}
+
+
+
+            <li class="nav-item" style="margin-right: 0px;">
+                <a class="nav-link" href="{{ path_for('logoutbkol') }}"><i class="menu-icon fa fa-power-off fa-fw"></i>
+                    Logout</a>
+            </li>
+            {% endif %}
+            <li class="nav-item" style="margin-right: 0px;">
+                <p class="nav-link text-muted" style="font-size: 10px;margin-top: 25px;">Copyright © 2018 <br><br>Disnaker
+                    Kota
+                    Cimahi All
+                    rights reserved.</p>
+            </li>
+        </ul>
+    </nav>
+</div>

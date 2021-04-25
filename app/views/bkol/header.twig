@@ -1,0 +1,375 @@
+<style>
+	.dropdown-menu {
+		min-width: 15rem;
+	}
+
+	.welcome {
+		text-align: right;
+		margin-right: 10px;
+	}
+
+	.dropdown-toggle::after {
+		display: none;
+	}
+
+	.burger-menu.navbar {
+		background-color: transparent;
+	}
+
+	.burger-menu.navbar .navbar-toggler {
+		background-image: url(/img/bkol/btn-dashboard.png) !important;
+		background-repeat: no-repeat;
+		background-size: contain;
+		border-color: transparent !important;
+		padding: 14px !important;
+		font-size: unset !important;
+		-webkit-transition: all .3s ease;
+		-moz-transition: all .3s ease;
+		-ms-transition: all .3s ease;
+		-o-transition: all .3s ease;
+		transition: all .3s ease;
+	}
+
+	.burger-menu.navbar .navbar-toggler:hover {
+		opacity: .9;
+	}
+
+	.burger-menu.navbar .navbar-toggler-icon {
+		background-image: none;
+	}
+
+	.burger-menu.navbar a.bg-light:hover {
+		background: none;
+	}
+
+	.welcome .greet {
+		font-size: 12px;
+		line-height: 14px;
+		font-weight: lighter;
+	}
+
+	.welcome .name {
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	.welcome .greet,
+	.welcome .name {
+		margin-bottom: 0;
+		color: #3b3d93;
+	}
+
+	@media (max-width: 767.98px) {
+		.mobile-toggler .container {
+			padding: 5px;
+		}
+
+		.welcome .greet,
+		.welcome .name {
+			margin-bottom: 0;
+			color: #fff;
+		}
+
+		.dropdown-menu.btn-profil.show {
+			top: 3rem !important;
+			left: 0 !important;
+		}
+
+		/* .navbar-toggler-icon {
+			width: 15px;
+			height: 15px;
+		} */
+
+		.menu-mobile span.icon-menu {
+			font-size: 27px;
+			top: 5px;
+		}
+
+	}
+</style>
+<header class="bkol-header py-3">
+	<div class="container">
+		<div class="row flex-nowrap justify-content-between align-items-center">
+			<div class="col">
+				<div class="d-flex justify-content-start">
+					<a href="/"><img class="img-fluid logo" src="{{base_url()}}/img/logo-silima.png" width="267"
+							alt=""></a>
+				</div>
+			</div>
+			{% if not auth.check() %}
+			<div class="col d-none d-lg-block header_pilar">
+				<h4>LIMA PILAR</h4>
+				<small>DINAS TENAGA KERJA KOTA CIMAHI</small>
+			</div>
+			{% endif %}
+			<div class="col d-block d-md-none">
+				<div class="menu-mobile navbar-light d-flex justify-content-end">
+					<span class="icon-menu navbar-toggler-icon"></span>
+				</div>
+				<!-- <div class="navbar-light">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+					</button>
+				</div> -->
+			</div>
+			<div class="top-nav d-none d-md-block d-lg-block">
+				<div class="d-flex align-items-center">
+					<!-- <span class="mr-2">{{auth.user.fullname}}</span> -->
+					{% if auth.check() %}
+					<div class="dropdown d-flex align-items-center">
+						<div class="welcome">
+							<h5 class="greet">SELAMAT DATANG</h5>
+							<h5 class="name">{{auth.user.username}}</h5>
+						</div>
+						<a class="burger-menu dropdown-toggle navbar" href="#" role="button" id="dropdownMenuButton"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<div class="navbar-toggler" style="background-image: url(/img/bkol/btn-dashboard.png);">
+								<span class="navbar-toggler-icon"></span>
+							</div>
+						</a>
+						<!-- <img class="btn-img img-responsive rounded-circle resume-photo" id="resume_photo" src="{{ auth.user.photoprofile }}" style="max-width: 50px;"> -->
+						<div class="dropdown-menu btn-profil" aria-labelledby="dropdownMenuButton">
+							{% if auth.hasAccess('jobseeker.view') %}
+							<a class="dropdown-item" href="{{ path_for('dashboardpencaker') }}"><i
+									class="fa fa-dashboard"></i> Dashboard</a>
+							<!-- <a class="dropdown-item" href="{{ path_for('admin-job-proposal') }}"><i class="fa fa-address-card"></i> Lamaranku</a>
+							<a class="dropdown-item" href="{{ path_for('pelatihanku') }}"><i class="fa fa-address-card"></i> Pelatihanku</a> -->
+							<a class="dropdown-item" href="{{ path_for('home') }}"><i class="fa fa-list-ul"></i> Cari
+								Lowongan Kerja</a>
+							<!-- <a class="dropdown-item" href="{# {{ path_for('home') }} #}"><i class="fa fa-envelope"></i> Undangan Kerja</a> -->
+							<a class="dropdown-item" href="{{ path_for('dashboardpencaker-biodata') }}"><i
+									class="fa fa-user"></i> Profil
+								Akun</a>
+							<a class="dropdown-item" href="{{ path_for('dashboardpencaker-settings') }}"><i
+									class="fa fa-gear"></i>
+								Pengaturan</a>
+							{% endif %}
+							{% if auth.hasAccess('companies.view') %}
+							<a class="dropdown-item" href="{{ path_for('dashboardperusahaan') }}"><i
+									class="fa fa-dashboard"></i> Dashboard</a>
+							<a class="dropdown-item" href="{{ path_for('dashboardperusahaan-lowongan-add') }}"><i
+									class="menu-icon mdi mdi-plus-circle"></i>
+								Tambah Lowongan Baru</a>
+							<a class="dropdown-item" href="{{ path_for('dashboardperusahaan-lowongan') }}"><i
+									class="menu-icon mdi mdi-format-list-bulleted"></i>
+								List Lowongan</a>
+							<a class="dropdown-item" href="{{ path_for('dashboardperusahaan-pelamar') }}"><i
+									class="menu-icon mdi mdi-account-check"></i>
+								List Pelamar</a>
+							{% endif %}
+
+							{% if auth.hasAccess('bkk.view') %}
+							<a class="dropdown-item" href="{{ path_for('bkk-dashboard') }}"><i
+									class="fa fa-dashboard"></i> Dashboard</a>
+							<a class="dropdown-item" href="{{ path_for('profile-bkk') }}"><i class="fa fa-user"></i>
+								Profil</a>
+							{% endif %}
+							{% if auth.hasAccess('pemerintah.view') %}
+							<a class="dropdown-item" href="{{ path_for('dashboardpemerintah') }}"><i
+									class="fa fa-dashboard"></i> Dashboard</a>
+							<a class="dropdown-item" href="{{ path_for('dashboardpemerintah-profile') }}"><i
+									class="fa fa-user"></i> Profil</a>
+							{% endif %}
+							{% if auth.hasAccess('lpk.view') %}
+							<a class="dropdown-item" href="{{ path_for('lpk-dashboard') }}"><i
+									class="fa fa-dashboard"></i> Dashboard</a>
+							<a class="dropdown-item" href="{{ path_for('profile-lpk') }}"><i class="fa fa-user"></i>
+								Profil</a>
+							{% endif %}
+							{% if auth.hasAccess('perguruan-tinggi.view') %}
+							<a class="dropdown-item" href="{{ path_for('pt-dashboard') }}"><i
+									class="fa fa-dashboard"></i> Dashboard</a>
+							<a class="dropdown-item" href="{{ path_for('profile-perguruan-tinggi') }}"><i
+									class="fa fa-user"></i> Profil</a>
+							{% endif %}
+							<a class="dropdown-item" href="{{ path_for('logoutbkol') }}"><i
+									class="fa fa-arrow-circle-o-right"></i> Keluar</a>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				{% if not auth.check() %}
+				<div class="d-inline mr-2"><a href="{{path_for('registerjobseeker')}}" role="button"><img
+							class="btn-img" src="{{base_url}}/images/silima/icon/icon-pencaker-daftar.png"
+							alt="Daftar Pencari Kerja"></a>
+				</div>
+				<div class="d-inline mr-2"><a href="{{path_for('registerEmployer')}}" role="button"><img class="btn-img"
+							src="{{base_url}}/images/silima/icon/icon-perusahaan-daftar.png"
+							alt="Daftar Perusahaan"></a>
+				</div>
+				<div class="d-inline mr-2"><a href="{{path_for('registerPemerintah')}}" role="button"><img
+							class="btn-img" src="{{base_url}}/images/silima/icon/icon-pemerintah-daftar.png"
+							alt="Daftar Pemerintah"></a>
+				</div>
+				<div class="d-inline mr-2"><a href="{{path_for('registerLpk')}}" role="button"><img class="btn-img"
+							src="{{base_url}}/images/silima/icon/icon-lpk-daftar.png" alt="Daftar LPk"></a>
+				</div>
+				<div class="d-inline mr-2"><a href="{{path_for('registerAkademi')}}" role="button"><img class="btn-img"
+							src="{{base_url}}/images/silima/icon/icon-dikti-daftar.png"
+							alt="Daftar Perguruan Tinggi"></a>
+				</div>
+
+				<div class="d-inline"><a href="javascript:void(0)" class="openLogin text-secondary"
+						data-href="{{ path_for('login-modal')}}"><img class="btn-img"
+							src="{{base_url}}/images/silima/icon/icon-masuk.png" alt="login"></a>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</header>
+<nav class="mobile-toggler navbar navbar-expand-md navbar-dark">
+	<div class="container d-flex justify-content-start justify-content-md-center align-items-center">
+		<div class="hide-menu"></div>
+		<!-- Mobile -->
+		<!-- <div class="col-1 menu-mobile">
+			<span class="icon-menu navbar-toggler-icon"></span>
+		</div> -->
+		<!-- <div> -->
+		<ul class="menu-list justify-content-center align-items-center">
+			<li>
+				{# <a href="#" class="active">Beranda</a> #}
+				<a class="{% if currentRoute == path_for('home') %} active{% endif %}"
+					href="{{path_for('home')}}">Beranda</a>
+			</li>
+			<li>
+				<a class="{% if currentRoute == path_for('bkol-lowongan') %} active{% endif %}"
+					href="{{ path_for('bkol-lowongan') }}">Lowongan
+					Kerja</a>
+			</li>
+			{# {% if auth.hasAccess('companies.view') %} #}
+			<li>
+				<a class="{% if currentRoute == path_for('list-pencarikerja') %} active{% endif %}"
+					href="{{path_for('list-pencarikerja')}}">Pencari
+					Kerja</a>
+			</li>
+			{# {% endif %} #}
+
+			<li>
+				<a class="{% if currentRoute == path_for('minisite-lpk') %} active{% endif %}"
+					href="{{ path_for('minisite-lpk') }}">LPK</a>
+			</li>
+			<li>
+				<a class="{% if currentRoute == path_for('minisite-bkk') %} active{% endif %}"
+					href="{{ path_for('minisite-bkk') }}">BKK</a>
+			</li>
+			<li>
+				<a class="{% if currentRoute == path_for('minisite-perusahaan') %} active{% endif %}"
+					href="{{ path_for('minisite-perusahaan') }}">Perusahaan</a>
+			</li>
+			<li>
+				<a class="{% if currentRoute == path_for('minisite-pemerintah') %} active{% endif %}"
+					href="{{ path_for('minisite-pemerintah') }}">Pemerintah</a>
+			</li>
+			<li>
+				<a class="{% if currentRoute == path_for('minisite-pt') %} active{% endif %}"
+					href="{{ path_for('minisite-pt') }}">Perguruan Tinggi</a>
+			</li>
+
+			<li>
+				<a class="{% if currentRoute == path_for('tentang-silima') %} active{% endif %}"
+					href="{{ path_for('tentang-silima') }}">Tentang
+					SILIMA</a>
+			</li>
+
+		</ul>
+		<!-- </div> -->
+		<div class="top-nav-mobile py-1 text-dark d-block d-sm-none text-center">
+			{% if auth.check() %}
+			<div class="dropdown d-flex align-items-center">
+				<!-- <a class="" href="" role="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="btn-img img-responsive rounded-circle resume-photo" id="resume_photo" src="{{ auth.user.photoprofile }}" style="max-width: 40px;">
+			</a> -->
+				<a class="burger-menu dropdown-toggle navbar mr-2" href="#" role="button" id="dropdownMenuButtonMobile"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<div class="navbar-toggler" style="background-image: url(/img/bkol/btn-dashboard.png);">
+						<span class="navbar-toggler-icon"></span>
+					</div>
+				</a>
+				<div class="welcome text-left">
+					<h5 class="greet">SELAMAT DATANG</h5>
+					<h5 class="name">{{auth.user.username}}</h5>
+				</div>
+				<div class="dropdown-menu btn-profil" aria-labelledby="dropdownMenuButtonMobile"
+					style="border-radius: unset;">
+					{% if auth.hasAccess('jobseeker.view') %}
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardpencaker') }}"><i
+							class="fa fa-dashboard"></i> Dashboard</a>
+					<!-- <a class="dropdown-item mb-2" href="{{ path_for('admin-job-proposal') }}"><i
+							class="fa fa-address-card"></i> Lamaranku</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('home') }}"><i class="fa fa-list-ul"></i> Cari
+						Lowongan Kerja</a>
+					<a class="dropdown-item mb-2" href="{# {{ path_for('home') }} #}"><i class="fa fa-envelope"></i>
+						Undangan Kerja</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardpencaker-biodata') }}"><i
+							class="fa fa-user"></i> Data Diri</a> -->
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardpencaker-settings') }}"><i
+							class="fa fa-gear"></i> Pengaturan</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('logout') }}"><i
+							class="fa fa-arrow-circle-o-right"></i> Keluar</a>
+					{% endif %}
+					{% if auth.hasAccess('companies.view') %}
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardperusahaan') }}"><i
+							class="fa fa-dashboard"></i> Dashboard</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardperusahaan-lowongan-add') }}"><i
+							class="menu-icon mdi mdi-plus-circle"></i>
+						Tambah Lowongan Baru</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardperusahaan-lowongan') }}"><i
+							class="menu-icon mdi mdi-format-list-bulleted"></i>
+						List Lowongan</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('dashboardperusahaan-pelamar') }}"><i
+							class="menu-icon mdi mdi-account-check"></i>
+						List Pelamar</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('logoutbkol') }}"><i
+							class="fa fa-arrow-circle-o-right"></i> Keluar</a>
+					{% endif %}
+					{% if auth.hasAccess('bkk.view') %}
+					<a class="dropdown-item mb-2" href="{{ path_for('bkk-dashboard') }}"><i class="fa fa-dashboard"></i>
+						Dashboard</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('profile-bkk') }}"><i class="fa fa-user"></i>
+						Profil</a>
+					{% endif %}
+					{% if auth.hasAccess('lpk.view') %}
+					<a class="dropdown-item mb-2" href="{{ path_for('lpk-dashboard') }}"><i class="fa fa-dashboard"></i>
+						Dashboard</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('profile-lpk') }}"><i class="fa fa-user"></i>
+						Profil</a>
+					{% endif %}
+					{% if auth.hasAccess('perguruan-tinggi.view') %}
+					<a class="dropdown-item mb-2" href="{{ path_for('pt-dashboard') }}"><i class="fa fa-dashboard"></i>
+						Dashboard</a>
+					<a class="dropdown-item mb-2" href="{{ path_for('profile-perguruan-tinggi') }}"><i
+							class="fa fa-user"></i> Profil</a>
+					{% endif %}
+				</div>
+			</div>
+			{% endif %}
+			{% if not auth.check() %}
+			{# <div class="d-inline mr-2">
+					<a style="padding:10px !important;" href="{{path_for('register')}}" class="btn btn-small btn-pencari-kerja d-flex align-items-center"><span class="btn-pencari-kerja_text d-flex flex-column"><span><b style="line-height: 30px;">DAFTAR</b></span></span></a>
+					
+				</div> #}
+			<div class="d-inline mr-2"><a href="{{path_for('registerjobseeker')}}" role="button"><img class="btn-img"
+						src="{{base_url}}/images/silima/icon/icon-pencaker-daftar.png" alt="Daftar Pencari Kerja"></a>
+			</div>
+			<div class="d-inline mr-2"><a href="{{path_for('registerEmployer')}}" role="button"><img class="btn-img"
+						src="{{base_url}}/images/silima/icon/icon-perusahaan-daftar.png" alt="Daftar Perusahaan"></a>
+			</div>
+			<div class="d-inline mr-2"><a href="{{path_for('registerPemerintah')}}" role="button"><img class="btn-img"
+						src="{{base_url}}/images/silima/icon/icon-pemerintah-daftar.png" alt="Daftar Pemerintah"></a>
+			</div>
+			<div class="d-inline mr-2"><a href="{{path_for('registerLpk')}}" role="button"><img class="btn-img"
+						src="{{base_url}}/images/silima/icon/icon-lpk-daftar.png" alt="Daftar LPk"></a>
+			</div>
+			<div class="d-inline mr-2"><a href="{{path_for('registerAkademi')}}" role="button"><img class="btn-img"
+						src="{{base_url}}/images/silima/icon/icon-dikti-daftar.png" alt="Daftar Perguruan Tinggi"></a>
+			</div>
+
+			<div class="d-inline"><a href="javascript:void(0)" class="openLogin text-secondary"
+					data-href="{{ path_for('login-modal')}}"><img class="btn-img"
+						src="{{base_url}}/images/silima/icon/icon-masuk.png" alt="login"></a>
+			</div>
+			{% endif %}
+
+		</div>
+	</div>
+</nav>

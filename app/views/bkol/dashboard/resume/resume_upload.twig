@@ -1,0 +1,130 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New Blog Post{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="bg-white px-4">
+
+
+
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Upload Dokumen</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 mb-2">
+                <div class="d-flex justify-content-sm-end justify-content-start">
+                    <button type="button" class="btn btn-sm w-100" data-toggle="modal" data-target="#exampleModal">
+                      Tambah Dokumen
+                    </button>
+                  </div>
+            </div>
+            <div class="col-md-12">
+            <table id="myTable" class="table order-list table-bordered">
+                <thead>
+                    <tr>
+                        <td rowspan="2" style="width: 35%;">Nama File</td>
+                        <td rowspan="2" style="width: 25%;">File Dokumen</td>
+                        <td rowspan="2" style="width: 25%;">Aksi</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if  auth.user.datapencarikerja.dokumen|length == 0 %}
+                      <tr>
+                        <td class="text-center" colspan="3">Belum Ada Dokumen Yang Di Upload</td>
+                      </tr>
+                    {% endif %}
+                    {% for r in auth.user.datapencarikerja.dokumen if r.nama_file == true %}
+                    <tr>
+                        <td>{{r.nama_file}}</td>
+                        <td><a target="_blank" href="{{r.upload_file}}">Lihat File</a></td>
+                        <td>
+                          <a href="javascript:void(0)" data-href="{{ path_for('resume-upload-edit', {'dokumen_id': r.id }) }}" class="openEdit btn btn-small btn-third mr-0 mr-sm-1 mb-1 mb-sm-0">
+                              Edit <span class="fa fa-fw fa-pencil"></span>
+                          </a>
+                          <form action="{{ path_for('resume-upload-delete') }}" method="post" style="display: inline;">
+                              <input type="hidden" name="dokumen_id" value="{{r.id}}" />
+                              {{csrf()}}
+                              <button class="btn btn-danger btn-small swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="Dokumen ini akan di hapus secara permanen">
+                                  Hapus <span class="fa fa-fw fa-trash"></span>
+                              </button>
+                          </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        </div>
+</div>
+
+
+
+
+</form>
+</div>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="{{ currentRoute }}" method="POST" role="form" method="POST" role="form" enctype="multipart/form-data">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Dokumen Pendukung</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label>Nama Dokumen</label>
+            <input type="text" class="form-control" name="nama_file">
+            <label>File Dokumen</label>
+            <input accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"  type="file" class="form-control form-control-sm" name="upload_doc"/>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+      {{ csrf() }}
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ModalEdit" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content" id="modal-edit">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+        $('.openEdit').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('#modal-edit').load(dataURL,function(){
+                $('#ModalEdit').modal({show:true});
+            });
+        });
+
+
+    </script>
+
+{% endblock %}

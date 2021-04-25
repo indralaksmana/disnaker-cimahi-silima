@@ -1,0 +1,132 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block page %}
+	<div class="card card-body">
+	<div class="container py-5">
+		<div class="row">
+
+			<div class="col-md-2">
+				<img class="img-fluid" src="{{author.photoprofile}}">
+			</div>
+			<div class="col-md-10">
+				<div class="table-responsive">
+
+
+				<h2>{{author.fullname}}</h2>
+				<table class="table">
+					<tr>
+						<th>No KTP</th>
+						<td> : {{author.datapencarikerja.no_ktp}}</td>
+
+						<th>Email</th>
+						<td> : {{author.email}}</td>
+					</tr>
+					<tr>
+						<th>Nomor Telepon</th>
+						<td> : {{author.datapencarikerja.no_telp}}</td>
+
+						<th>Tempat Tanggal Lahir</th><td>{{author.datapencarikerja.tempat_lahir}} / {{author.datapencarikerja.tanggal_lahir}}</td>
+					</tr>
+					<tr>
+						<th>Jenis Kelamin</th><td>{{author.datapencarikerja.jenis_kelamin}}</td>
+						<th>Agama</th><td>{{author.datapencarikerja.agama}}</td>
+					</tr>
+
+						<tr>
+							{# <th>Kewarganegaraan</th><td>{{author.nationality}}</td> #}
+							<th>Pendidikan Terakhir</th><td>{{author.datapencarikerja.pendidikanterakhir.jenis_pendidikan}}</td>
+							<th>Jurusan Pendidikan</th><td>{{author.datapencarikerja.jurusanpendidikan.jenis_pendidikan}}</td>
+						</tr>
+						<tr>
+							<th>Alamat</th>
+						<td> : {{author.address}}</td>
+							<th>Kecamatan/Kelurahan  </th><td>{{author.datapencarikerja.kecamatan.lokasi_nama}} / {{author.datapencarikerja.kelurahan.lokasi_nama}}</td>
+						</tr>
+				</table>
+
+				<h2>Riwayat Pendidikan</h2>
+				<table class="table">
+					<tr>
+							<th>Tingkat Pendidikan</th>
+							<th>Nama Sekolah / Universitas</th>
+							<th>Jurusan</th>
+							<th>Tahun Lulus</th>
+							<th>Nilai / IPK</th>
+							<th>Nomor Ijazah</th>
+
+						</tr>
+						{% if pendidikan|length == 0 %}
+					<tr class="text-center">
+						<td colspan="4">Belum Ada data Riwayat Pendidikan</td>
+					</tr>
+				{% endif %}
+				{% for post in pendidikan  %}
+					<tr>
+						<td>{{post.level}}</td>
+						<td>{{post.schoolname}}</td>
+						<td>{{post.schoolmajors}}</td>
+						<td>{{post.graduationyear}}</td>
+						<td>{{post.schoolgrades}}</td>
+						<td>{{post.numberofdiplomas}}</td>
+					</tr>
+				{% endfor %}
+				</table>
+
+				<h2>Riwayat Pendidikan Non formal</h2>
+				<table class="table">
+					<tr>
+							<th>Nama Pendidikan </th>
+							<th>Mulai Bulan / Tahun</th>
+							<th>Selesai Bulan / Tahun</th>
+						</tr>
+						{% if nonformal|length == 0 %}
+							<tr class="text-center">
+								<td colspan="4">Belum Ada data Riwayat Pendidikan Non formal</td>
+							</tr>
+						{% endif %}
+						{% for post in nonformal  %}
+							<tr>
+								<td>{{post.nameofeducation}}</td>
+								<td>{{post.startingmonth}} / {{post.startyear}}</td>
+								<td>{{post.finishedmonth}} / {{post.finishedyear}}</td>
+							</tr>
+						{% endfor %}
+				</table>
+
+				<h2>Riwayat Pekerjaan</h2>
+				<table class="table">
+					<tr>
+							<th>Nama Perusahaan</th>
+							<th>Jenis Pekerjaan</th>
+							<th>Jabatan </th>
+							<th>Upah</th>
+							<th>Mulai Bulan / Tahun </th>
+							<th>Selesai Bulan / Tahun</th>
+
+						</tr>
+
+						{% if pekerjaan|length == 0 %}
+							<tr class="text-center">
+								<td colspan="4">Belum Ada Pelamar Baru</td>
+							</tr>
+						{% endif %}
+						{% for post in pekerjaan  %}
+							<tr>
+								<td>{{post.companyname}}</td>
+								<td>{{post.typeofwork}}</td>
+								<td>{{post.position}}</td>
+								<td>{{post.salary}}</td>
+								<td>{{post.startmonth}} / {{post.startyear}}</td>
+								<td>{{post.finishedmonth}} / {{post.finishedyear}}</td>
+							</tr>
+						{% endfor %}
+				</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

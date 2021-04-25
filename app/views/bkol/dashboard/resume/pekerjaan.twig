@@ -1,0 +1,262 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+
+{% block title %}{{config['site-name']}} || Edit Resume{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style type="text/css">
+   .item .item-title {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 300;
+        color: #333;
+        line-height: 30px;
+    }
+
+    .item .item-period {
+        float: right;
+        right: 12px;
+        height: 20px;
+        margin-top: -10px;
+        color: #888;
+        font-style: italic;
+    }
+    .item a {
+    margin-bottom: 0px!important;
+    }
+
+    .item .sub-title {
+        color: #08d;
+        font-size: 18px;
+        line-height: 24px
+    }
+
+    .item .desc {
+        font-size: 14px;
+        line-height: 18px;
+        color: #888;
+    }
+</style>
+<div class="container">
+    <div class="row bg-white">
+
+        <div class="col padding-2">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Riwayat Pekerjaan</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+            <p>
+                <a class="btn btn-lg btn-primary btn-block" data-toggle="collapse" href="#collapseExample" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Tambah Riwayat Pekerjaan
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <form action="{{ path_for('resume-pekerjaan-add') }}" method="POST" role="form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group input-group-sm{% if has_error('companyname') %} has-error{% endif %}">
+                                    <label for="companyname">Nama Perusahaan</label>
+                                    <input type="text" name="companyname" class="form-control" id="companyname"
+                                        placeholder="Nama Pekerjaan" value="{% if requestParams.companyname %}{{requestParams.companyname}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('companyname') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('typeofwork') %} has-error{% endif %}">
+                                    <label for="typeofwork">Jenis Pekerjaan</label>
+                                    <input type="text" name="typeofwork" class="form-control" id="typeofwork"
+                                        placeholder="Jenis Pekerjaan" value="{% if requestParams.typeofwork %}{{requestParams.typeofwork}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('typeofwork') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('position') %} has-error{% endif %}">
+                                    <label for="position">Jabatan</label>
+                                    <input type="text" name="position" class="form-control" id="position" placeholder="Jabatan"
+                                        value="{% if requestParams.position %}{{requestParams.position}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('position') }}</span>
+                                </div>
+
+                                <div class="form-group input-group-sm{% if has_error('salary') %} has-error{% endif %}">
+                                    <label for="salary">Upah</label>
+                                    <input type="text" name="salary" class="form-control" id="salary" placeholder="Upah"
+                                        value="{% if requestParams.salary %}{{requestParams.salary}}{% endif %}"
+                                        required="required">
+                                    <span class="help-block">{{ error('salary') }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group input-group-sm{% if has_error('startmonth') %} has-error{% endif %}">
+                                    <label for="startmonth">Mulai Bulan</label>
+                                    <select name="startmonth" class="form-control" id="startmonth" required="required">
+                                        <option value="">- select -</option>
+                                        {% for i in [
+                                        'Januari',
+                                        'Februari',
+                                        'Maret',
+                                        'April',
+                                        'Mei',
+                                        'Juni',
+                                        'Juli',
+                                        'Agustus',
+                                        'September',
+                                        'Oktober',
+                                        'November',
+                                        'Desember'
+                                        ]
+                                        %}
+                                        <option value="{{ i }}" {% if requestParams.startmonth %} selected {% endif %}>
+                                            {{i }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('startmonth') }}</span>
+                                </div>
+                                <div class="form-group input-group-sm{% if has_error('startyear') %} has-error{% endif %}">
+                                    <label for="startyear">Mulai tahun</label>
+                                    <select name="startyear" class="form-control" required="required">
+                                        <option value="0">Mulai tahun</option>
+                                        {% for i in 2020..1950 %}
+                                        <option value="{{ i }}" {% if requestParams.startyear %}selected{% endif %}>{{
+                                            i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('startyear') }}</span>
+                                </div>
+                                <div class="form-group input-group-sm{% if has_error('finishedmonth') %} has-error{% endif %}">
+                                    <label for="finishedmonth">Selesai Bulan</label>
+                                    <select name="finishedmonth" class="form-control" id="finishedmonth" required="required">
+                                        <option value="">- select -</option>
+                                        {% for i in [
+                                        'Januari',
+                                        'Februari',
+                                        'Maret',
+                                        'April',
+                                        'Mei',
+                                        'Juni',
+                                        'Juli',
+                                        'Agustus',
+                                        'September',
+                                        'Oktober',
+                                        'November',
+                                        'Desember'
+                                        ]
+                                        %}
+                                        <option value="{{ i }}" {% if requestParams.finishedmonth %} selected {% endif
+                                            %}>
+                                            {{i }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('finishedmonth') }}</span>
+                                </div>
+                                <div class="form-group input-group-sm{% if has_error('finishedyear') %} has-error{% endif %}">
+                                    <label for="finishedyear">Selesai Tahun</label>
+                                    <select name="finishedyear" class="form-control" required="required">
+                                        <option value="0">Tahun Lulus</option>
+                                        {% for i in 2020..1950 %}
+                                        <option value="{{ i }}" {% if requestParams.finishedyear %}selected{% endif %}>{{
+                                            i
+                                            }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('finishedyear') }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group input-group-sm {% if has_error('descjob') %} has-error{% endif %}">
+                                    <label for="descjob">Deskripsi Pekerjaan</label>
+                                    <textarea name="descjob" class="form-control">
+                                            {% if requestParams.descjob %}{{requestParams.descjob}}{% endif %}
+                                        </textarea>
+                                    <span class="help-block">{{ error('descjob') }}</span>
+                                </div>
+                                <div class="form-group input-group-sm">
+                                    <button type="submit" class="btn btn-third">SIMPAN</button>
+                                    <a style="margin-left:10px;font-size:1rem;" data-toggle="collapse" href="#collapseExample"
+                                        role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-third btn-secondary">BATAL</a>
+                                </div>
+                            </div>
+                            {{ csrf() }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 border-top">
+
+            {% for post in posts %}
+            {% if posts|length == 0 %}
+            <span class="text-center">Belum Ada data Riwayat Pendidikan</span>
+            {% endif %}
+            <div class="item">
+                <div class="item-title bold">
+                    {{post.position}}
+                </div>
+                <div class="item-period italic" style="margin-top: 5px">
+                    <a href="/dashboard/pencarikerja/resume/pekerjaan/edit/{{post.id}}" class="btn btn-small btn-third">
+                        Edit <span class="fa fa-fw fa-pencil"></span>
+                    </a>
+                    {% if post.status == 1 %}
+                    <form action="{{ path_for('resume-pekerjaan-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button style="margin-left: 15px" class="btn btn-small btn-warning btn-sm swal-confirm"
+                            data-swtitle="Anda Yakin?" data-swmessage="Data ini akan terhapus secara permanen">
+                            Hapus <span class="fa fa-fw fa-close"></span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{{ path_for('resume-pekerjaan-publish') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-success btn-sm swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="This gallery post will be published at the specified date/time.">
+                            Publish <span class="fa fa-fw fa-check"></span>
+                        </button>
+                    </form>
+                    <form action="{{ path_for('resume-pekerjaan-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-secondary btn-sm swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">
+                            Hapus <span class="fa fa-fw fa-trash"></span>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="sub-title italic">
+                    {{post.companyname}}
+                </div>
+                <div class="desc">
+                    {# {{post.numberofdiplomas}} #}
+                    <p>
+                        <span class="start italic">{{post.startmonth}} {{post.startyear}} - {{post.finishedmonth}}
+                            {{post.finishedyear}}</span>
+                        <br>
+                        <span class="start italic">{{post.descjob}}</span>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

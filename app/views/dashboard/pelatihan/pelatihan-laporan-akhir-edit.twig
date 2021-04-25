@@ -1,0 +1,229 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New Blog Post{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <style>
+    .table td, .table th {
+        vertical-align: middle !important;
+        padding: 7px !important;
+        white-space: normal !important;
+        }
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+            background-color: rgba(0, 0, 0, 0.03) !important;
+        }
+    </style>
+{% endblock %}
+
+{% block page %}
+    <div class="card card-body">
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="page-header">Laporan Akhir Pelatihan {{post.title}}</h4>
+            <table class="table">
+              <tr>
+                <th>Nama Pelatihan</th><td>: {{post.title}}</td>
+              </tr>
+              <tr>
+                <th>Tanggal Mulai</th><td>: {{post.start_date}}</td> <th>Sampai Tanggal</th><td>: {{post.end_date}}</td>
+              </tr>
+              <tr>
+                <th>Kuota Peserta</th><td>: {{post.kuota_peserta}}</td>
+              </tr>
+              <tr>
+                <th>Tempat Pelaksanaan</th><td>: {{post.tempat_pelaksanaan}}</td>
+              </tr>
+              <tr>
+                <th>Sasaran</th><td>: {{post.sasaran}}</td>
+              </tr>
+              <tr>
+                <th>Keterangan</th><td>: {{post.keterangan}}</td>
+              </tr>
+              <tr>
+                <th>Berbasis</th><td>: {{post.berbasis}}</td>
+              </tr>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+
+    <form action="{{ currentRoute }}" method="POST" role="form">
+        <div class="row">
+          <div class="col-md-8">
+              <div class="row">
+                  <div class="col-md-4">
+                      <div class="form-group{% if has_error('tanggal_pelaksanaan') %} has-error{% endif %}">
+                          <label for="tanggal_pelaksanaan">Tanggal Pelaksanaan</label>
+                        <input type="text" name="tanggal_pelaksanaan" class="form-control" id="date" placeholder="Tanggal Pelaksanaan" value="{{post.laporan.tanggal_pelaksanaan}}" required="required">
+                          <span class="help-block">{{ error('tanggal_pelaksanaan') }}</span>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <div class="form-row">
+                              <div class="col-md-12">
+                                  <label for="">Kuota Peserta Yang Mengikuti</label>
+                              </div>
+                              <div class="col">
+                                  <label class="sr-only" for="jumlah_peserta">Orang</label>
+                                  <div class="input-group mb-2">
+                                <input value="{% if requestParams.jumlah_peserta %}{{requestParams.jumlah_peserta}}{% else %}{{post.laporan.jumlah_peserta}}{% endif %}" type="number" class="form-control" name="jumlah_peserta" id="jumlah_peserta"
+                                        required>
+                                      <div class="input-group-prepend">
+                                          <div class="input-group-text">
+                                              <small>Orang</small>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="col-md-12">
+                  <div class="form-group{% if has_error('info_kegiatan') %} has-error{% endif %}">
+                      <label for="info_kegiatan">Info Kegiatan</label>
+                      <textarea name="info_kegiatan" class="form-control">{{post.laporan.info_kegiatan|raw}}</textarea>
+                      <span class="help-block">{{ error('info_kegiatan') }}</span>
+                  </div>
+              </div>
+
+          </div>
+          <div class="col-md-4">
+            <div class="form-group{% if has_error('photo') %} has-error{% endif %}">
+                <label for="cl_upload">Foto Kegiatan</label>
+                <span class="help-block">{{ error('photo') }}</span>
+                <div class="row">
+                    {% if hasCloudinary %}
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <a class="btn btn-block upload-featured-cloudinary">
+                                <span class="fa fa-upload"></span> Upload Photo
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group" id="featured_thumbnail" delete-token="">
+                            {% if not post.laporan.photo %}
+                                <img src="https://placehold.it/400x210?text=No+Featured+Photo" class="img-responsive" alt="Image" style="width: 100%;">
+                            {% elseif requestParams.photo %}
+                                <img src="{{requestParams.photo}}" class="img-responsive" alt="Image" style="width: 100%;">
+                            {% else %}
+                                <img src="{{post.laporan.photo}}" class="img-responsive" alt="Image" style="width: 100%;">
+                            {% endif %}
+                        </div>
+                      <input type="hidden" name="photo" id="photo" value="{% if requestParams.photo != "" %}{{ requestParams.photo }}{% else %}{{post.laporan.photo}}{% endif %}">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-md-12 col-md-offset-12">
+            <div class="form-group">
+                <button type="submit" class="btn btn-success form-control">Simpan Laporan</button>
+            </div>
+        </div>
+        {{ csrf() }}
+         </div>
+    </form>
+
+                </div>
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<!-- Select2 Dropdowns -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.1/tinymce.min.js" type="text/javascript"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="{{ asset('dashboard/js/tinymce-init.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/video-parser.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/blog.min.js') }}" type="text/javascript"></script>
+{% if hasCloudinary %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-jquery-file-upload/2.3.0/cloudinary-jquery-file-upload.min.js"></script>
+{{ cloudinaryJsConfig() }}
+<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+var generateSignature = function(callback, params_to_sign){
+    $.ajax({
+        url     : "/dashboard/media/cloudinary-sign",
+        type    : "GET",
+        dataType: "text",
+        data    : { data: params_to_sign},
+        success : function(signature, textStatus, xhr) { callback(signature); },
+        error   : function(xhr, status, error) { console.log(xhr, status, error); }
+    });
+}
+
+$('.upload-featured-cloudinary').cloudinary_upload_widget(
+    {
+        cloud_name: 'codesains',
+        thumbnails: false,
+        upload_signature: generateSignature,
+        api_key: '{{ cloudinarySignature.api_key|raw }}',
+        button_class: 'btn btn-info form-control',
+        button_caption: '<span class="fa fa-upload"></span> Upload Photo',
+        folder: 'image/laporan',
+        show_powered_by: false,
+        sources: [
+            'local'
+        ],
+        multiple: false,
+        theme: 'white'
+    },
+    function(error, result) {
+        if (result) {
+
+            var deleteToken = $("#featured_thumbnail").attr('delete-token');
+            if (deleteToken != "") {
+                $.cloudinary.delete_by_token(deleteToken);
+            }
+
+            $("#photo").val(result[0].secure_url);
+            $("#featured_thumbnail").html('<img src="'+result[0].secure_url+'" class="img-responsive" alt="Featured Image" style="width: 100%;">');
+            $("#featured_thumbnail").attr('delete-token', result[0].delete_token);
+        }
+    }
+);
+</script>
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $('#date').daterangepicker({
+        startDate: '{{ post.laporan.tanggal_pelaksanaan|date("m/d/Y") }}',
+        singleDatePicker: true,
+        timePicker: true,
+        timePickerIncrement: 1,
+        locale: {
+            format: 'MM/DD/YYYY'
+        }
+    });
+    tinymce.init({
+      selector: 'textarea',  // change this value according to your HTML
+      menu: {
+
+      }
+    });
+});
+</script>
+{% endblock %}

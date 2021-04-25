@@ -1,0 +1,144 @@
+{
+    "framework": "disnaker",
+    "version": "1.0.0",
+    "displayErrorDetails": true,
+    "showInAdmin": true,
+    "environment": "development",
+    "db": {
+        "development": {
+            "driver": "mysql",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "database": "disnakercimahi",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci",
+            "prefix": "",
+            "timezone": "+00:00"
+        },
+        "staging": {
+            "driver": "mysql",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "database": "disnakercimahi",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci",
+            "prefix": "",
+            "timezone": "+00:00"
+        },
+        "production": {
+            "driver": "mysql",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "database": "disnakercimahi",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci",
+            "prefix": "",
+            "timezone": "+00:00"
+        }
+    },
+    "dblogger": {
+        "development": {
+            "driver": "mysql",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "database": "disnakercimahi_logger",
+            "username": "root",
+            "password": "root",
+            "charset": "utf8",
+            "collation": "utf8_general_ci",
+            "prefix": "",
+            "timezone": "+00:00"
+        },
+        "staging": {
+            "driver": "mysql",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "database": "disnakercimahi",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci",
+            "prefix": "",
+            "timezone": "+00:00"
+        },
+        "production": {
+            "driver": "mysql",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "database": "disnakercimahi",
+            "username": "root",
+            "password": "",
+            "charset": "utf8",
+            "collation": "utf8_general_ci",
+            "prefix": "",
+            "timezone": "+00:00"
+        }
+    },
+    "view": {
+        "twig": {
+            "cache": false,
+            "debug": false,
+            "auto_reload": true
+        }
+    },
+    "csrf": {
+        "prefix": "appcsrf",
+        "storage_limit": 200,
+        "strength": 32,
+        "persist_tokens": false
+    },
+    "logger": {
+        "log_name": "App",
+        "log_file_name": "app.log",
+        "le_token": ""
+    },
+    "cloudinary": {
+        "enabled": true,
+        "cloud_name": "codesains",
+        "api_key": "632592952188468",
+        "api_secret": "By6yEKn6B7MLsPgx212bJA5WyrY"
+    },
+    "deployment": {
+        "enabled": false,
+        "manual": false,
+        "deploy_url": "deploy",
+        "deploy_token": "",
+        "repo_url": "",
+        "repo_branch": ""
+    },
+    "mail": {
+       "relay": "phpmail",
+       "logging": true,
+       "log_details": ["html", "plain_text"],
+       "log_retention": 30,
+       "mailgun": {
+           "username": "postmaster@malayeka.id",
+           "password": "e428b7558bae9bab1c4ce9138fa16378-c8e745ec-eeef082f",
+           "api_key": "key-68191f5ff57c5e2843a7b4e4c32ce3f8",
+           "api_base_url": "https://api.mailgun.net/v3/malayeka.id"
+       },
+       "smtp": {
+            "host": "mail.cimahikota.go.id",
+            "port": 587,
+            "smtp_auth": true,
+            "smtp_secure": "tls",
+            "username": "admin-bkol@cimahikota.go.id",
+            "password": "IS[lTBvb).qX"
+        }
+   },
+    "base_url": "",
+    "base_chima": "http://cimasistaker.test",
+    "recaptcha": {
+        "site_key": "6LdzSm0UAAAAAN0STcU5K982g1wNRxQ2OgNaNCd9",
+        "secret_key": "6LdzSm0UAAAAAOuY6nHL1YvIrh-m1DQJuz2K7J0X"
+    },
+    "jwt": {
+        "secret": "supersecretkeyyoushouldnotcommittogithub"
+    }
+}

@@ -1,0 +1,111 @@
+<!-- form -->
+<form action="{{ currentRoute }}" method="POST" role="form" id="form-update">
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h2>
+                Judul dan Deskripsi
+            </h2>
+            {# Title #}
+            <div class="form-group{% if has_error('title') %} has-error{% endif %}">
+                <label for="title">Judul <span style="color:red;">*</span></label>
+                <div class="form-line">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Judul" value="{% if requestParams.title %}{{requestParams.title}}{% else %}{{post.title}}{% endif %}"
+                    required="required">
+                    <span class="help-block">{{ error('title') }}</span>
+            </div>
+            {# Description #}
+            <div class="form-group{% if has_error('description') %} has-error{% endif %}">
+                <label for="description">Deskripsi <span style="color:red;">*</span></label>
+                <div class="form-line">
+                    <input type="text" name="description" class="form-control" id="description" placeholder="Deskripsi"
+                        value="{% if requestParams.description %}{{requestParams.description}}{% else %}{{post.description}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('description') }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="description">Fitur Gambar <span style="color:red;">*</span></label>
+            <div class="form-group logo-image">
+                <label for="item-img" class="cabinet center-block">
+                <img src="" class="gambar img-fluid" id="item-img-output" />
+                </label>
+                <label class="btn btn-secondary btn-small w-100 btn-upload" for="item-img">AMBIL GAMBAR</label>
+                <input id="logo" hidden="hidden"  name="featured_image_upload">
+                <input id="item-img" hidden="hidden" type="file" accept="image/*" class="item-img file center-block" />
+                <input type="hidden" value="{{ post.featured_image }}" name="featured_image"/>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h2>
+                BODY
+            </h2>
+            {# Content #}
+            <div class="form-group{% if has_error('post_content') %} has-error{% endif %}">
+                <label for="post_content">Konten <span style="color:red;">*</span></label>
+                <div class="form-line">
+                <textarea name="post_content" class="form-control tinymce" id="post_content" placeholder="Post Content" required>{% if requestParams.post_content %}{{requestParams.post_content}}{% else %}{{post.content|raw}}{% endif %}</textarea>
+                <span class="help-block">{{ error('post_content') }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <h2>
+                Kategori dan Publikasi
+            </h2>
+
+            {# Category #}
+            <div class="form-group{% if has_error('category') %} has-error{% endif %} mb-4">
+                <label for="category">Kategori <span style="color:red;">*</span></label>
+                {# <select name="category" id="category" class="form-control show-tick" required="required"> #}
+                <select name="category"  class="form-control show-tick" data-live-search="true" required="required">
+                    <option value="">Pilih Kategori</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if requestParams.category==category.id or
+                        post.category_id==category.id %}SELECTED{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">{{ error('category') }}</span>
+            </div>
+            <div class="form-group{% if has_error('publish_at') %} has-error{% endif %}">
+            <label for="publish_at">Tanggal Publikasi <span style="color:red;">*</span> <span style="font-weight: normal;">({{config['timezone']}})</span></label>
+            <input type="text" name="publish_at" class="form-control datepicker"  placeholder="Tanggal Publikasi"
+                value="{% if requestParams.publish_at %}{{requestParams.publish_at}}{% else %}{{post.publish_at}}{% endif %}"
+                required="required">
+            <span class="help-block">{{ error('publish_at') }}</span>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="form-group{% if has_error('status') %} has-error{% endif %}">
+                        <label for="status">Status </label>
+                        <br/><input type="checkbox" name="status" class="form-control" id="status" {% if
+                            requestParams.status %}checked{% elseif post.status %}checked{% endif %}>
+                        <span class="help-block">{{ error('status') }}</span>
+                    </div>
+                </div>
+            </div>
+            <a  class="btn btn-danger m-t-15 waves-effect" href="#" onclick="history.back();">KEMBALI</a>
+            <button type="submit" class="btn btn-primary m-t-15 waves-effect">SIMPAN</button>
+        </div>
+    </div>
+    {{ csrf() }}
+</form>
+
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div id="upload-crop" class="center-block"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" id="cropImageBtn" class="btn btn-primary">Potong</button>
+      </div>
+    </div>
+  </div>
+</div>

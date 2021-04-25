@@ -1,0 +1,329 @@
+{% extends "bkol/bkol.twig" %} {% import 'bkol/macros/form.twig' as form %} {% block stylesheets %}
+<link href="{{ asset('bkol/css/bootstrap-social.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="/vendors/formvalidation/dist/css/formValidation.min.css"> {% endblock %} {% block page %}
+<div class="container">
+    <style type="text/css" media="screen">
+        #dalamnegeri, #luarnegeri {
+            display: none;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-12" style="margin-top: 20px;">
+            <div class="panel panel-default" style="padding: 20px;">
+                <div class="panel-heading">Register JobSeeker</div>
+                <div class="panel-body">
+                    <form id="form" action="{{ path_for('registerpencarikerja') }}" method="POST">
+                        <div class="row">
+                            <div class="col">
+                                {{ form.text('username', requestParams['username'], 'username', 'Username', null, 'username', 'fa-user') }}
+                                {{ form.text('password', null, 'password', 'Password', null, 'password','fa-key') }}
+                                {{ form.text('password-confirm', null, 'password-confirm', 'Confirm password', null, 'password', 'fa-key') }}
+                                {{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email', 'fa-envelope') }}
+
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="no_ktp">Nomor KTP/NIK
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="number" name="no_ktp" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama_lengkap">Nama Lengkap
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="nama_lengkap" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="tempat_lahir">Tempat Lahir
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="tempat_lahir" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="tempat_lahir">Tanggal Lahir
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="tanggal_lahir" required="required" />
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <label for="jenis_kelamin">Jenis Kelamin
+                                        <span class="require">*</span>
+                                    </label>
+                                    <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
+                                        <option value="">- select -</option>
+                                        {% for i in ['LAKI-LAKI','PEREMPUAN'] %}
+                                        <option value="{{ i }}" {% if requestParams[ 'jenis_kelamin']==i %}selected{% endif %}>{{i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="agama">Agama
+                                        <span class="require">*</span>
+                                    </label>
+                                    <select name="agama" class="form-control" id="agama">
+                                        <option value="">- select -</option>
+                                        {% for i in ['ISLAM','KRISTEN','KATOLIK','BUDHA','HINDU','KHONGHUCU'] %}
+                                        <option value="{{ i }}" {% if requestParams[ 'agama']==i %}selected{% endif %}>{{i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="kondisi_fisik">Kondisi Fisik / Disabilitas
+                                        <span class="require">*</span>
+                                    </label>
+                                    <select name="kondisi_fisik" class="form-control" id="kondisi_fisik">
+                                        <option value="">- select -</option>
+                                        {% for i in ['Non Disabilitas'] %}
+                                        <option value="{{ i }}" {% if requestParams[ 'kondisi_fisik']==i %}selected{% endif %}>{{i }}</option>
+                                        {% endfor %}
+                                        <optgroup label="DISABILITAS"></optgroup>
+                                        {% for i in ['Tuna Daksa','Tuna Grahita','Tuna Wicara','Tuna Netra','Tuna Rungu','Tuna Ganda'] %}
+                                        <option value="{{ i }}" {% if requestParams[ 'kondisi_fisik']==i %}selected{% endif %}>{{i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status_perkawinan">Status Perkawian
+                                        <span class="require">*</span>
+                                    </label>
+                                    <select name="status_perkawinan" class="form-control" id="status_perkawinan">
+                                        <option value="">- select -</option>
+                                        {% for i in ['Belum Kawin','Duda','Janda','Kawin'] %}
+                                        <option value="{{ i }}" {% if requestParams[ 'status_perkawinan']==i %}selected{% endif %}>{{i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <!-- <div class="form-group mb-0"> -->
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <label for="">Tinggi / Berat Badan</label>
+                                        </div>
+                                        <div class="col">
+                                            <label class="sr-only" for="jumlah_penerima_org">Orang</label>
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" name="tinggi_badan" id="tinggi_badan" placeholder="">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <small>CM</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <label class="sr-only" for="berat_badan"></label>
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" name="berat_badan" id="berat_badan" placeholder="">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <small>KG</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="no_telp">No Telpon / Handphone
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="no_telp" />
+                                </div>
+                            </div>
+                            <div class="row">
+                            <div class="col">
+                                
+                            </div>
+                            <div class="col">
+                                <h3>Pendidikan</h3>
+                                
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                            <h3>Harapan Wilayah Pekerjaan</h3>
+                            <br>
+                            <div class="form-group">
+                                    <label for="nilai_ijazah_ipk">Dalam Negeri
+                                        <input id="dalam" type="radio" name="harapan_wilayah_pekerjaan" value="Dalam Negeri" />
+                                    </label>
+                                    <br>
+                                    <label for="nilai_ijazah_ipk">Luar Negeri
+                                        <input id="luar" type="radio" name="harapan_wilayah_pekerjaan" value="Luar Negeri" />
+                                    </label>
+                                    <br>
+                                    <label for="nilai_ijazah_ipk">Dalam dan Luar Negeri
+                                        <input id="dalamluar" type="radio" name="harapan_wilayah_pekerjaan" value="Dalam dan Luar Negeri" />
+                                    </label>
+                                </div>
+                            <div id="dalamnegeri">
+                                    
+                                    <div class="form-group">
+                                    <label for="provinsi_dalam_negeri">Provinsi</label>
+                                    <select name="provinsi_dalam_negeri" id="provinsi_dalam" class="form-control" {# required="required" #}>
+                                        <option value="">Pilih Provinsi</option>
+                                        {% for daerahs in daerahs %}
+                                            <option name="provinsi" value="{{ daerahs.lokasi_nama }}" id="{{ daerahs.lokasi_provinsi }}" >{{ daerahs.lokasi_nama }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kabupatenkota_">Kabupaten/Kota</label>
+                                    <select name="kabupatenkota_dalam_negeri" id="kabupatenkota_dalam" class="form-control" {# required="required" #}>
+                                        <option value="">Pilih Kabupaten/Kota</option>
+                                    </select>
+                                </div>
+                                    
+                                    </div>
+                                    
+                                    <div id="luarnegeri">
+                                        <div class="form-group">
+                                    <label for="kabupatenkota">Negara</label>
+                                    <select name="negara_luar_negeri" id="kabupatenkota" class="form-control" {# required="required" #}>
+                                        <option value="test">tress</option>
+                                    </select>
+                                </div>
+                                    </div>
+                        
+              
+                            </div>
+                            <div class="col">
+                            <h3>Detail Pekerjaan<h3>
+                                <div class="form-group">
+                                    <label for="jenis_jabatan_yang_diminati">Jenis Jabatan yang Diminati
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="jenis_jabatan_yang_diminati"/>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="nama_instansi_pendidikan">Sistem Pembayaran
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="sistem_pembayaran" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama_instansi_pendidikan">Harapan Gaji Minimum
+                                        <span class="require">*</span>
+                                    </label>
+                                    <input class="form-control" type="text" name="harapan_gaji_minimum" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            {{ form.custom('recaptcha', recaptcha()) }}
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-warning">Mendaftar</button>
+                            </div>
+                        </div>
+                        </div>
+
+                        
+
+                        
+
+
+                        {{ csrf() }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} {% block javascript %}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '/daerah/kecamatan/32/77',
+            type: 'GET',
+            success: function (val) {
+                $('#kecamatan').html(val);
+            }
+        });
+
+        $('#provinsi_dalam').change(function(){
+                var id = $(this).children(":selected").attr("id");
+                $.ajax({
+                    url: '/daerah/kabupatenkota/' + id,
+                    type: 'GET',
+                    success: function(val) {
+                        $('#kabupatenkota_dalam').html(val);
+                    }
+                });
+            });
+
+            $('#kabupatenkota_dalam').change(function(){
+                var id = $(this).children(":selected").attr("id");
+                $.ajax({
+                    url: '/daerah/kecamatan/' + id,
+                    type: 'GET',
+                    success: function(val) {
+                        $('#kecamatan').html(val);
+                    }
+                });
+            });
+
+        $('#kecamatan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kelurahan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kelurahan').html(val);
+                }
+            });
+        });
+
+        $('#kodependidikan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/jenispendidikan/kodejurusan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kodejurusan').html(val);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+    $('#dalam').click(function () {
+        $('#luarnegeri').hide('fast');
+        $('#dalamnegeri').show('fast');
+    });
+    $('#luar').click(function () {
+        $('#dalamnegeri').hide('fast');
+        $('#luarnegeri').show('fast');
+    });
+
+    $('#dalamluar').click(function () {
+        $('#dalamnegeri').hide('fast');
+        $('#luarnegeri').hide('fast');
+    });
+
+    
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,420 @@
+{% extends "bkol/bkol.twig" %}
+{% block stylesheets %}
+<style>
+	.leftside .hr-theme {
+		margin-bottom: 25px;
+	}
+
+	.bg-teal {
+		background: #018989;
+	}
+
+	.table td {
+		padding: 0 0 .5rem 0;
+		font-size: 14px;
+	}
+
+	.kategori-list .item:hover {
+		transition: all .5s ease;
+		position: relative;
+		left: 1px;
+	}
+</style>
+{% endblock %}
+
+{% block page %}
+{% include 'bkol/inc/flash.twig' %}
+
+<div class="lembaga-header bg-teal">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-sm-6">
+
+				<div class="card mb-3">
+					<div class="row no-gutters text-center text-sm-left">
+						<div class="col-md-4 text-center mb-3">
+							{% if post.logo != ''%}
+							<img class="img-fluid" src="{{base_url}}{{post.logo}}" alt="">
+							{% else %}
+							<img class="img-fluid" src="{{base_url()}}/img/nologo.jpg" alt="">
+							{% endif %}
+						</div>
+						<div class="col-md-8">
+							<div class="px-3">
+								<h3 class="card-title mb-3 font-weight-bold">{{post.companyname}}</h3>
+								<dl class="attribute-list mb-3">
+									<dd>
+										<span class="badge badge-light d-block"><strong>No. Izin :</strong>
+											{% if post.no_izin != ''%}{{post.no_izin}}{% else %}-{% endif %}
+										</span>
+									</dd>
+								</dl>
+
+								<div class="attribute-list">
+									<dt class="mb-0">Industri</dt>
+									<dd>{{post.jenisusaha.name}}</dd>
+								</div>
+
+								<div class="attribute-list">
+									<dt class="mb-0">Berdiri Sejak</dt>
+									<dd>{{post.tahun_berdiri}}</dd>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-12 col-sm-6">
+
+				<div class="card mb-3">
+					<div class="row no-gutters text-center text-sm-left">
+						<div class="col-md-8">
+							<div class="px-sm-4 px-0">
+								<dl class="attribute-list attribute-list-right">
+									<div class="mb-3">
+										<dt class="mb-0">Alamat</dt>
+										<dd>{{post.companysaddress}}</dd>
+									</div>
+
+									<div class="mb-3">
+										<dt class="mb-0">Hubungi Kami</dt>
+										<dd>
+											<span><strong>No. Telp :</strong> {{post.phonenumber}}</span><br>
+											<!-- <span><strong>Email : </strong> {% if post.email %}<a
+													href="mailto:{{post.email}}">{{post.email}}</a>{% endif %}</span><br>
+											<span> -->
+											{% if post.faxnumber != '' %}
+											<span><strong>No. Fax :</strong> {{post.faxnumber}}</span><br>
+											{% endif %}
+											{% if post.website != '' %}
+											<a href="{{post.website}}" target="_blank">{{post.website}}</a>
+											{% endif %}
+											</span>
+										</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<!-- map here -->
+							<div id="instansi-map" class="map-profile-box">
+                            	{{post.gmap_embed|raw}}
+                            </div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% if post.flag_perusahaan == 1 %}
+
+<div class="lembaga-profile text-left py-5">
+	<div class="container">
+		<div class="row leftside">
+			<div class="col-md-8 mb-3 mb-sm-0">
+				<div class="hr-theme mb-3">
+					<div class="hr-title">
+						<h5 class="title-section text-body">Tentang {{post.companyname}}</h5>
+					</div>
+				</div>
+				{{post.about|raw}}
+			</div>
+
+			<div class="col-md-4 mb-3 mb-sm-0">
+				<div class="hr-theme mb-3">
+					<div class="hr-title">
+						<h5 class="title-section text-body">Profil Perusahaan</h5>
+					</div>
+				</div>
+				<table class="table table-borderless">
+					<tr>
+						<td class="font-weight-bold">Status Perusahaan</td>
+						<td>:</td>
+						<td><span class="text-capitalize">{{post.companystatus}}</span></td>
+					</tr>
+					<tr>
+						<td class="font-weight-bold" width="45%">Ukuran Perusahaan</td>
+						<td width="3%">:</td>
+						<td><span class="text-capitalize">{{post.companysize}}</span></td>
+					</tr>
+					<!-- <tr>
+						<td class="font-weight-bold">Email HRD</td>
+						<td>:</td>
+						<td><span class="text-capitalize">hrd@malayekadigitalsolution.com</span></td>
+					</tr> -->
+					<tr>
+						<td class="font-weight-bold">Email Admin</td>
+						<td>:</td>
+						<td><span>{{post.userperusahaan.email}}</span></td>
+					</tr>
+				</table>
+				<!-- <div class="d-flex flex-row no-gutters">
+					<div class="col-sm-12 mb-3">
+						<p class="mb-1 text-muted text-small">Status Perusahaan :</p>
+						<p class="mb-0">Lorem ipsum dolor sit amet.</p>
+					</div>
+					<div class="col-sm-12 mb-3">
+						<p class="mb-1 text-muted text-small">Ukuran Perusahaan :</p>
+						<p class="mb-0">{{post.companysize}}</p>
+					</div>
+					<div class="col-sm-12 mb-3">
+						<p class="mb-1 text-muted text-small">Email HRD :</p>
+						<p class="mb-0">hrd@malayekadigitalsolution.com</p>
+					</div>
+					<div class="col-sm-12 mb-3">
+						<p class="mb-1 text-muted text-small">Email Admin :</p>
+						<p class="mb-0">{{post.userperusahaan.email}}</p>
+					</div>
+				</div> -->
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+<div class="bg-white py-3 py-sm-0">
+	<div id="home" class="container pb-5">
+
+		{% if post.flag_perusahaan == 1 %}
+
+		<div class="row">
+			<div class="col-xl-4 order-1 col-sm-4 order-2">
+				<div class="row sidebar">
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title">
+								<h5 class="title-section">LOWONGAN KERJA</h5>
+							</div>
+							<div class="hr-line flex-grow-1"
+								style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+						</div>
+
+						<ul class="kategori-list">
+							{% for j in jobs %}
+							<li class="item">
+								<a
+									href="{{path_for('job_detail', {'year': j.publish_at|date("Y"), 'month': j.publish_at|date("m"), 'day': j.publish_at|date("d"), 'slug': j.slug})}}">
+									<h5 class="font-weight-bold mb-1">{{j.nama_lowongan}}</h5>
+									<p>{{post.kabupatenkota.lokasi_nama}}</p>
+
+									<p><span class="badge bg-teal text-white py-1 px-4 text-uppercase font-weight-bold"
+											style="background-color: #018989 !important;border-radius: 10em;font-size: 12px;">{{j.status_pekerjaan}}</span><span
+											class="badge bg-teal ml-2 text-white py-1 px-4 text-uppercase font-weight-bold"
+											style="background-color: #018989 !important;border-radius: 10em;font-size: 12px;">{{j.wilayah_pekerjaan}}</span>
+									</p>
+								</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-8 col-sm-8">
+				<div class="row leftside">
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title">
+								<h5 class="title-section">Berita Terbaru</h5>
+							</div>
+							<div class="hr-line flex-grow-1"
+								style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+						</div>
+								<div data-jplist-control="no-results" data-group="lists-lowongan" data-name="no-results">
+								<h6 class="big">Belum ada berita</h6>
+								</div>
+						<div class="row posts-loop" data-jplist-group="lists-lowongan">
+							{% for post in berita %}
+							<div class="col-md-6" data-jplist-item>
+								<div class="card mb-3">
+									<div class="row no-gutters">
+										<div class="col-md-4">
+											<a
+												href="{{path_for('detail-berita', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}">
+												<img loading="lazy" alt="Card image cap" class="card-img"
+													src="{{base_url}}{{ post.featured_image }}">
+											</a>
+										</div>
+										<div class="col-md-8">
+											<div class="pt-sm-0 pt-2 pr-2 pb-2 pl-0 pl-sm-2">
+												<a class="card-title-link"
+													href="{{path_for('detail-berita', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}">
+													<h5 class="card-title mb-1">{{ post.title }}</h5>
+												</a>
+												<p class="card-text"><small
+														class="text-muted">{{ post.publish_at|date('d/m/Y - h:i:s A') }}</small>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+
+ {% if berita|length > 0 %}
+						<div class="row">
+							<div class="col">
+								<div class="text-center">
+									<div class="col flex flex-wrap justify-content-center">
+										<!-- pagination control -->
+
+										<nav data-jplist-control="pagination" data-group="lists-lowongan"
+											data-items-per-page="6" data-current-page="0" data-disabled-class="disabled"
+											data-selected-class="active" data-jump="top" data-name="pagination1"
+											class="mb-2 mr-3">
+											<!-- first and previous buttons -->
+											<ul class="pagination d-inline-flex" style="margin-top: 20px;">
+												<li class="page-item d-none d-sm-none d-lg-inline-block"
+													data-type="first">
+													<a class="page-link" href="#">«</a>
+												</li>
+												<li class="page-item" data-type="prev">
+													<a class="page-link" href="#">‹</a>
+												</li>
+											</ul>
+											<!-- pages buttons -->
+											<ul class="pagination d-none d-sm-none d-lg-inline-flex" data-type="pages">
+												<li class="page-item" data-type="page">
+													<a class="page-link" href="#">{pageNumber}</a>
+												</li>
+											</ul>
+
+											<!-- next and last buttons -->
+											<ul class="pagination d-inline-flex">
+												<li class="page-item" data-type="next">
+													<a class="page-link" href="#">›</a>
+												</li>
+												<li class="page-item d-none d-sm-none d-lg-inline-block"
+													data-type="last">
+													<a class="page-link" href="#">»</a>
+												</li>
+											</ul>
+
+											<!-- information labels -->
+											<span data-type="info"
+												class="d-none d-sm-none d-md-inline-flex badge badge-secondary ml-3 p-2">
+												{startItem} - {endItem} of {itemsNumber}
+											</span>
+										</nav>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+{% endif %}
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title">
+								<h5 class="title-section">Agenda Kegiatan</h5>
+							</div>
+							<div class="hr-line flex-grow-1"
+								style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+						</div>
+
+						<div class="row posts-loop">
+							{% for a in agenda %}
+							<div class="col-md-6">
+								<div class="card mb-3">
+									<div class="row no-gutters">
+										<div class="col-md-4">
+											<div class="agenda-calendar py-2">
+												<span class="date">{{ a.publish_at|date('d')}}</span>
+												<span class="month">{{ a.publish_at|date('F')}}</span>
+											</div>
+										</div>
+										<div class="col-md-8">
+											<div class="pt-sm-0 pt-2 pr-2 pb-2 pl-0 pl-sm-2">
+												<p class="card-text-category text-uppercase mb-1">{{ a.category.name }}
+												</p>
+												<a class="card-title-link mb-2"
+													href="{{path_for('minisite-lpk-agenda', {'slug': post.slug})}}">
+													<h5 class="card-title font-weight-bold">{{ a.agendatitle }}</h5>
+												</a>
+												<p class="text-small text-muted">Di : <small
+														class="text-muted">{{ a.address }}</small></p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+
+
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title">
+								<h5 class="title-section">Galeri Foto</h5>
+							</div>
+							<div class="hr-line flex-grow-1"
+								style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+						</div>
+
+						<div class="row gallery-album">
+							{% for a in gallery %}
+							<div class="col-md-6  mb-2 mb-sm-0">
+								<div class="card bg-dark text-white">
+									<img src="{{ a.thumb }}" class="card-img" alt="{{ a.title }}">
+									<div class="card-img-overlay">
+										<a class="galeri-link"
+											href="{{path_for('album-detail', {'year': a.publish_at|date("Y"), 'month': a.publish_at|date("m"), 'day': a.publish_at|date("d"), 'slug': a.slug})}}"
+											data-size="600x400">
+											<p class="card-title">{{ a.title }}</p>
+										</a>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		{% else %}
+
+		<div class="row">
+			<div class="col p-3">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Lowongan Kerja</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				<div class="row">
+					{% for j in jobs %}
+					<div class="col-md-6 p-3">
+						<a
+							href="{{path_for('job_detail', {'year': j.publish_at|date("Y"), 'month': j.publish_at|date("m"), 'day': j.publish_at|date("d"), 'slug': j.slug})}}">
+							<h5>{{j.nama_lowongan}}</h5>
+						</a>
+						<p>{{post.kabupatenkota.lokasi_nama}}</p>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		{% endif %}
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% include 'bkol/minisite/js.twig' %}
+{% endblock %}

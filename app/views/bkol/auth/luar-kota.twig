@@ -1,0 +1,80 @@
+{% import 'bkol/macros/form.twig' as form %}
+<div class="row no-gutters">
+				<div class="col-xs-12 col-md-6 col-lg-6 alert-info companies-registration-info">
+					<div class="alert alert-info mb-0 p-4" role="alert">
+						<h4 class="alert-heading mb-3"><i class="fa fa-info-circle" aria-hidden="true"></i> Perhatian !</h4>
+						<hr>
+						<p>Perusahaan Diluar Kota Cimahi Anda Bisa Bergabung Dengan Kami Untuk Memberikan Informasi Lowongan Pekerjaan dan Berinteraksi Dengan Pencari Kerja. GRATIS !!!. Syarat & Ketentuan Berlaku.</p>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6 col-lg-6 companies-registration-form bg-light">
+					<div class="alert mb-0 p-4" role="alert">
+						<h4 class="alert-heading mb-3">Akun Perusahaan Luar Kota Cimahi</h4>
+						<hr>
+						<form action="{{ path_for('registerPerusahaanLuar') }}" method="POST">
+
+							{{ form.text('companyname', requestParams['companyname'], 'companyname', 'Nama Perusahaan', null, null,
+							'fa-user-circle')
+							}}
+
+							{{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email', 'fa-envelope') }}
+
+							{{ form.textarea('companysaddress', requestParams['companysaddress'], 'companysaddress', 'Alamat Perusahaan',
+							null,
+							'3', 'fa-map-marker') }}
+
+							<div class="form-group row">
+								<label  class="col-sm-4 col-form-label" for="provinsi">Provinsi</label>
+								<div class="col-sm-8">
+								<select name="provinsi_id" id="provinsi" class="form-control" required="required">
+									
+									{% for daerahs in daerahs %}
+									<option name="provinsi" value="{{ daerahs.id }}" id="{{ daerahs.lokasi_provinsi }}">{{
+									daerahs.lokasi_nama }}</option>
+									{% endfor %}
+								</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label  class="col-sm-4 col-form-label" for="kabupatenkota">Kabupaten/Kota</label>
+								<div class="col-sm-8">
+								<select name="kabupatenkota_id" id="kabupatenkota" class="form-control" required="required">
+									
+								</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label  class="col-sm-4 col-form-label" for="kecamatan">Kecamatan</label>
+								<div class="col-sm-8">
+								<select name="kecamatan_id" id="kecamatan" class="form-control" required="required">
+									
+								</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label  class="col-sm-4 col-form-label" for="kecamatan">Kelurahan</label>
+								<div class="col-sm-8">
+								<select name="kelurahan_id" id="kelurahan" class="form-control" required="required">
+									
+								</select>
+								</div>
+							</div>
+							<hr style="border-bottom: 2px solid #3b3d93;margin-bottom: 1rem;">
+
+							{{ form.text('username', requestParams['username'], 'username', 'Username', null, 'username', 'fa-user-circle-o')
+							}}
+
+							{{ form.text('password', null, 'password', 'Password', null, 'password', 'fa-key') }}
+
+							{{ form.text('password-confirm', null, 'password-confirm', 'Confirm password', null, 'password', 'fa-key') }}
+
+
+							{{ form.custom('recaptcha', recaptcha()) }}
+							{{ csrf() }}
+							<div class="form-group">
+								<button type="submit" class="btn btn-sm btn-block btn-orange">DAFTAR SEKARANG</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>

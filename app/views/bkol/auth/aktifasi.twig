@@ -1,0 +1,49 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% block title %}
+{{config['site-name']}}
+{% endblock %}
+
+{% block page %}
+<div class="row" style="background: url('http://localhost:8181/img/bkol01.jpg')">
+    <div class="container">
+        <div class="card-body text-white" style="background: rgba(0,0,0,.3);margin: 0;">
+
+            {# <div class="row text-center">
+                <div class="col-md-6 col-md-offset-3">
+                    <img src="{{config['logo']}}" class="img-responsive" alt="{{ config['site-name'] }} Logo">
+                </div>
+            </div> #}
+
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <h1>Pendaftaran Berhasil !</h1>
+                    {% include 'bkol/inc/flash.twig' %}
+                </div>
+            </div>
+
+            <div class="row text-center pt-4">
+                <div class="col-md-12">
+                    <p>Sudah punya akun? login
+                        <a href="javascript:void(0)" class="openLogin text-light font-weight-bold" data-href="{{ path_for('login-modal')}}">di
+                            sini</a>
+                        <p>
+                            <a href="{{ path_for('home') }}"><button type="button" class="btn btn-primary">KEMBALI KE
+                                    BERANDA</button></a>
+                        </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.openLogin').on('click', function () {
+        var dataURL = $(this).attr('data-href');
+        $('#modalLoginModal').load(dataURL, function () {
+            $('#ModalLogin').modal({
+                show: true
+            });
+        });
+    });
+</script>
+{% endblock %}

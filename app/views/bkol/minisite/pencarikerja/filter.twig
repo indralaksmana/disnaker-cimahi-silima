@@ -1,0 +1,62 @@
+
+<div class="col-sm-12 p-3">
+{# <div class="hr-theme ">
+  <div class="hr-title"><h5 class="title-section">FORM PENCARIAN</h5></div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+</div>
+<div class="form-group">
+<div class="input-group">
+  <input data-jplist-control="textbox-filter" data-group="pencaker" data-name="my-filter-2" data-path=".author-name" type="text" value="" placeholder="Filter Berdasarkan Nama" data-clear-btn-id="author-clear-btn" class="form-control"/>
+
+  <div class="input-group-append">
+    <button class="btn btn-secondary" type="button" id="author-clear-btn">Clear</button>
+  </div>
+</div>
+</div> #}
+<div class="hr-theme ">
+  <div class="hr-title"><h5 class="title-section">PENDIDIKAN TERAKHIR</h5></div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+</div>
+
+    <div class="form-group input-group-sm{% if has_error('pendidikan_terakhir') %} has-error{% endif %}">
+
+        <ul class="kategori-list">
+            {% for r in lulusanPencariKerja %}
+            <li class="d-flex justify-content-start align-items-center">
+              <input id="pendidikan{{ r.id }}" data-name="tags-filter" data-or="filters" type="checkbox" data-jplist-control="checkbox-text-filter" data-path=".pendidikan{{ r.id }}" data-group="pencaker" data-name="cb-filter" value="pendidikan{{ r.id }}"/>
+              <label for="pendidikan{{ r.id }}" class='cat-check'>{{ r.jenis_pendidikan }}</label>
+            </li>
+            {% endfor %}
+          </ul>
+        <span class="help-block">{{ error('pendidikan') }}</span>
+    </div>
+    <ul class="kategori-list" id="kodejurusan">
+
+    </ul>
+
+<!--
+    <div class="hr-theme ">
+      <div class="hr-title"><h5 class="title-section">KECAMATAN</h5></div>
+        <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+
+        <div class="form-group input-group-sm{% if has_error('pendidikan_terakhir') %} has-error{% endif %}">
+            <ul class="kategori-list">
+                {% for r in kecamatanPencariKerja %}
+                <li class="d-flex justify-content-start align-items-center">
+                  <input data-name="tags-filter" data-or="filters" type="checkbox" data-jplist-control="checkbox-text-filter" data-path=".kecamatan{{ r.id }}" id="kecamatan{{ r.id }}"data-group="pencaker" data-name="cb-filter" value="{{ r.lokasi_nama|title }}"/>
+                  <label for="kecamatan{{ r.id }}" class='cat-check'>{{ r.lokasi_nama }}</label>
+                </li>
+                {% endfor %}
+              </ul>
+            <span class="help-block">{{ error('pendidikan') }}</span>
+        </div>
+        <ul class="kategori-list" id="kodejurusan">
+
+        </ul>
+    reset control -->
+
+    <button data-jplist-control="reset" data-group="pencaker" class="btn btn-primary btn-block" data-name="reset" type="button">
+      Reset
+    </button>
+</div>

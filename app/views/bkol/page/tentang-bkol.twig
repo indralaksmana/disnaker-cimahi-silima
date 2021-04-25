@@ -1,0 +1,143 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+    {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+	{% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+	{% set append = " || Author: " ~ companies.username %}
+{% else %}
+    {% set append = "" %}
+{% endif %}
+{% block page %}
+<section id="page-hero" class="clearfix" style="background-image: url('{{ base_url() }}/img/bkol/bg-tentang.jpg');">
+
+</section>
+<div id="tentang" class="tentang-page container">
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+    <div class="hr-theme text-center d-flex  align-items-center">
+      <div class="hr-line hr-line-big d-none d-md-block" style="background-image: url('{{ base_url() }}/img/bkol/line-big.jpg')"></div>
+      <div class="hr-title"><h5 class="title-section">Tentang Sistem Informasi Link and Match Dinas Tenaga Kerja Kota Cimahi</h5></div>
+      <div class="hr-line hr-line-big d-none d-md-block" style="background-image: url('{{ base_url() }}/img/bkol/line-big.jpg')"></div>
+    </div>
+    <p class="tentang-page_deskripsi">
+      <span class="bold">SILIMA Kota Cimahi</span> merupakan salah satu bentuk pelayanan dari <span class="bold">Dinas Tenaga Kerja Kota Cimahi</span> untuk <span class="bold">warga Kota Cimahi</span> dalam mencari pekerjaan dengan mudah dan informatif serta membantu pemberi kerja kemudahan dalam mencari pekerja dengan memanfaatkan teknologi informasi dan internet.
+    </p>
+    <div class="row">
+      <div class="col-md-6">
+      <div class="tentang-page_section">
+        <div class="hr-theme d-flex">
+          <div class="hr-title"><h3 class="title-section">Fungsi SILIMA</h3></div>
+          <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+        </div>
+        <ul class="tentang-page_list">
+          <li>Memfasilitasi pencari kerja untuk mendapatkan pekerjaannya sesuai dengan bakat, minat, keterampilan dan pendidikannya;</li>
+          <li>Membantu perusahaan pengguna tenaga kerja untuk mendapatkan tenaga kerja yang berkualitas, terampil dan profesional sesuai dengan kebutuhan perusahaan;</li>
+          <li>Melaksanakan perekrutan tenaga kerja melalui bursa kerja;</li>
+          <li>Mengurangi angka pengangguran melalui peningkatan penempatan tenaga kerja;</li>
+        </ul>
+
+        <div class="hr-theme d-flex">
+          <div class="hr-title"><h3 class="title-section">Kartu AK/1</h3></div>
+          <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+        </div>
+        <p>
+          Kartu AK-1 adalah <b>Kartu Tanda Bukti Pendaftaran Pencari Kerja</b> yang di berikan oleh <b>Dinas Tenaga Kerja Kota/Kabupaten</b> kepada pencari kerja untuk mendapatkan layanan penempatan tenaga kerja.
+        </p>
+        <p>
+          <b>Dasar Hukum</b> : <a href="#">Peraturan Menteri Tenaga Kerja dan Transmigrasi RI Nomor PER.07/MEN/IV/2008 Tanggal 21 April 2008 Tentang Penempatan Tenaga Kerja</a>
+        </p>
+        <p>Syarat-syarat pembuatan Kartu AK-1, adalah:</p>
+        <ul class="tentang-page_list">
+          <li>Kartu tanda penduduk yang masih berlaku;</li>
+          <li>Copy ijazah pendidikan terakhir bagi yang memiliki;</li>
+          <li>Copy sertifikat keterampilan bagi yang memiliki; dan</li>
+          <li>copy surat keterangan pengalaman kerja bagi yang memiliki.</li>
+        </ul>
+
+      </div>
+
+      </div>
+      <div class="col-md-6">
+        <div class="tentang-page_section_right">
+          <div class="hr-theme d-flex">
+            <div class="hr-title"><h3 class="title-section">Tujuan SILIMA</h3></div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+          </div>
+          <ul class="tentang-page_list">
+            <li>Sebagai salah satu upaya dalam rangka melaksanakan misi mengatur dan melaksanakan penyediaan, penyebaran, pembinaan, penggunaan dan perlindungan tenaga kerja;</li>
+            <li>Bentuk pemberian pelayanan kepada masyarakat, juga merupakan suatu upaya untuk mencegah atau mengurangi terjadinya penipuan dan pemasaran para pencari kerja dan pemberi kerja oleh umum atau pihak yang tidak bertanggung jawab;</li>
+            <li>Membantu kelancaran pembangunan nasional khususnya yang berkenaan dengan usaha perluasan kerja dan mengurangi angka pengangguran;</li>
+            <li>Melayani permintaan dan mengurangi biaya dan waktu yang diperlukan para pencari kerja agar dapat segera menemukan dan mendapatkan pekerjaan yang sesuai dengan kemampuan dan keinginan;</li>
+            <li>Memudahkan dan mengurangi biaya serta waktu yang diperlukan oleh para pemberi tenaga kerja untuk mendapatkan tenaga kerja yang sesuai dan cocok dengan kebutuhannya;</li>
+            <li>Penyediaan informasi pasar kerja secara nasional yang cepat, tepat dan akurat;</li>
+            <li>Pemanfaatan dan penggunaan sumber daya teknologi yang maju dalam menunjang dan memudahkan Departemen Tenaga Kerja dalam melaksanakan tugasnya dalam pelayanan kepada masyarakat;</li>
+            <li>Memperluas akses penggunaan bursa kerja online dan tidak hanya dengan jalur internet tetapi juga melalui jalur telepon khususnya melalui pengiriman Short Message Service (SMS).</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    </div>
+    <div class="card card-blue">
+    <div class="hr-theme text-center d-flex  align-items-center">
+      <div class="hr-line hr-line-big d-none d-md-block" style="background-image: url('{{ base_url() }}/img/bkol/line-big.jpg')"></div>
+      <div class="hr-title"><h5 class="title-section">Fitur Unggulan SILIMA Kota Cimahi</h5></div>
+      <div class="hr-line hr-line-big d-none d-md-block" style="background-image: url('{{ base_url() }}/img/bkol/line-big.jpg')"></div>
+    </div>
+    <div class="list-fitur">
+    <div class="row">
+      <div class="col-md-2 text-center">
+        <img src="{{base_url()}}/img/bkol/fitur/jobs.png" alt="" class="img-fluid">
+        <p>Lowongan Kerja dari Cimahi dan seluruh kota di Indonesia hingga Luar Negeri.</p>
+      </div>
+      <div class="col-md-2 text-center">
+        <img src="{{base_url()}}/img/bkol/fitur/pencaker.png" alt="" class="img-fluid">
+        <p>Pencari Kerja KHUSUS Warga Kota Cimahi dan pemilik KTP Kota Cimahi</p>
+      </div>
+      <div class="col-md-2 text-center">
+        <img src="{{base_url()}}/img/bkol/fitur/abcd.png" alt="" class="img-fluid">
+        <p>Informasi Pelatihan dan proses pendaftaran yang transparan serta Informasi Lembaga serta Sekolah Kejuruan di Cimahi</p>
+      </div>
+      <div class="col-md-2 text-center">
+        <img src="{{base_url()}}/img/bkol/fitur/ak1.png" alt="" class="img-fluid">
+        <p>Pengajuan Kartu AK-1 dapat dilakukan online dan pengelolaan laporan secara online melalui akun pencari kerja disini.</p>
+      </div>
+      <div class="col-md-2 text-center">
+        <img src="{{base_url()}}/img/bkol/fitur/email.png" alt="" class="img-fluid">
+        <p>Langsung ke email anda untuk informasi lowongan kerja yang sesuai minat.</p>
+      </div>
+      <div class="col-md-2 text-center">
+        <img src="{{base_url()}}/img/bkol/fitur/hr.png" alt="" class="img-fluid">
+        <p>Mencari pekerja dapat dengan mudah dilakukan perusahaan dengan sistem HR sederhana.</p>
+      </div>
+    </div>
+    </div>
+    </div>
+
+
+
+		</div>
+	</div>
+
+</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+        $('.openPopup').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('#modal-melamar').load(dataURL,function(){
+                $('#ModalLamaran').modal({show:true});
+            });
+        });
+    </script>
+{% endblock %}

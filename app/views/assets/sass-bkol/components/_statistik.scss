@@ -1,0 +1,67 @@
+/*statistik*/
+#statistik-box-bkol {
+     .statistik-value {
+       font-family: 'Roboto Condensed', sans-serif;
+       font-size: 32px;
+     }
+   }
+   .bg-statistik {
+     position: relative;
+     .bg-opacity {
+       position: absolute;
+       width: 100%;
+       height: 100%;
+       left: 0;
+       right: 0;
+       top: 0;
+       bottom: 0;
+       background: #2a3489;
+       opacity: 0.4
+     }
+     .statistik {
+       &-image {
+
+       }
+       &-value {
+         font-size: 48px;
+         letter-spacing: -1px;
+         color: #fff;
+       }
+       &-titile, p {
+         font-size: 14px;
+         line-height: 16px;
+         text-transform: uppercase;
+         color: #fff;
+       }
+     }
+   }
+
+#statistik-box-bkol {
+  @include media-breakpoint-down(sm) { 
+    .d-flex {
+      margin-bottom: 0px !important;
+    }
+  }
+ .item-list{
+   padding: .3rem;
+   text-align: center;
+   @include media-breakpoint-down(sm) { 
+      width: 100% !important;
+      text-align: left;
+      flex: 1;
+   }
+  }
+}
+.statistik-card .card img {
+   padding: 0;
+   background: #cccccc;
+}
+.statistik-card{
+   .card {
+     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+   }
+   .card:hover {
+   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+   }
+ }

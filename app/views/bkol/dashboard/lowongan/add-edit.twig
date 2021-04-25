@@ -1,0 +1,247 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Buat Lowongan Kerja Baru{% endblock %}
+
+{% block header_include %}
+<link rel="stylesheet" href="{{base_url()}}/libraries/select2/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
+<style type="text/css" media="screen">
+    .wilayah {
+        display: none;
+    }
+    .field-invalid,
+    .mce-panel.field-invalid {
+        border:1px solid #fdd;
+    }
+</style>
+{% endblock %}
+
+{% block page %}
+<div class="px-3 jobs-add">
+    <div class="hr-theme d-flex  align-items-center">
+        <div class="hr-title">
+        {% if '/add' in currentRoute %}
+        <h3 class="title-section">Buat Lowongan Kerja</h3>
+        {% else %}
+        <h3 class="title-section">Edit Lowongan Kerja</h3>
+        {% endif %}
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+</div>
+    <br>
+    <ul class="progressbar d-flex justify-content-between">
+        <li class="step active"><b>Detail Lowongan</b></li>
+        <li class="step"><b>Kualifikasi</b></li>
+        <li class="step"><b>Persyaratan</b></li>
+        <li class="step"><b>Opsi Lowongan</b></li>
+    </ul>
+    {% include 'bkol/dashboard/lowongan/form.twig' %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+<!-- Select2 Dropdowns -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.1/tinymce.min.js" type="text/javascript"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="{{ asset('dashboard/js/tinymce-init.min.js') }}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $("#jenisgoljabatanharapan, .pendidikan,.jurusan").select2({
+        theme: "classic",
+        width: '100%'
+    });
+    $('#tags').select2({
+        tags: true,
+        width: '100%',
+        theme: "classic",
+        width: '100%'
+    });
+    $('#category').select2({
+        tags: true,
+        width: '100%',
+        theme: "classic",
+        width: '100%'
+    });
+    $('#publish_at').daterangepicker({
+        startDate: '{% if requestParams.publish_at %}{{ requestParams.publish_at }}{% else %}{{ "now"|date("m/d/Y h:i A") }}{% endif %}',
+        singleDatePicker: true,
+        timePicker: true,
+        timePickerIncrement: 1,
+        locale: {
+            format: 'MM/DD/YYYY h:mm A'
+        }
+    });
+    $('#status').bootstrapToggle({
+      on: 'Published',
+      off: 'Draft',
+      width: '100%'
+    });
+
+
+
+
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#provinsi').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kabupatenkota').html(val);
+                }
+            });
+        });
+
+        $('#kabupatenkota').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kecamatan').html(val);
+                }
+            });
+        });
+
+        $('#kodependidikan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/jenispendidikan/kodejurusan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kodejurusan').html(val);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#wilayahpekerjaan").change(function () {
+            $(this).find("option:selected").each(function () {
+                var optionID = $(this).attr("id");
+                if (optionID) {
+                    $(".wilayah").not("." + optionID).hide();
+                    $("." + optionID).show('fast');
+                } else {
+                    $(".wilayah").hide('fast');
+                }
+            });
+        }).change();
+    });
+
+
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+
+    function showTab(n) {
+        // This function will display the specified tab of the form ...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        // ... and fix the Previous/Next buttons:
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        } else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Simpan";
+        } else {
+            document.getElementById("nextBtn").innerHTML = "Berikutnya";
+        }
+        // ... and run a function that displays the correct step indicator:
+        fixStepIndicator(n)
+    }
+
+    function nextPrev(n) {
+        // This function will figure out which tab to display
+        var x = document.getElementsByClassName("tab");
+        // Exit the function if any field in the current tab is invalid:
+        if (n == 1 && !validateForm()) return false;
+        // Hide the current tab:
+        x[currentTab].style.display = "none";
+        // Increase or decrease the current tab by 1:
+        currentTab = currentTab + n;
+        // if you have reached the end of the form... :
+        if (currentTab >= x.length) {
+            //...the form gets submitted:
+            document.getElementById("stepForm").submit();
+            return false;
+        }
+        // Otherwise, display the correct tab:
+        showTab(currentTab);
+    }
+
+    function validateForm() {
+        // This function deals with validation of the form fields
+        var x, y, i, valid = true;
+        x = document.getElementsByClassName("tab");
+        y = x[currentTab].getElementsByTagName("input");
+        s = x[currentTab].getElementsByTagName("select");
+        t = x[currentTab].getElementsByTagName("textarea");
+
+        // A loop that checks every input field in the current tab:
+        for (i = 0; i < y.length; i++) {
+            // If a field is empty...
+            if (y[i].value == "" && y[i].hasAttribute('required')) {
+                // add an "invalid" class to the field:
+                y[i].className += " invalid";
+                // and set the current valid status to false:
+                valid = false;
+            }
+        }
+        for (i = 0; i < s.length; i++) {
+            // If a field is empty...
+            if (s[i].value == "" && s[i].hasAttribute('required')) {
+                // add an "invalid" class to the field:
+                s[i].className += " invalid";
+                if ( s[i].classList.contains('select2-hidden-accessible') ) {
+                    s[i].nextSibling.className += ' field-invalid';
+                }
+                // and set the current valid status to false:
+                valid = false;
+            }
+        }
+        /*for (i = 0; i < t.length; i++) {
+            // If a field is empty...
+            if (t[i].value == "" && t[i].hasAttribute('required')) {
+                // add an "invalid" class to the field:
+                t[i].className += " invalid";
+                if ( t[i].classList.contains('tinymce') ) {
+                    t[i].previousSibling.className += ' field-invalid';
+                }
+                // and set the current valid status to false:
+                valid = false;
+            }
+        }*/
+        // If the valid status is true, mark the step as finished and valid:
+        if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+        }
+        return valid; // return the valid status
+    }
+
+    function fixStepIndicator(n) {
+        // This function removes the "active" class of all steps...
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class to the current step:
+        x[n].className += " active";
+    }
+</script>
+{% endblock %}

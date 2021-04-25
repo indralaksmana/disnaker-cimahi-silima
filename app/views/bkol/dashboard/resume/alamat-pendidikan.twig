@@ -1,0 +1,90 @@
+   <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold">Alamat</h5>
+                        <div class="form-group input-group-sm">
+                            <label for="alamat_lengkap">Nama Jalan
+                                <span class="require">*</span>
+                            </label>
+                            <textarea class="form-control" name="alamat_lengkap" required="required">{{auth.user.datapencarikerja.alamat_lengkap}}</textarea>
+                        </div>
+
+                        {# <select hidden name="provinsi_id" class="form-control" required="required">
+                            <option selected value="Jawa Barat">Jawa Barat</option>
+                        </select>
+
+                        <select hidden name="kabupatenkota" class="form-control" required="required">
+                            <option selected value="Kota Cimahi">Kota Cimahi</option>
+                        </select> #}
+
+
+                        <div class="form-group input-group-sm">
+                            <label for="kecamatan">Kecamatan
+                                <span class="require">*</span>
+                            </label>
+                            <select name="kecamatan_id" id="kecamatan" class="form-control" required="required">
+                                <option selected value="{{auth.user.datapencarikerja.kecamatan_id}}">{{auth.user.datapencarikerja.kecamatan.lokasi_nama}}</option>
+                                <option value="1477" id="32/77/1">CIMAHI SELATAN</option>
+                                <option value="1478" id="32/77/2">CIMAHI TENGAH</option>
+                                <option value="1479" id="32/77/3">CIMAHI UTARA</option>
+                            </select>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="kelurahan">Kelurahan
+                                <span class="require">*</span>
+                            </label>
+                            <select name="kelurahan_id" id="kelurahan" class="form-control" required="required">
+                                <option value="{{auth.user.datapencarikerja.kelurahan_id}}">{{auth.user.datapencarikerja.kelurahan.lokasi_nama}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="kode_pos">Kode Pos <span class="require">*</span></label>
+                            <input class="form-control" type="text" name="kodepos" value="{{auth.user.datapencarikerja.kodepos}}" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold">Pendidikan</h5>
+                        <div class="form-group input-group-sm{% if has_error('pendidikan_terakhir') %} has-error{% endif %}">
+                            <label for="pendidikan_terakhir">Pendidikan Terakhir
+                                <span class="require">*</span>
+                            </label>
+                            <select name="pendidikan_terakhir_id" id="kodependidikan" class="form-control" required="required">
+                                <option value="{{auth.user.datapencarikerja.pendidikan_terakhir_id}}">{{auth.user.datapencarikerja.pendidikanterakhir.jenis_pendidikan}}</option>
+                                {% for r in jenispendidikan %}
+                                <option name="pendidikan_terakhir_id" value="{{ r.id }}" id="{{ r.kode_pendidikan }}">{{
+                                    r.jenis_pendidikan }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('pendidikan_terakhir') }}</span>
+                        </div>
+                        <div class="form-group input-group-sm{% if has_error('jurusan_pendidikan') %} has-error{% endif %}">
+                            <label for="jurusan_pendidikan_id">Jurusan
+                                <span class="require">*</span>
+                            </label>
+                            <select name="jurusan_pendidikan_id" id="kodejurusan" class="form-control" {# required="required"
+                                #}>
+                                <option value="{{auth.user.datapencarikerja.jurusan_pendidikan_id}}">{{auth.user.datapencarikerja.jurusanpendidikan.jenis_pendidikan}}</option>
+                            </select>
+                            <span class="help-block">{{ error('jurusan_pendidikan') }}</span>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="nama_instansi_pendidikan">Nama Instansi Pendidikan
+                                <span class="require">*</span>
+                            </label>
+                            <input class="form-control" type="text" name="nama_instansi_pendidikan" value="{{auth.user.datapencarikerja.nama_instansi_pendidikan}}" />
+                        </div>
+                        {# <div class="form-group input-group-sm">
+                            <label for="nilai_ijazah_ipk">Nilai Ijazah / IPK
+                                <span class="require">*</span>
+                            </label>
+                            <input class="form-control" type="text" name="nilai_ijazah_ipk" value="{{auth.user.datapencarikerja.nilai_ijazah_ipk}}" />
+                        </div> #}
+
+                        <div class="form-group input-group-sm">
+                            <label for="tahun_lulus">Tahun Lulus
+                                <span class="require">*</span>
+                            </label>
+                            <input class="form-control" type="text" name="tahun_lulus" value="{{auth.user.datapencarikerja.tahun_lulus}}" />
+                        </div>
+                    </div>
+                    </div>

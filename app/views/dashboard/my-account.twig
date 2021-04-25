@@ -1,0 +1,345 @@
+{% extends 'dashboard/base.twig' %}
+
+
+{% block title %}{{config['site-name']}} || Edit Resume{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-success my-3">
+                <button data-dismiss="alert" class="close" type="button">�</button>
+                <strong>Perhatian!</strong> Silahkan anda melengkapi data, 
+    Semua akun dijamin kerahasiaan dan privasinya. Perusahaan hanya dapat melihat resume/cv Anda ketika Anda melamar lowongan pekerjaan.
+
+            </div>
+            <h3 class="page-header">
+                Profile anda , {{auth.user.fullname}}
+            </h3>
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                    Profil
+                </a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-pendidikan" role="tab" aria-controls="nav-pendidikan" aria-selected="false">
+                    Riwayat Pendidikan
+                </a>
+                <a class="nav-item nav-link" id="nav-nonformal-tab" data-toggle="tab" href="#nav-nonformal" role="tab" aria-controls="nav-contact" aria-selected="false">
+                    Riwayat Pendidikan Non Formal
+                </a>
+                <a class="nav-item nav-link" id="nav-pekerjaan-tab" data-toggle="tab" href="#nav-pekerjaan" role="tab" aria-controls="nav-pekerjaan" aria-selected="false">
+                    Riwayat Pekerjaan
+                </a>
+                <a class="nav-item nav-link" id="nav-informasitambahan-tab" data-toggle="tab" href="#nav-informasitambahan" role="tab" aria-controls="nav-informasitambahan" aria-selected="false">  
+                    Informasi Tambahan
+                </a>
+              </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            {% include 'dashboard/resume/profile.twig' %}
+        </div>
+        <div class="tab-pane fade" id="nav-pendidikan" role="tabpanel" aria-labelledby="nav-pendidikan-tab">
+            {% include 'dashboard/resume/pendidikan.twig' %}
+        </div>
+        <div class="tab-pane fade" id="nav-nonformal" role="tabpanel" aria-labelledby="nav-nonformal-tab">
+            {% include 'dashboard/resume/pendidikan_non_formal.twig' %}
+        </div>
+        <div class="tab-pane fade" id="nav-pekerjaan" role="tabpanel" aria-labelledby="nav-pekerjaan-tab">
+           {% include 'dashboard/resume/pekerjaan.twig' %}
+        </div>
+        <div class="tab-pane fade" id="nav-informasitambahan" role="tabpanel" aria-labelledby="nav-informasitambahan-tab">
+            {% include 'dashboard/resume/profile_tambahan.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ asset('bkol/js/change-password.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="{{ asset('dashboard/js/video-parser.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/blog.min.js') }}" type="text/javascript"></script>
+{% if hasCloudinary %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-jquery-file-upload/2.3.0/cloudinary-jquery-file-upload.min.js"></script>
+{{ cloudinaryJsConfig() }}
+<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+var generateSignature = function(callback, params_to_sign){
+    $.ajax({
+        url     : "/dashboard/media/cloudinary-sign",
+        type    : "GET",
+        dataType: "text",
+        data    : { data: params_to_sign},
+        success : function(signature, textStatus, xhr) { callback(signature); },
+        error   : function(xhr, status, error) { console.log(xhr, status, error); }
+    });
+}
+
+$('.upload-featured-cloudinary').cloudinary_upload_widget(
+    { 
+        cloud_name: 'codesains', 
+        thumbnails: false,
+        upload_signature: generateSignature,
+        api_key: '{{ cloudinarySignature.api_key|raw }}', 
+        button_class: 'btn btn-info form-control',
+        button_caption: '<span class="fa fa-upload"></span> via Cloudinary',
+        cropping: 'server',
+        // cropping_aspect_ratio: 1.91,
+        folder: 'file/',
+        show_powered_by: false,
+        sources: [
+            'local',
+        ],
+        multiple: false,
+        theme: 'white'
+    },
+    function(error, result) { 
+        if (result) {
+
+            var deleteToken = $("#featured_thumbnail").attr('delete-token');
+            if (deleteToken != "") {
+                $.cloudinary.delete_by_token(deleteToken);
+            }
+
+            $("#featured_image").val(result[0].secure_url);
+            $("#featured_thumbnail").html('<img src="'+result[0].secure_url+'" class="img-responsive" alt="Featured Image" style="width: 100%;">');
+            $("#featured_thumbnail").attr('delete-token', result[0].delete_token);
+        }
+    }
+);
+</script>
+{% endif %}
+
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        
+        $('#pendidikan-table').DataTable({
+            responsive: true,
+            stateSave: true,
+            "processing": true,
+            "serverSide": true,
+            "ajax":{
+                     "url": "/dashboard/my-account/pendidikan/datatables",
+                     "dataType": "json",
+                     "type": "GET"
+                   },
+            "columns": [
+                { "data": "level" },
+                { "data": "schoolname" },
+                { "data": "schoolmajors" },
+                { "data": "graduationyear" },
+                { "data": "schoolgrades" },
+                { "data": "numberofdiplomas" },
+
+                { 
+                    "data": function( data ){
+                        return data;
+                    },
+                    "orderable": false,
+                    "render": function ( data ) {
+                        var result = "";
+                        {% if auth.hasAccess('gallery.edit') %}
+                            var result = result + ' <a href="/dashboard/my-account/pendidikan/edit/'+data.id+'" class="btn btn-small btn-primary btn-sm">'+
+                                'Edit <span class="fa fa-fw fa-pencil"></span>'+
+                            '</a>';
+                            if (data.status == 1) {
+                                var result = result + ' <form action="{{ path_for('resume-pendidikan-unpublish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-small btn-warning btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will not be publicly viewable.">'+
+                                        'Hapus <span class="fa fa-fw fa-close"></span>'+
+                                    '</button>'+
+                                '</form>';
+                            }else{
+                                var result = result + ' <form action="{{ path_for('resume-pendidikan-publish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-success btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will be published at the specified date/time.">'+
+                                        'Publish <span class="fa fa-fw fa-check"></span>'+
+                                    '</button>'+
+                                '</form>'+
+                                ' <form action="{{ path_for('resume-pendidikan-delete') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">'+
+                                        'Hapus <span class="fa fa-fw fa-trash"></span>'+
+                                    '</button>'+
+                                '</form>';
+                            }
+                        {% endif %}
+
+                        return result;
+                    }
+                }
+            ],
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if (aData.status) {
+                    $('td', nRow).addClass('success');
+                }else{
+                    $('td', nRow).addClass('danger');
+                }
+            }
+        });
+
+        $('#nopendidikan-table').DataTable({
+            responsive: true,
+            stateSave: true,
+            "processing": true,
+            "serverSide": true,
+            "ajax":{
+                     "url": "/dashboard/my-account/pendidikannoformal/datatables",
+                     "dataType": "json",
+                     "type": "GET"
+                   },
+            "columns": [
+                { "data": "nameofeducation" },
+                { "data": "startingmonth" },
+                { "data": "startyear" },
+                { "data": "finishedmonth" },
+                { "data": "finishedyear" },
+
+                { 
+                    "data": function( data ){
+                        return data;
+                    },
+                    "orderable": false,
+                    "render": function ( data ) {
+                        var result = "";
+                        {% if auth.hasAccess('gallery.edit') %}
+                            var result = result + ' <a href="/dashboard/my-account/pendidikannoformal/edit/'+data.id+'" class="btn btn-small btn-primary btn-sm">'+
+                                'Edit <span class="fa fa-fw fa-pencil"></span>'+
+                            '</a>';
+                            if (data.status == 1) {
+                                var result = result + ' <form action="{{ path_for('resume-nonformalpendidikan-unpublish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-small btn-warning btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will not be publicly viewable.">'+
+                                        'Hapus <span class="fa fa-fw fa-close"></span>'+
+                                    '</button>'+
+                                '</form>';
+                            }else{
+                                var result = result + ' <form action="{{ path_for('resume-nonformalpendidikan-publish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-success btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will be published at the specified date/time.">'+
+                                        'Publish <span class="fa fa-fw fa-check"></span>'+
+                                    '</button>'+
+                                '</form>'+
+                                ' <form action="{{ path_for('resume-nonformalpendidikan-delete') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">'+
+                                        'Hapus <span class="fa fa-fw fa-trash"></span>'+
+                                    '</button>'+
+                                '</form>';
+                            }
+                        {% endif %}
+
+                        return result;
+                    }
+                }
+            ],
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if (aData.status) {
+                    $('td', nRow).addClass('success');
+                }else{
+                    $('td', nRow).addClass('danger');
+                }
+            }
+        });
+
+        $('#pekerjaan-table').DataTable({
+            responsive: true,
+            stateSave: true,
+            "processing": true,
+            "serverSide": true,
+            "ajax":{
+                     "url": "/dashboard/my-account/pekerjaan/datatables",
+                     "dataType": "json",
+                     "type": "GET"
+                   },
+            "columns": [
+                
+                { "data": "companyname" },
+                { "data": "typeofwork" },
+                { "data": "position" },
+                { "data": "salary" },
+                { "data": "startmonth" },
+                { "data": "startyear" },
+                { "data": "finishedmonth" },
+                { "data": "finishedyear" },
+                { 
+                    "data": function( data ){
+                        return data;
+                    },
+                    "orderable": false,
+                    "render": function ( data ) {
+                        var result = "";
+                        {% if auth.hasAccess('gallery.edit') %}
+                            var result = result + ' <a href="/dashboard/my-account/pekerjaan/edit/'+data.id+'" class="btn btn-small btn-primary btn-sm">'+
+                                'Edit <span class="fa fa-fw fa-pencil"></span>'+
+                            '</a>';
+                            if (data.status == 1) {
+                                var result = result + ' <form action="{{ path_for('resume-pekerjaan-unpublish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-small btn-warning btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will not be publicly viewable.">'+
+                                        'Hapus <span class="fa fa-fw fa-close"></span>'+
+                                    '</button>'+
+                                '</form>';
+                            }else{
+                                var result = result + ' <form action="{{ path_for('resume-pekerjaan-publish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-success btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This gallery post will be published at the specified date/time.">'+
+                                        'Publish <span class="fa fa-fw fa-check"></span>'+
+                                    '</button>'+
+                                '</form>'+
+                                ' <form action="{{ path_for('resume-pekerjaan-delete') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">'+
+                                        'Hapus<span class="fa fa-fw fa-trash"></span>'+
+                                    '</button>'+
+                                '</form>';
+                            }
+                        {% endif %}
+
+                        return result;
+                    }
+                }
+            ],
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if (aData.status) {
+                    $('td', nRow).addClass('success');
+                }else{
+                    $('td', nRow).addClass('danger');
+                }
+            }
+        });
+        
+    });
+    </script>
+{% endblock %}
+

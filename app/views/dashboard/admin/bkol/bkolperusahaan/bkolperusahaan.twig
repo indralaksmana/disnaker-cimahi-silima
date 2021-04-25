@@ -1,0 +1,147 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}User Perusahaan{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('assets/dashboard/plugins/data-table/skin/bootstrap/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/dashboard/plugins/data-table/skin/bootstrap/css/responsive.bootstrap4.min.css') }}" rel="stylesheet">
+ <style>
+    .table td, .table th {
+        vertical-align: middle !important;
+        padding: 7px !important;
+        white-space: normal !important;
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+</style>
+
+{% endblock %}
+
+{% block page %}
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <a href="{{ path_for('bkol-perusahaan-add') }}" class="btn bg-teal pull-right waves-effect">
+                    <i class="material-icons">add</i>
+                    <span>Tambah Admin</span>
+                </a>
+                <h2>Admin Perusahaan</h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table style="width:100%" class="display table table-striped table-bordered table-hover" id="perusahaan-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Nama Perusahaan</th>
+                                <td>Status</td>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set row = 0 %}
+                            {% for sp in perusahaan %}
+                                    {% set row = row + 1 %}
+                                <tr>
+                                    <td>{{ sp.userperusahaan.username }}</td>
+                                    <td>{{sp.userperusahaan.email}}</td>
+                                    <td>{{ sp.companyname }}</td>
+                                    <td>
+                                        {% if sp.userperusahaan.activation.completed == 1 %}
+                                        <span class="badge badge-success">Aktif</span>
+                                    {% elseif sp.userperusahaan.activation.completed == 0 %}
+                                        <span class="badge badge-danger">Belum Aktif</span>
+                                    {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path_for('bkol-perusahaan-edit', {'id': sp.user_id}) }}" class="btn btn-sm bg-blue waves-effect">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                        {% if sp.userperusahaan.activation.completed == 1 %}
+                                            <form action="{{ path_for('bkol-perusahaan-nonaktifkan') }}" method="post" style="display: inline;">
+                                                <input type="hidden" name="user_id" value="{{ sp.user_id }}" />
+                                                {{csrf()}}
+                                                <button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="Akun ini akan di Non Aktipkan.">
+                                                    <span class="">Non Aktifkan</span>
+                                                </button>
+                                            </form>
+                                        {% elseif sp.userperusahaan.activation.completed == 0 %}
+                                            <form action="{{ path_for('bkol-perusahaan-aktifkan') }}" method="post" style="display: inline;">
+                                                <input type="hidden" name="user_id" value="{{ sp.user_id }}" />
+                                                {{csrf()}}
+                                                <button class="btn btn-success btn-sm swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="Akun ini akan di Aktipkan.">
+                                                    <span class="">Aktifkan</span>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                        <form action="{{ path_for('bkol-perusahaan-delete') }}" method="post" style="display: inline;">
+                                            <input type="hidden" name="user_id" value="{{ sp.id }}" />
+                                            {{csrf()}}
+                                            <button class="btn bg-red btn-sm swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="Akun ini akan di hapus secara permanen.">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Detail Perusahaan</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+    <!-- Jquery DataTable Plugin Js -->
+    {% include 'dashboard/scripts/datatables.twig' %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#perusahaan-table').DataTable({
+                responsive: true
+            });
+        });
+        $(document).ready(function(){
+            $('.openDetail').on('click',function(){
+                var dataURL = $(this).attr('data-href');
+                $('.modal-body').load(dataURL,function(){
+                    $('#myModal').modal({show:true});
+                    $('#phio, #phihk, #fasilitask3, #fasilitaskesjahteraan').select2({
+                        tags: true,
+                        width: '100%'
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

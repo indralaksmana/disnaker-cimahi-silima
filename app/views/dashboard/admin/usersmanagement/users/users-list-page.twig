@@ -1,0 +1,111 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || User Management{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% if config['oauth2-enabled'] %}
+<link href="{{ asset('disnaker/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endif %}
+{% endblock %}
+
+{% block page %}
+
+
+{% if type == 'lpk' %}
+
+<div class="block-header">
+    <a href="{{ path_for('admin-users-lpk-add') }}" class="btn btn-primary waves-effect">
+        <i class="material-icons">add</i> <span>Tambah  User LPK</span>
+    </a>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card">
+                
+                <div class="header">
+                    <h2>User Lembaga Pelatihan Kerja</h2>
+                </div>
+
+                <div class="body">
+                    {% include 'dashboard/admin/usersmanagement/users/lpk.twig' %}
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+{% if type == 'bkk' %}
+
+<div class="block-header">
+    <a href="{{ path_for('admin-users-bkk-add') }}" class="btn btn-primary waves-effect">
+        <i class="material-icons">add</i> <span>Tambah  User BKK</span>
+    </a>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card">
+                
+                <div class="header">
+                    <h2>User Bursa Kerja Khusus</h2>
+                </div>
+
+                <div class="body">
+                    {% include 'dashboard/admin/usersmanagement/users/bkk.twig' %}
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% if type == 'pt' %}
+
+<div class="block-header">
+    <a href="{{ path_for('admin-users-pt-add') }}" class="btn btn-primary waves-effect">
+        <i class="material-icons">add</i> <span>Tambah  User Perguruan Tinggi</span>
+    </a>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card">
+                
+                <div class="header">
+                    <h2>User Perguruan Tinggi</h2>
+                </div>
+
+                <div class="body">
+                    {% include 'dashboard/admin/usersmanagement/users/perguruan-tinggi.twig' %}
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+{% include 'dashboard/admin/usersmanagement/users/js.twig' %}
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+{% endblock %}

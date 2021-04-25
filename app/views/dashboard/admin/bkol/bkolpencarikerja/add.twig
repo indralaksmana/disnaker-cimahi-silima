@@ -1,0 +1,28 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New User{% endblock %}
+
+{% block page %}
+<div class="card">
+    <div class="header">
+        <h2>Tambah User Pencari Kerja</h2>
+    </div>
+
+    <div class="body">
+        {% include 'dashboard/admin/bkol/bkolpencarikerja/form.twig' %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+</script>
+{% endblock %}

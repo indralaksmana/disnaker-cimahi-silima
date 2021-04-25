@@ -1,0 +1,34 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}Perguruan Tinggi{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('assets/dashboard/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+ <style>
+    .table td, .table th {
+        vertical-align: middle !important;
+        padding: 7px !important;
+        white-space: normal !important;
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+</style>
+<link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+{% endblock %}
+
+{% block page %}
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Edit Admin Perguruan Tinggi</h2>
+            </div>
+            <div class="body">
+                {# FORM #}
+                {% include 'dashboard/admin/bkol/bkolperguruantinggi/form.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

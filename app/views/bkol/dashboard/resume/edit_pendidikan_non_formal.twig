@@ -1,0 +1,237 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New gallery Post{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="bg-white container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Edit Riwayat Pendidikan Non-Formal</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form action="{{ currentRoute }}" method="POST" role="form">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group input-group-sm{% if has_error('nameofeducation') %} has-error{% endif %}">
+                    <label for="nameofeducation">Nama Pendidikan</label>
+                    <input type="text" name="nameofeducation" class="form-control" id="nameofeducation" placeholder="Nama Pendidikan"
+                        value="{% if requestParams.nameofeducation %}{{requestParams.nameofeducation}}{% else %}{{post.nameofeducation}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('nameofeducation') }}</span>
+                </div>
+                <div class="form-group input-group-sm">
+                    <label >Jenis Keterampilan</label>
+                    <select name="jenis_keterampilan" class="form-control" id="bidang" required>
+                        <option value="{% if requestParams.jenis_keterampilan %}{{requestParams.jenis_keterampilan}}{% else %}{{post.jenis_keterampilan}}{% endif %}">{{post.jenis_keterampilan}}</option>
+                        {% for k in k %}
+                        <option  value="{{ k.jenis_kursus }}" id="{{ k.kode_bidang }}">{{
+                        k.jenis_kursus }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group input-group-sm{% if has_error('startingmonth') %} has-error{% endif %}">
+                    <label for="startingmonth">Mulai Bulan</label>
+                    <select name="startingmonth" class="form-control" id="startingmonth" required="required">
+                        <option value="{% if requestParams.startingmonth %}{{requestParams.startingmonth}}{% else %}{{post.startingmonth}}{% endif %}">{%
+                            if requestParams.startingmonth %}{{requestParams.startingmonth}}{% else
+                            %}{{post.startingmonth}}{% endif %}</option>
+                        {% for i in [
+                        'Januari',
+                        'Februari',
+                        'Maret',
+                        'April',
+                        'Mei',
+                        'Juni',
+                        'Juli',
+                        'Agustus',
+                        'September',
+                        'Oktober',
+                        'November',
+                        'Desember'
+                        ]
+                        %}
+                        <option value="{{ i }}" {% if requestParams.startingmonth %} selected {% endif %}>
+                            {{i }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('startingmonth') }}</span>
+                </div>
+                <div class="form-group input-group-sm{% if has_error('startyear') %} has-error{% endif %}">
+                    <label for="startyear">Mulai Tahun</label>
+                    <select name="startyear" class="form-control" required="required">
+                        <option value="{% if requestParams.startyear %}{{requestParams.startyear}}{% else %}{{post.startyear}}{% endif %}">{%
+                            if requestParams.startyear %}{{requestParams.startyear}}{% else %}{{post.startyear}}{%
+                            endif %}</option>
+                        {% for i in 2020..1950 %}
+                        <option value="{{ i }}" {% if requestParams.startyear %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('startyear') }}</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group input-group-sm{% if has_error('finishedmonth') %} has-error{% endif %}">
+                    <label for="finishedmonth">Selesai Bulan</label>
+                    <select name="finishedmonth" class="form-control" id="finishedmonth" required="required">
+                        <option value="{% if requestParams.finishedmonth %}{{requestParams.finishedmonth}}{% else %}{{post.finishedmonth}}{% endif %}">{%
+                            if requestParams.finishedmonth %}{{requestParams.finishedmonth}}{% else
+                            %}{{post.finishedmonth}}{% endif %}</option>
+                        {% for i in [
+                        'Januari',
+                        'Februari',
+                        'Maret',
+                        'April',
+                        'Mei',
+                        'Juni',
+                        'Juli',
+                        'Agustus',
+                        'September',
+                        'Oktober',
+                        'November',
+                        'Desember'
+                        ]
+                        %}
+                        <option value="{{ i }}" {% if requestParams.finishedmonth %} selected {% endif %}>
+                            {{i }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('finishedmonth') }}</span>
+                </div>
+                <div class="form-group input-group-sm{% if has_error('finishedyear') %} has-error{% endif %}">
+                    <label for="">Selesai Tahun</label>
+                    <select name="finishedyear" class="form-control" required="required">
+                        <option value="{% if requestParams.finishedyear %}{{requestParams.finishedyear}}{% else %}{{post.finishedyear}}{% endif %}">{%
+                            if requestParams.finishedyear %}{{requestParams.finishedyear}}{% else
+                            %}{{post.finishedyear}}{% endif %}</option>
+                        {% for i in 2020..1950 %}
+                        <option value="{{ i }}" {% if requestParams.finishedyear %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('finishedyear') }}</span>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group input-group-sm">
+                    <button type="submit" class="btn btn-third">SIMPAN</button>
+                    <a style="margin-left:10px;font-size:1rem;" href="{{ path_for('resume-nonformalpendidikan')}}" role="button"
+                        class="btn btn-third btn-secondary">BATAL</a>
+                </div>
+            </div>
+            {{ csrf() }}
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<!-- Select2 Dropdowns -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.1/tinymce.min.js" type="text/javascript"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="{{ asset('dashboard/js/tinymce-init.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/video-parser.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/blog.min.js') }}" type="text/javascript"></script>
+{% if hasCloudinary %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-jquery-file-upload/2.3.0/cloudinary-jquery-file-upload.min.js"></script>
+{{ cloudinaryJsConfig() }}
+<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var generateSignature = function (callback, params_to_sign) {
+        $.ajax({
+            url: "/dashboard/media/cloudinary-sign",
+            type: "GET",
+            dataType: "text",
+            data: {
+                data: params_to_sign
+            },
+            success: function (signature, textStatus, xhr) {
+                callback(signature);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr, status, error);
+            }
+        });
+    }
+
+    $('.upload-featured-cloudinary').cloudinary_upload_widget({
+            cloud_name: 'codesains',
+            thumbnails: false,
+            upload_signature: generateSignature,
+            api_key: '{{ cloudinarySignature.api_key|raw }}',
+            button_class: 'btn btn-info form-control',
+            button_caption: '<span class="fa fa-upload"></span> Cloudinary',
+            cropping: 'server',
+            // cropping_aspect_ratio: 1.90476190476, 
+            // cropping_validate_dimensions: true, 
+            // cropping_show_dimensions: true,
+            // cropping_coordinates_mode: 'custom',
+            folder: 'gallery/',
+            // min_image_width: 1200,
+            // min_image_height: 630, 
+            show_powered_by: false,
+            sources: [
+                'local',
+                'url',
+                'camera',
+            ],
+            multiple: false,
+            theme: 'white'
+        },
+        function (error, result) {
+            if (result) {
+
+                var deleteToken = $("#featured_thumbnail").attr('delete-token');
+                if (deleteToken != "") {
+                    $.cloudinary.delete_by_token(deleteToken);
+                }
+
+                $("#featured_image").val(result[0].secure_url);
+                $("#featured_thumbnail").html('<img src="' + result[0].secure_url +
+                    '" class="img-responsive" alt="Featured Image" style="width: 100%;">');
+                $("#featured_thumbnail").attr('delete-token', result[0].delete_token);
+            }
+        }
+    );
+</script>
+{% endif %}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#publish_at').daterangepicker({
+            startDate: '{% if requestParams.publish_at %}{{ requestParams.publish_at }}{% else %}{{ post.publish_at|date("m/d/Y h:i A") }}{% endif %}',
+            singleDatePicker: true,
+            timePicker: true,
+            timePickerIncrement: 1,
+            locale: {
+                format: 'MM/DD/YYYY h:mm A'
+            }
+        });
+
+    });
+</script>
+{% endblock %}

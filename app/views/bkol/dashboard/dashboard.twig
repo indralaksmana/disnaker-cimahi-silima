@@ -1,0 +1,231 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block page %}
+
+<!-- Dashboard pencaker -->
+<section id="candidates" class="content-header">
+  <div class="container">
+    <div class="row">
+      <div class="col padding-2">
+
+        <div class="hr-theme">
+          <div class="hr-title">
+            <h3 class="title-section">SELAMAT DATANG
+              <span class="user">{{auth.user.username|title}}</span>...</h3>
+          </div>
+          <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+        </div>
+
+        <div class="overview">
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <div class="card card-body">
+                <div class="overview-total">
+                  <h1>{{jobs}}</h1>
+                </div>
+                <div class="overview-title">
+                  <p>LOWONGAN PEKERJAAN<br>MASIH TERSEDIA</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="card card-body">
+                <div class="overview-total">
+                  <h1>{{jobsminat}}</h1>
+                </div>
+                <div class="overview-title">
+                  <p>LOWONGAN PEKERJAAN<br>SESUAI MINAT ANDA</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="card card-body">
+                <div class="overview-total">
+                  <h1>{{lamaranterkirim}}</h1>
+                </div>
+                <div class="overview-title">
+                  <p>LAMARAN PEKERJAAN<br>SUDAH TERKIRIM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-list">
+          <h3>Lowongan Terkini Untuk Anda</h3>
+        </div>
+
+        <div class="jobs">
+          <div class="list-job">
+            {% if listjobsminat | length == 0 %}
+            <!-- no results control -->
+            <div class="p-3 bg-warning" data-jplist-control="no-results" data-group="lists-lowongan" data-name="no-results">
+              <h6 class="big">Maaf, Posisi yang anda cari belum tersedia..</h6>
+            </div>
+            {% endif %}
+            <div class="row" data-jplist-group="lists-lowongan">
+              {% for post in listjobsminat %}
+              <div class="col-lg-12 col-sm-6 mb-2" data-jplist-item="data-jplist-item"> 
+                {% set deskripsi_pekerjaan = post.deskripsi_pekerjaan | split(' ') %}
+                {% set deskripsi_pekerjaan = deskripsi_pekerjaan[0] ~ ' ' ~ deskripsi_pekerjaan[1] ~ ' ' ~
+                deskripsi_pekerjaan[2] ~ ' ' ~ deskripsi_pekerjaan[3] ~ ' ' ~ deskripsi_pekerjaan[4] ~ ' ' ~
+                deskripsi_pekerjaan[5] ~ ' ' ~ deskripsi_pekerjaan[6] ~ ' ' ~ deskripsi_pekerjaan[7] ~ ' ' ~
+                deskripsi_pekerjaan[8] ~ '...' %}
+                <div class="card-body">
+                  <div class="jobs-list p-3">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h5 class="jobs-list_title"><a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}"
+                            class="nama_lowongan card-link font-weight-light">{{post.nama_lowongan}}</a></h5>
+                        <div class="job-list_info d-flex">
+                          <span class="job-company py-1 px-3 mr-sm-1"><i class="fa fa-building"></i>&nbsp;<a href="{{path_for('job-companies', {'companyname': post.authorCompanies.companyname})}}">{{post.authorCompanies.companyname}}</a></span>
+                          {% if post.kabupatenkota.lokasi_nama != ''%}
+                          <span class="job-location py-1 px-3 mr-sm-1"><i class="fa fa-map-marker"></i>&nbsp;<span class="multifilter">{{post.kabupatenkota.lokasi_nama
+                              }}</span></span>
+                          {% endif %}
+
+                          <span class="py-1 px-3 mr-sm-1"><i class=" fa fa-user-plus"></i>&nbsp;{{post.jumlah_kebutuhan_tenaga}} orang</span>
+                        </div>
+                        <div class="job-desc py-3" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                          {% if post.deskripsi_pekerjaan|length > 100 %} {{ deskripsi_pekerjaan | raw }} {% else %}{{
+                          deskripsi_pekerjaan | raw}} {% endif %}
+                        </div>
+                      </div>
+                      <div class="d-none d-lg-block col-md-2" id="company_logo">
+                        <a href="#" title="{{post.nama_lowongan}}" rel="nofollow">
+                          <figure>
+                            {% if post.authorCompanies.logo != "" %}
+                            <img class="img-fluid img-company-logo" id="img_company_logo_1" data-original="{{post.authorCompanies.logo}}"
+                              alt="{{post.nama_lowongan}}" src="{{post.authorCompanies.logo}}" style="display: inline;">
+                            {% else %}
+                            {# <img id="company_logo" src="{{ base_url() }}/img/nologo.jpg" class="img-responsive"> #}
+                            {% endif %}
+                          </figure>
+                        </a>
+                      </div>
+
+                      <div class="col d-flex justify-content-between align-items-sm-center flex-column flex-sm-row">
+                        <span class="job-date text-muted my-2 my-sm-0">{{post.publish_at| time_diff }}</span>
+                        <div class="btn-wrap">
+
+                          <a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}"
+                            class="btn btn-small btn-detail" role="button">LIHAT DETAIL</a>
+                          {% if auth.check() %}
+                          {# {% if auth.hasAccess('companies.view') %}
+                          <a disabled href="javascript:void(0)" class="openPopup btn btn-small btn-success" data-href="{{ path_for('modal-lamaran', {'id': post.id, 'slug': post.slug }) }}">Lamar
+                            Sekarang</a>
+                          {% endif %} #}
+                          {% if auth.hasAccess('jobseeker.view') %}
+                            {% for user in post.pelamar if user.user_id == auth.user.id %}
+                                <a class="btn btn-small btn-disabled">LAMARAN SUDAH TERKIRIM</a>
+                            {% else %}
+                              {% for r in post.author.roles if r.slug == 'admin'%}
+                              {% else %}
+                                 <a href="javascript:void(0)" class="openPopup btn btn-small btn-third" data-href="{{ path_for('modal-lamaran', {'id': post.id, 'slug': post.slug }) }}">MELAMAR SEKARANG</a>
+                             {% endfor %}
+                             {% endfor %}
+                          {% endif %}
+                          {% endif %}
+                          {% if not auth.check() %}
+                          <a href="javascript:void(0)" class="openLogin btn btn-small btn-primary" data-href="{{ path_for('login-modal')}}">LOGIN
+                            UNTUK MELAMAR</a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span hidden class="jabatan{{post.jabatan_id}}">jabatan{{post.jabatan_id}}</span>
+                  <span hidden class="pendidikan{{post.pendidikan_terakhir_id}}">pendidikan{{post.pendidikan_terakhir_id}}</span>
+                  <span hidden class="provinsi{{post.provinsi_id}}">provinsi{{post.provinsi_id}}</span>
+                  <span hidden class="kabupatenkota{{post.kabupatenkota_id}}">kabupatenkota{{post.kabupatenkota_id}}</span>
+                  <span hidden class="kategori{{post.category_id}}">kategori{{post.category_id}}</span>
+                </div>
+              </div>
+              {% endfor %}
+              <!-- no results control -->
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="text-center">
+                  <div class="col flex flex-wrap justify-content-center">
+                    <!-- pagination control -->
+                    <nav data-jplist-control="pagination" data-group="lists-lowongan" data-items-per-page="2"
+                      data-current-page="0" data-disabled-class="disabled" data-selected-class="active" data-jump="top"
+                      data-name="pagination1" class="mb-2 mr-3">
+                      <!-- first and previous buttons -->
+                      <ul class="pagination d-inline-flex">
+                        <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="first">
+                          <a class="page-link" href="#">«</a>
+                        </li>
+                        <li class="page-item" data-type="prev">
+                          <a class="page-link" href="#">‹</a>
+                        </li>
+                      </ul>
+                      <!-- pages buttons -->
+                      <ul class="pagination d-none d-sm-none d-lg-inline-flex" data-type="pages">
+                        <li class="page-item" data-type="page">
+                          <a class="page-link" href="#">{pageNumber}</a>
+                        </li>
+                      </ul>
+
+                      <!-- next and last buttons -->
+                      <ul class="pagination d-inline-flex">
+                        <li class="page-item" data-type="next">
+                          <a class="page-link" href="#">›</a>
+                        </li>
+                        <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="last">
+                          <a class="page-link" href="#">»</a>
+                        </li>
+                      </ul>
+
+                      <!-- information labels -->
+                      <span data-type="info" class="d-none d-sm-none d-md-inline-flex badge badge-secondary ml-3 p-2">
+                        {startItem} - {endItem} of {itemsNumber}
+                      </span>
+                    </nav>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <div class="modal fade bd-example-modal-lg" id="ModalLamaran" role="dialog">
+      <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content" id="modal-melamar">
+          </div>
+      </div>
+  </div>
+{% endblock %}
+{% block javascript %}
+{# <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script> #}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<!-- IE / Edge babel polyfill -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+
+<!-- jPList Library -->
+<script src="{{ asset('/js/jplist/1.2.0/jplist.min.js') }}"></script>
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+  $('.openPopup').on('click', function () {
+    var dataURL = $(this).attr('data-href');
+    $('#modal-melamar').load(dataURL, function () {
+      $('#ModalLamaran').modal({
+        show: true
+      });
+    });
+  });
+
+  jplist.init({
+    deepLinking: true
+  });
+</script>
+
+{% endblock %}

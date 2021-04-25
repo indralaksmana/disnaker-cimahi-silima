@@ -1,0 +1,63 @@
+<div class="card bkol-side-menu">
+
+    <div class="row sidebar">
+        <div class="col-sm-12 pt-3 pb-1">
+            <ul class="list-group list-group-flush w-100 side-menu-item">
+                <li class="list-group-item">
+                    <div class="hr-theme ">
+                        <div class="hr-title">
+                            <h5 class="title-section">MENU ANDA</h5>
+                        </div>
+                        <div class="hr-line flex-grow-1" style="background-image: url('{{ base_url() }}/img/bkol/line-2.png')"></div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path_for('dashboardperusahaan') }}">Dashboard</a>
+                </li>
+                <li class="list-group-item">
+                    <a class="" href="{{ path_for('dashboardperusahaan-lowongan-add') }}">Buat Lowongan Baru</a>
+                </li>
+                <li class="list-group-item">
+                    <a class="" href="{{ path_for('dashboardperusahaan-lowongan') }}">List Lowongan Kerja</a>
+                </li>
+                <li class="list-group-item">
+
+                    <a class="" href="{{ path_for('dashboardperusahaan-pelamar')}}">List Lamaran Kerja</a>
+                </li>
+                <!--
+                <li class="list-group-item">
+                    <a class="" href="{{ path_for('dashboardperusahaan-shortlist')}}">Pencari Kerja Pilihan</a>
+                </li>
+                -->
+                {% if auth.user.companiesprofile.flag_perusahaan == 1 %}
+                <li class="list-group-item">
+                    <a href="{{ path_for('perusahaan-dashboard-berita')}}">Berita</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path_for('perusahaan-dashboard-agenda')}}">Kegiatan</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path_for('perusahaan-dashboard-gallery')}}">Album Foto</a>
+                </li>
+                {% endif %}
+                <li class="list-group-item">
+                    <a href="{{ path_for('dashboardperusahaan-profile')}}">Profil Perusahaan</a>
+                </li>
+                {% if auth.user.companiesprofile.flag_perusahaan == 1 %}
+                <!--
+                <li class="list-group-item">
+                    <a href="{{ path_for('dashboardperusahaan-produk-jasa') }}">Produk Dan Jasa</a>
+                </li>
+                -->
+                {% endif %}
+                <li class="list-group-item">
+                    <a class="" href="{{ path_for('dashboardperusahaan-settings-akun') }}">Pengaturan Akun</a>
+                </li>
+                <li class="list-group-item">
+                    <a class="" href="{{ path_for('logoutbkol') }}">Keluar</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

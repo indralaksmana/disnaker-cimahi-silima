@@ -1,0 +1,115 @@
+<div class="card card-header">
+    <h2>Buat Laporan Pelatihan</h2>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h3>Nama LPK: {{ lpk.nama_lpk }}</h3>
+
+        </p>
+        <form action="{{ currentRoute }}" method="POST" role="form" class="forms-sample">
+            <div class="row">
+                <div class="col-md-12 d-flex align-items-stretch grid-margin">
+                    <div class="row flex-grow">
+                        <div class="col-12">
+                            <h5>Data Lembaga Pelatihan Kerja</h5>
+                            <div class="row">
+                                <div class="col-md-12 form-group{% if has_error('tahun') %} has-error{% endif %}">
+                                    <label for="">Tahun</label>
+                                    <input type="text" name="tahun" class="form-control" id="tahun" value="{{ pp.tahun }}">
+                                    <span class="help-block">{{ error('tahun') }}</span>
+                                </div>
+                                <div class="form-group col-md-12{% if has_error('nama_program') %} has-error{% endif %}">
+                                    <label for="">Nama Program Pelatihan</label>
+                                    <input type="text" name="nama_program" class="form-control" id="nama_program"
+                                        placeholder="Nama Program Pelatihan">
+                                    <span class="help-block">{{ error('nama_program') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>Jumlah Lulusan Yang Bekerja</h5>
+                                </div>
+                                <div class="form-group col-md-6{% if has_error('jumlah_lulusan_yang_bekerja_laki') %} has-error{% endif %}">
+                                    <label for="">Laki Laki</label>
+                                    <input type="number" name="jumlah_lulusan_yang_bekerja_laki" class="form-control"
+                                        id="jumlah_lulusan_yang_bekerja_laki" placeholder="Laki Laki">
+                                    <span class="help-block">{{ error('jumlah_lulusan_yang_bekerja_laki') }}</span>
+                                </div>
+                                <div class="form-group col-md-6{% if has_error('jumlah_lulusan_yang_bekerja_perempuan') %} has-error{% endif %}">
+                                    <label for="">Perempuan</label>
+                                    <input type="number" name="jumlah_lulusan_yang_bekerja_perempuan" class="form-control"
+                                        id="jumlah_lulusan_yang_bekerja_perempuan" placeholder="Perempuan">
+                                    <span class="help-block">{{ error('jumlah_lulusan_yang_bekerja_perempuan') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>Jumlah Lulusan Yang Belum Bekerja</h5>
+                                </div>
+                                <div class="form-group col-md-6{% if has_error('jumlah_lulusan_yang_belum_bekerja_laki') %} has-error{% endif %}">
+                                    <label for="">Laki Laki</label>
+                                    <input type="number" name="jumlah_lulusan_yang_belum_bekerja_laki" class="form-control"
+                                        id="jumlah_lulusan_yang_belum_bekerja_laki" placeholder="Laki Laki">
+                                    <span class="help-block">{{ error('jumlah_lulusan_yang_belum_bekerja_laki') }}</span>
+                                </div>
+                                <div class="form-group col-md-6{% if has_error('jumlah_lulusan_yang_belum_bekerja_perempuan') %} has-error{% endif %}">
+                                    <label for="">Perempuan</label>
+                                    <input type="number" name="jumlah_lulusan_yang_belum_bekerja_perempuan" class="form-control"
+                                        id="jumlah_lulusan_yang_belum_bekerja_perempuan" placeholder="Perempuan">
+                                    <span class="help-block">{{ error('jumlah_lulusan_yang_belum_bekerja_perempuan') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>Jumlah Lulusan Lainnya</h5>
+                                </div>
+                                <div class="form-group col-md-6{% if has_error('jumlah_lulusan_lainya_laki') %} has-error{% endif %}">
+                                    <label for="">Laki Laki</label>
+                                    <input type="number" name="jumlah_lulusan_lainya_laki" class="form-control" id="jumlah_lulusan_lainya_laki"
+                                        placeholder="Laki Laki">
+                                    <span class="help-block">{{ error('jumlah_lulusan_lainya_laki') }}</span>
+                                </div>
+                                <div class="form-group col-md-6{% if has_error('jumlah_lulusan_lainya_perempuan') %} has-error{% endif %}">
+                                    <label for="">Perempuan</label>
+                                    <input type="number" name="jumlah_lulusan_lainya_perempuan" class="form-control" id="jumlah_lulusan_lainya_perempuan"
+                                        placeholder="Perempuan">
+                                    <span class="help-block">{{ error('jumlah_lulusan_lainya_perempuan') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>Keterangan</h5>
+                                </div>
+                                <div class="form-group col-md-12{% if has_error('keterangan') %} has-error{% endif %}">
+                                    <label for=""></label>
+                                    <textarea name="keterangan" class="form-control">
+                                    </textarea>
+                                    <span class="help-block">{{ error('keterangan') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="d-flex flex-row justify-content-between align-items-start">
+                        <button type="submit" class="btn btn-sm btn-primary btn-primary">SIMPAN</button>
+                        <a class="btn btn-sm btn-warning close" type="button" data-dismiss="modal" aria-label="Close">BATAL</a>
+                        {{ csrf() }}
+                    </div>
+                </div>
+
+
+            </div>
+    </div>
+
+</div>
+</div>

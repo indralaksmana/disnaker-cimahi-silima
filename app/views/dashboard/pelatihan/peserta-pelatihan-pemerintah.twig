@@ -1,0 +1,310 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New Blog Post{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="card card-body">
+    <div class="alert alert-info">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Peserta Pelatihan - {{post.title}}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Tempat Pelaksanaan</label>
+            </div>
+            <div class="col-md-9">
+                <label>: {{post.tempat_pelaksanaan}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Tanggal</label>
+            </div>
+            <div class="col-md-9">
+                <label>: {{post.start_date|date("D, j F Y")}} - <b>s/d</b> - {{post.end_date|date("D, j F Y")}}</label>
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-3">
+                <label>Sasaran </label>
+            </div>
+            <div class="col-md-9">
+                <label>: {{post.sasaran }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Kuota Peserta</label>
+            </div>
+            <div class="col-md-9">
+                <label>: {{post.kuota_peserta }} Orang</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Keterangan</label>
+            </div>
+            <div class="col-md-9">
+                <label>: {{post.keterangan }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label>Jenis Pelatihan</label>
+            </div>
+            <div class="col-md-9">
+                <label>: {{post.category.name }}</label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="tab-wrapper">
+        <ul class="tabs clearfix" data-tabgroup="js-tabgroup">
+            <li class="tabs-list">
+                <a href="#tab1" class="tabs-list-link is-active">Calon Peserta</a>
+            </li>
+            <li class="tabs-list">
+                <a class="tabs-list-link" href="#tab2">
+                    Peserta Terpilih
+                </a>
+            </li>
+            {# <li class="tabs-list">
+                <a class="tabs-list-link" href="#tab3">
+                    Peserta Terpilih
+                </a>
+            </li> #}
+        </ul>
+        <section id="js-tabgroup" class="tabgroup">
+            <div id="tab1" class="tab-content">
+                {# <table width="100%" class="table table-striped table-bordered table-hover" id="pelatihan-table"> #}
+                    <table width="100%" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Pendaftaran</th>
+                                <th>Nama Peserta</th>
+                                <th>No Handphone</th>
+                                <th>Alamat</th>
+                                <th>Persyaratan</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set row = 0 %}
+                            {% for r in peserta %}
+                            {% set row = row + 1 %}
+                            <tr>
+                                <td>{{ row }}</td>
+                                <td><b>{{ r.nomor_pendaftaran }}</b></td>
+                                <td>{{ r.userpelatihan.datapencarikerja.nama_lengkap }}</td>
+                                <td>{{ r.userpelatihan.datapencarikerja.no_telp }}</td>
+                                <td>{{ r.userpelatihan.datapencarikerja.kecamatan.lokasi_nama }}</td>
+                                <td>
+                                    {% if r.status == 0 %}
+                                    Belum Lengkap
+                                    {% endif %}
+                                    {% if r.status == 1 %}
+                                    Lengkap
+                                    {% endif %}
+                                    </td>
+                                <td>
+
+                                    <a href="{{ path_for('bkol-pencarikerja-edit-peserta', {'user_id': r.userpelatihan.id}) }}" class="btn btn-primary btn-sm" role="button"><span class="fa fa-fw fa-pencil"></span></a>
+                                    {% if r.status == 1 %}
+                                    <form action="{{ path_for('admin-pelatihan-unpublish') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="post_id" value="{{ r.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-warning btn-xs action-prosses" data-swtitle="Kamu Yakin?"
+                                            data-swmessage="This pelatihan post will not be publicly viewable.">
+                                            <span class="fa fa-fw fa-close"></span></button>
+                                    </form>
+                                    {% endif %}
+                                    {% if r.status == 0 %}
+                                    <form action="{{ path_for('admin-peserta-pelatihan-lengkap') }}" method="post"
+                                        style="display: inline;">
+                                        <input type="hidden" name="post_id" value="{{ r.id }}" />
+                                        {{csrf()}}<button class="btn btn-success btn-xs action-prosses" data-swtitle="Kamu Yakin?"
+                                            data-swmessage="Calon Peserta Pelatihan ini sudah Mempunyai Syarat yang lengkap">
+                                            Syarat Sudah Lengkap
+                                        </button>
+                                        <input type="hidden" name="redirect" value="{{currentRoute}}?comment_login=1" />
+                                    </form>
+                                    {# <form action="{{ path_for('admin-pelatihan-delete') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="post_id" value="{{ r.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-danger btn-xs action-prosses" data-swtitle="Kamu Yakin?"
+                                            data-swmessage="This post will be permanently deleted and you will not be able to recover it.">
+                                            <span class="fa fa-fw fa-trash"></span>
+                                        </button>
+                                    </form> #}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+
+            <div id="tab2" class="tab-content">
+                {# <table width="100%" class="table table-striped table-bordered table-hover" id="pelatihan-table-tutup"> #}
+                    <table width="100%" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Pendaftaran</th>
+                                <th>Nama Peserta</th>
+                                <th>Alamat</th>
+                                <th>Persyaratan</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set row = 0 %}
+                            {% for r in lengkap %}
+                            {% set row = row + 1 %}
+                            <tr>
+                                <td>{{ row }}</td>
+                                <td><b>{{ r.nomor_pendaftaran }}</b></td>
+                                <td>{{ r.userpelatihan.fullname }}</td>
+                                <td>{{ r.userpelatihan.datapencarikerja.kecamatan }}</td>
+                                <td>
+                                    {% if r.status == 0 %}
+                                    Belum Lengkap
+                                    {% endif %}
+                                    {% if r.status == 1 %}
+                                    Lengkap
+                                    {% endif %}
+                                <td>
+                                    {# <a href="/dashboard/pelatihan/edit//{{ r.id }}'" class="btn btn-primary btn-xs">Edit
+                                    </a> #}
+                                    {% if r.status == 1 %}
+                                    <form action="{{ path_for('admin-pelatihan-unpublish') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="post_id" value="{{ r.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-info btn-xs action-prosses" data-swtitle="Kamu Yakin?"
+                                            data-swmessage="This pelatihan post will not be publicly viewable.">
+                                            Jadikan Peserta
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+            </div>
+
+
+        </section>
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+
+        $('#pelatihan-table').DataTable({
+            responsive: true,
+            stateSave: false
+        });
+        $('#pelatihan-table-tutup').DataTable({
+            responsive: true,
+            stateSave: false
+        });
+
+        $('#pelatihan-terpilih').DataTable({
+            responsive: true,
+            stateSave: false
+        });
+
+
+
+        $('#tags-table').DataTable({
+            responsive: true,
+            stateSave: false
+        });
+        $('#categories-table').DataTable({
+            responsive: true,
+            stateSave: false
+        });
+    });
+
+    $('.action-prosses').click(function (e) {
+
+        e.preventDefault();
+        var swtitle = $(this).data('swtitle');
+        var swmessage = $(this).data('swmessage');
+        // var swmessage = 'Data Ini Akan Pindah ke List Data Lengkap';
+        var form = $(this).parents(form);
+        swal({
+            title: swtitle,
+            text: swmessage,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batalkan'
+        }).then(
+            function (result) {
+                swal("Berhasil!", "Data Sudah Di Pindahkan", "success").then(
+                    setTimeout(function () {
+                        form.submit();
+                    }, 1000)
+                );
+            },
+            function (dismiss) {
+                return false;
+            }
+        ).catch(swal.noop);
+
+    });
+
+    $(document).ready(function () {
+
+        $('#users_table, #datalengkap, #siapcetak, #sudahjadi').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+        $('.tab-content').hide();
+        $('.tab-content:first-child').show();
+
+        $('.tabs-list-link').click(function (e) {
+            e.preventDefault();
+            const $this = $(this),
+                TABGROUP = '#' + $this.parents('.tabs').data('tabgroup'),
+                OTHERS = $this.parents('.tabs-list').siblings().find('.tabs-list-link'),
+                IS_TARGET = $this.attr('href'),
+                IS_ACTIVE = 'is-active',
+                JS_TAB_CONTENT = '.tab-content';
+
+            OTHERS.removeClass(IS_ACTIVE);
+            $this.addClass(IS_ACTIVE);
+            $(TABGROUP).find(JS_TAB_CONTENT).hide();
+            $(IS_TARGET).show();
+        })
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,211 @@
+fdfdf{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+    {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+	{% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+	{% set append = " || Author: " ~ companies.username %}
+{% else %}
+    {% set append = "" %}
+{% endif %}
+{% block page %}
+
+{% include 'bkol/inc/flash.twig' %}
+<style>
+  div[class^="sm-padding"]{
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.bg-with-image{
+  background-image: url('{{ base_url() }}/img/bkol/bg-tentang2.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .tab-pane .card-body {
+    background-color: rgba(229,229,229,.3);
+}
+.photo img{
+  max-width: 95px;
+  margin-bottom: 1rem;
+}
+</style>
+<div id="DetailPencariKerja" class="container">
+  <div class="d-flex flex-column" style="text-align: center;  ">
+    <div class="bg-with-image py-4">
+    <div class="photo">
+      {% if r.photoprofile != '' %}
+      <img src="{{r.photoprofile}}" alt="" class="img-fluid">
+      {% else %}
+      <img src="{{base_url()}}/img/nologo.jpg" alt="" class="img-fluid">
+      {% endif %}
+
+    </div>
+    <div class="nama">
+      <h5 class="font-weight-bold">{{r.nama_lengkap}}</h5>
+    </div>
+    <div class="info">
+      <p>
+        <span class="font-weight-bold">{% for post in r.riwayatpekerjaan|slice(0,1)  %}{{post.typeofwork}}{% endfor %}</span><br>
+        <span>{% for post in r.riwayatpekerjaan|slice(0,1)  %}{{post.companyname}}{% endfor %}</span><br>
+      </p>
+
+      {% if r.datapencarikerja.no_telp != ''%}
+      <span class="nowrap">
+        <i class="fa fa-phone" aria-hidden="true"></i> {{r.datapencarikerja.no_telp}}
+      </span>
+      |
+      {% else %}
+      {% endif %}
+      {% if r.email != ''%}
+      <span class="nowrap"><i class="fa fa-envelope" aria-hidden="true"></i> {{r.email}}</span>
+      |
+      {% else %}
+      {% endif %}
+      {% if r.datapencarikerja.harapan_gaji_minimum_id != ''%}
+      <span class="nowrap"><i class="fa fa-usd" aria-hidden="true"></i> {{r.datapencarikerja.harapan_gaji_minimum_id}} &nbsp;</span>
+      |
+      {% else %}
+      {% endif %}
+      {% if r.datapencarikerja.kecamatan_id != ''%}
+      <span class="nowrap"><i class="fa fa-map-marker" aria-hidden="true"></i> {{r.datapencarikerja.kecamatan.lokasi_nama}}</span>
+      {% else %}
+      {% endif %}
+    </div>
+    {% if auth.hasAccess('companies.view') %}
+    {% if auth.check() %}
+    <form action="{{ currentRoute }}" method="post" class="mt-3">
+      {{csrf()}}
+      {% if s.perusahaan_id != auth.user.id %}
+      <input type="submit" name="add_favorite" value="Masukan Ke Daftar Favorit" class="btn btn-warning" />
+      {% else %}
+      <input type="submit" name="delete_favorite" value="Batalkan Daftar Favorit" class="btn btn-danger" />
+      {% endif %}
+    </form>
+    {% endif %}
+    {% endif %}
+
+
+    </div>
+    <div class="d-flex justify-content-center bg-white pt-3">
+      <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" href="#data-pribadi" role="tab" data-toggle="tab"><i class="fa fa-briefcase mr-1" aria-hidden="true"></i><span class="tabs-link">Data Pribadi</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#riwayat-pekerjaan" role="tab" data-toggle="tab"><i class="fa fa-user mr-1" aria-hidden="true"></i><span class="tabs-link">Riwayat Pekerjaan</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pendidikan" role="tab" data-toggle="tab"><i class="fa fa-graduation-cap mr-1" aria-hidden="true"></i><span class="tabs-link">Pendidikan</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pendidikan-non" role="tab" data-toggle="tab"><i class="fa fa-address-card mr-1" aria-hidden="true"></i><span class="tabs-link">Pendidikan Non Formal</span></a>
+          </li>
+        </ul>
+    </div>
+   <!-- Tab panes -->
+    <div class="tab-content bg-white text-left">
+      <div role="tabpanel" class="tab-pane fade show active" id="data-pribadi">
+        <div class="card-body">
+          <h4 class="mb-3">Data Pribadi</h4>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane fade" id="riwayat-pekerjaan">
+       <div class="card-body row no-gutters">
+        <div class="col-sm-12">
+        <h4 class="mb-3">Riwayat Pekerjaan</h4>
+        </div>
+
+        {% if r.riwayatpekerjaan|length == 0 %}
+        <span class="text-center">Belum Riwayat Pekerjaan</span>
+        {% endif %}
+        {% for post in r.riwayatpekerjaan  %}
+        <div class="col-sm-4">
+          <p class="text-muted">{{post.startmonth}} {{post.startyear}} - {{post.finishedmonth}} {{post.finishedyear}}</p>
+        </div>
+        <div class="col-sm-8">
+          {% if r.riwayatpekerjaan|length == 0 %}
+          <span class="text-center">Belum Ada Pelamar Baru</span>
+          {% endif %}
+          <h5>{{post.typeofwork}}</h5>
+          <h6>{{post.companyname}}</h6>
+          <div class="form-group">
+            <div class="row no-gutters py-2">
+              <label class="col-sm-3 text-muted text-small m-0">Posisi</label>
+              <label class="col-sm-9">{{post.position}}</label>
+              <label class="col-sm-3 text-muted text-small m-0">Salary</label>
+              <label class="col-sm-9"><span class="number">{{post.salary}}</span></label>
+              <p>{{post.descjob}}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="pendidikan">
+      <div class="card-body row no-gutters">
+        <div class="col-sm-12">
+          <h4 class="mb-3">Pendidikan</h4>
+        </div>
+
+        {% if r.riwayatpendidikan|length == 0 %}
+        <span class="text-center">Belum Ada data Riwayat Pendidikan</span>
+        {% endif %}
+
+        {% for post in r.riwayatpendidikan  %}
+        <div class="col-sm-4">
+          <p class="text-muted">{{post.graduationyear}}</p>
+        </div>
+        <div class="col-sm-8">
+
+          <h5>{{post.schoolname}}</h5>
+          <h6>{{post.schoolmajors}}</h6>
+          <div class="form-group">
+            <div class="row no-gutters py-2">
+              <label class="col-sm-3 text-muted text-small m-0">Tingkat Pendidikan</label>
+              <label class="col-sm-9">{{post.level}}</label>
+              <label class="col-sm-3 text-muted text-small m-0">Nilai / IPK</label>
+              <label class="col-sm-9">{{post.schoolgrades}}</label>
+              {# <label class="col-sm-3 text-muted text-small m-0">Nomor Ijazah</label>
+              <label class="col-sm-9">{{post.numberofdiplomas}}</label> #}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="pendidikan-non">
+     <div class="card-body">
+     <h4 class="mb-3">Pendidikan Non Formal</h4>
+
+       {% if r.riwayatnonformalpendidikan|length == 0 %}
+     <span class="text-center">Belum Ada Pendidikan Non Formal</span>
+     {% endif %}
+     <div class="row no-gutters">
+      {% for post in r.riwayatnonformalpendidikan  %}
+      <div class="col-sm-4">
+        <p class="text-muted">{{post.startingmonth}} {{post.startyear}} - {{post.finishedmonth}} {{post.finishedyear}}</p>
+      </div>
+      <div class="col-sm-8">
+        <h5>{{post.nameofeducation}}</h5>
+      </div>
+      {% endfor %}
+     </div>
+    </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+
+{% endblock %}

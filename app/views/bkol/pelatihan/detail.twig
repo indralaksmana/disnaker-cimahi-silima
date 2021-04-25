@@ -1,0 +1,282 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% block seo %}
+	<title>{# {{ seo.title }} #}Dinas Tenaga Kerja Cimahi || {{ post.jobtitle }}</title>
+	<meta name="page-title" content="{{ post.title }}" />
+	<meta name="description" content="{{ post.description }}" />
+	<meta name="author" content="{{ post.author.username }}"/>
+
+	{% if post.video_id and post.video_provider %}
+	    {% if post.video_provider == "youtube" %}
+	    	{% set player_url = "https://www.youtube.com/embed/" ~ post.video_id %}
+	    {% elseif post.video_provider == "vimeo" %}
+	    	{% set player_url = "https://player.vimeo.com/video/" ~ post.video_id %}
+	    {% else %}
+	    	{% set player_url = false %}
+	    {% endif %}
+	{% endif %}
+
+	{# Open Graph #}
+	<meta property="og:title" content="{{ post.title }}" />
+	<meta property="og:type" content="{% if player_url %}video.other{% else %}article{% endif %}" />
+	<meta property="og:url" content="https://{{ config['domain-bkol'] }}{{ currentRoute }}" />
+	<meta property="og:image" content="{{ post.featured_image }}" />
+	<meta property="og:description" content="{{ post.description }}" />
+	<meta property="og:site_name" content="{{ config['site-name'] }}" />
+	{% if player_url %}
+	<meta property="og:video" content="{{ player_url }}" />
+	{% endif %}
+
+	{# Twitter Card #}
+	<meta name="twitter:card" content="{% if player_url %}player{% else %}summary_large_image{% endif %}">
+	<meta name="twitter:title" content="{{ post.title }}">
+	<meta name="twitter:description" content="{{ post.description }}">
+	<meta name="twitter:image" content="{{ post.featured_image }}">
+	{% if player_url %}
+	<meta property="twitter:player" content="{{ player_url }}" />
+	<meta property="twitter:player:stream" content="{{ player_url }}" />
+    <meta property="twitter:player:height" content="450" />
+    <meta property="twitter:player:width" content="800" />
+	{% endif %}
+
+	{# Google+ #}
+	<meta itemprop="name" content="{{ post.title }}">
+	<meta itemprop="description" content="{{ post.description }}">
+	<meta itemprop="image" content="{{ post.featured_image }}">
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block page %}
+<style>
+	dt:after {
+    content: ':';
+    position: absolute;
+    right: 0;
+}
+dl, ol, ul {
+    margin-bottom: 0rem;
+}
+dd{
+  margin-bottom: 0rem;
+}
+@media (max-width: 575.98px) {
+dl, ol, ul {
+    margin-bottom: .5rem;
+}
+dt:after {
+    right: unset;
+    margin-left: 5px;
+}
+.btn{
+	font-size: 12px;
+}
+}
+</style>
+	<div class="container pt-3 pb-5">
+		<div class="row">
+			<!-- Blog Entries Column -->
+			<div class="col-md-8">
+				{% include 'bkol/inc/flash.twig' %}
+
+			    <div class="card mb-4">
+					<div class="card-body">
+                        <h3 class="card-title">{{post.title}}</h3>
+                        <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Tanggal Pendaftaran</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		{{post.start_date|date("d-m-Y")}} <b>s/d</b> {{post.end_date|date("d-m-Y")}}
+	                    	</dd>
+                        </dl>
+						 <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Tanggal Seleksi</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		{{post.tgl_seleksi|date("d-m-Y")}}
+	                    	</dd>
+                        </dl>
+						</dl>
+						 <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Persyaratan</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		{{post.persyaratan|raw}}
+	                    	</dd>
+                        </dl>
+						</dl>
+						 <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Instruktur</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		{{post.keterangan_instruktur|raw}}
+	                    	</dd>
+                        </dl>
+                        <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Sasaran</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		{{post.sasaran }}
+	                    	</dd>
+                        </dl>
+                        <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Tempat Pelaksanaan</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		{{post.tempat_pelaksanaan }}
+	                    	</dd>
+                        </dl>
+                        <dl class="row">
+	                    	<dt class="col-lg-4 col-md-5 col-sm-4">
+	                    		<span>Kategori</span>
+	                    	</dt>
+	                    	<dd class="col-lg-8 col-md-7 col-sm-8">
+	                    		<a href="{{path_for('pelatihan-category', {'slug': post.category.slug})}}">{{ post.category.name }}</a>
+	                    	</dd>
+                        </dl>
+                    <!--     <p class="card-text"><b>Tanggal:</b> {{post.start_date|date("D, j F  Y")}} - <b>s/d</b> - {{post.end_date|date("D, j F  Y")}}</p>
+                        <p class="card-text"><b>Sasaran:</b> {{post.sasaran }}</p>
+                        <p class="card-text"><b>Tempat Pelaksanaan:</b> {{post.tempat_pelaksanaan }}</p>
+                        <div>
+							<b>Kategori:</b> <a href="{{path_for('pelatihan-category', {'slug': post.category.slug})}}">{{ post.category.name }}</a>
+						</div> -->
+					</div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-md-between justify-content-sm-start flex-lg-row flex-sm-column flex-column">
+							{% if post.status == 1 %}
+							{% if auth.check() %}
+								{% if auth.hasAccess('jobseeker.view') %}
+								{% if postapplied.user_id != auth.user.id %}
+								{% if auth.user.datapencarikerja.iscimahi == 1 %}
+								<a href="javascript:void(0)" class="openPopup btn btn-small btn-success" data-href="{{ path_for('pelatihan-modal-daftar', {'id': post.id, 'slug': post.slug }) }}">Daftar Pelatihan</a>
+								 {% else %}
+                                          warga cimahi yang dapat mendaftar pelatihan
+                                      {% endif %}
+								{% else %}
+									<span  class="btn btn-block btn-disabled">Kamu Sudah Mendaftar Pelatihan Ini</span>
+								{% endif %}
+
+								{% endif %}
+							{% endif %}
+							{% if not auth.check() %}
+								<a href="javascript:void(0)" class="openLogin btn btn-small btn-success"  data-href="{{ path_for('login-modal')}}">Login atau Register Terlebih Dahulu</a>
+							{% endif %}
+							{% endif %}
+						</div>
+                    </div>
+				</div>
+			</div><!-- Sidebar Widgets Column -->
+			<div class="col-md-4">
+		    	<div class="row sidebar">
+				<div class="col-sm-12 py-2">
+          <div class="hr-theme ">
+            <div class="hr-title"><h5 class="title-section">BIDANG PELATIHAN</h5></div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+          </div>
+          <div class="mb-3 pb-3">
+            {% include 'bkol/pelatihan/filter.twig' %}
+          </div>
+          <div class="mb-3 pb-3">
+					{% if auth.check() %}
+							{% if auth.hasAccess('jobseeker.view') %}
+							<div class="sidebar_ak1" style="background-image: url('{{ base_url() }}/img/bkol/daftar-ak1.jpg');">
+								<h3>Khusus Masyarakat Kota Cimahi</h3>
+								<p>Dapatkan Kartu Pencari Kerja (AK-1) dengan mendaftar sebagai Pencari Kerja di sini.</p>
+								{% if auth.check() %}
+								<a href="{{ path_for('pengajuan-ak1')}}" class="btn btn-daftar">DAFTAR</a>
+								{% else %}
+								<a href="{{ path_for('registerjobseeker')}}" class="btn btn-daftar">DAFTAR</a>
+								{% endif %}
+							</div>
+							{% endif %}
+						{% else %}
+							<div class="sidebar_ak1" style="background-image: url('{{ base_url() }}/img/bkol/daftar-ak1.jpg');">
+								<h3>Khusus Masyarakat Kota Cimahi</h3>
+								<p>Dapatkan Kartu Pencari Kerja (AK-1) dengan mendaftar sebagai Pencari Kerja di sini.</p>
+								{% if auth.check() %}
+								<a href="{{ path_for('pengajuan-ak1')}}" class="btn btn-daftar">DAFTAR</a>
+								{% else %}
+								<a href="{{ path_for('registerjobseeker')}}" class="btn btn-daftar">DAFTAR</a>
+								{% endif %}
+							</div>
+						{% endif %}
+          </div>
+          <div class="mb-3 pb-3">
+            <div class="hr-theme ">
+              <div class="hr-title"><h5 class="title-section">KATEGORI LOWONGAN</h5></div>
+              <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+            </div>
+            <ul class="kategori-list text-capitalize">
+              {% for category in jobCategories %}
+              <li class="d-flex justify-content-between align-items-center">
+                <a  href="{{path_for('job-category', {'slug': category.slug})}}" style="padding: 0;">{{category.name}}
+                </a>
+                <span class="badge badge-primary badge-pill">{{category.posts_count}}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+		    </div>
+		</div><!-- /.row -->
+	</div>
+    <!-- /.container -->
+
+    <div class="modal fade" id="ModalLogin">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content loginmodal-container">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ recaptchaJs() }}
+    {% if requestParams['current_login'] %}
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	$('html, body').animate({
+		    scrollTop: ($('#comments').offset().top -175)
+		},500);
+	});
+    </script>
+
+    {% endif %}
+
+    <script>
+        $('.openLogin').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('.modal-content').load(dataURL,function(){
+                $('#ModalLogin').modal({show:true});
+            });
+        });
+    </script>
+
+	<script>
+        $('.openPopup').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('.modal-content').load(dataURL,function(){
+                $('#myModal').modal({show:true});
+            });
+        });
+    </script>
+{% endblock %}

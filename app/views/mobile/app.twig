@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    </head>
+    <title>BKOL Mobile Version</title>
+  </head>
+  <body>
+  <div id="app">
+     <vs-button vs-type="filled">Hello World</vs-button>
+  </div>
+
+  <script type="text/javascript" src="{{ base_url() }}/js/app.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.umd.js"></script>
+
+  {# Ajax CSRF #}
+  <script src="{{ asset('dashboard/js/csrf.min.js') }}"></script>
+
+
+  <script type="text/javascript">
+      AppCSRF.csrfUrl = "/csrf";
+  </script>
+  </body>
+</html>

@@ -1,0 +1,209 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+    {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+	{% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+	{% set append = " || Author: " ~ companies.username %}
+{% else %}
+    {% set append = "" %}
+{% endif %}
+{% block page %}
+<style>
+  .pelatihan-warp .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+      color: #495057;
+      background-color: #fff;
+      border-color: unset;
+  }
+  .pelatihan-warp .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    border-color: unset;
+}
+  .nav-tabs .nav-link {
+      border: 0px solid transparent;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+  }
+  .nav-tabs .nav-link {
+    color: #fff;
+    font-weight: 600;
+}
+dt:after {
+    content: ':';
+    position: absolute;
+    right: 0;
+}
+dl, ol, ul {
+    margin-bottom: 0rem;
+}
+dd{
+  margin-bottom: 0rem;
+}
+@media (max-width: 575.98px) {
+dl, ol, ul {
+    margin-bottom: .5rem;
+}
+.nav-tabs .nav-link {
+    font-size: 12px;
+    padding: .25rem .5rem;
+  }
+.nav-tabs {
+    padding: .5rem .5rem 0 !important;
+  }
+dt:after {
+    right: unset;
+    margin-left: 5px;
+}
+}
+</style>
+<section id="page-hero" class="clearfix" style="background-image: url('{{ base_url() }}/img/bkol-pencari-bg.jpg');">
+
+</section>
+<div class="container pt-3 pb-5 pelatihan-warp">
+	<div class="row">
+		<div class="col-xl-4 order-1 col-sm-4 order-2">
+			<div class="row sidebar">
+				<div class="col-sm-12 py-2">
+          <div class="hr-theme ">
+            <div class="hr-title"><h5 class="title-section">BIDANG PELATIHAN</h5></div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+          </div>
+          <div class="mb-3 pb-3">
+            {% include 'bkol/pelatihan/filter.twig' %}
+          </div>
+          <div class="mb-3 pb-3">
+          {% if auth.check() %}
+              {% if auth.hasAccess('jobseeker.view') %}
+              <div class="sidebar_ak1" style="background-image: url('{{ base_url() }}/img/bkol/daftar-ak1.jpg');">
+                <h3>Khusus Masyarakat Kota Cimahi</h3>
+                <p>Dapatkan Kartu Pencari Kerja (AK-1) dengan mendaftar sebagai Pencari Kerja di sini.</p>
+                {% if auth.check() %}
+                <a href="{{ path_for('pengajuan-ak1')}}" class="btn btn-daftar">DAFTAR</a>
+                {% else %}
+                <a href="{{ path_for('registerjobseeker')}}" class="btn btn-daftar">DAFTAR</a>
+                {% endif %}
+              </div>
+              {% endif %}
+            {% else %}
+              <div class="sidebar_ak1" style="background-image: url('{{ base_url() }}/img/bkol/daftar-ak1.jpg');">
+                <h3>Khusus Masyarakat Kota Cimahi</h3>
+                <p>Dapatkan Kartu Pencari Kerja (AK-1) dengan mendaftar sebagai Pencari Kerja di sini.</p>
+                {% if auth.check() %}
+                <a href="{{ path_for('pengajuan-ak1')}}" class="btn btn-daftar">DAFTAR</a>
+                {% else %}
+                <a href="{{ path_for('registerjobseeker')}}" class="btn btn-daftar">DAFTAR</a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="mb-3 pb-3">
+            <div class="hr-theme ">
+              <div class="hr-title"><h5 class="title-section">KATEGORI LOWONGAN</h5></div>
+              <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+            </div>
+            <ul class="kategori-list text-capitalize">
+              {% for category in jobCategories %}
+              <li class="d-flex justify-content-between align-items-center">
+                <a  href="{{path_for('job-category', {'slug': category.slug})}}" style="padding: 0;">{{category.name}}
+                </a>
+                <span class="badge badge-primary badge-pill">{{category.posts_count}}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+		<div class="col-xl-8 col-sm-8 jobs">
+			{% include 'bkol/inc/flash.twig' %}
+      <div class="row">
+
+				<div class="col">
+					<div class="card">
+						<div class="card-body">
+            <div class="hr-theme d-flex  align-items-center">
+              <div class="hr-title"><h3 class="title-section">Pelatihan Kerja</h3></div>
+                <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+      <ul class="nav nav-tabs pt-3 px-4 btn-primary" style="background: #333399;">
+        <li class="nav-item">
+      <a class="nav-link {% if (currentRoute == path_for('disnaker-pelatihan')) or  (currentRoute starts with path_for('pelatihan-category', {'slug': pelatihan.slug})) %} active{% endif %}" href="{{path_for('disnaker-pelatihan')}}">BUKA PENDAFTARAN</a>
+        </li>
+        <li class="nav-item">
+      <a class="nav-link nav-seleksi {% if currentRoute == path_for('pelatihanSeleksi') %}active{% endif %}" href="{{path_for('pelatihanSeleksi')}}">SELEKSI</a>
+        </li>
+        <li class="nav-item">
+      <a class="nav-link nav-tutup {% if currentRoute == path_for('pelatihanTutup') %}active{% endif %} " href="{{path_for('pelatihanTutup')}}">TUTUP</a>
+        </li>
+      </ul>
+      <div class="tab-content bg-white" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="row">
+          <div class="col-12 jobs">
+            <div class="card pelatihan">
+            {% include 'bkol/pelatihan/list.twig' %}
+            <div class="row">
+          		<div class="col">
+          			<div class="text-center" style="{% if pagination is empty %}height: 20px;{% endif %}">
+          			{{pagination|raw}}
+          			</div>
+          		</div>
+          	</div>
+        </div>
+      </div>
+    </div>
+        </div>
+      </div>
+
+
+</div>
+</div>
+
+
+<div class="modal fade" id="ModalLogin">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content loginmodal-container">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+{{ recaptchaJs() }}
+<script>
+    $('.openLogin').on('click', function () {
+        var dataURL = $(this).attr('data-href');
+        $('.modal-content').load(dataURL, function () {
+            $('#ModalLogin').modal({
+                show: true
+            });
+        });
+    });
+</script>
+
+<script>
+    $('.openPopup').on('click', function () {
+        var dataURL = $(this).attr('data-href');
+        $('.modal-content').load(dataURL, function () {
+            $('#myModal').modal({
+                show: true
+            });
+        });
+    });
+</script>
+{% endblock %}

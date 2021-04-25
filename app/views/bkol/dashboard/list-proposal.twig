@@ -1,0 +1,107 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+{% block page %}
+<style>
+    .dataTables_filter,
+    .dataTables_length {
+        display: none;
+    }
+</style>
+<div class="container">
+    <div class="row bg-white">
+        <div class="col-12">
+            <div class="mb-4">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Riwayat Lamaran</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1"
+                        style="background-image: url('http://localhost:8181/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 padding-2" style="overflow-x:auto;">
+            <table class="table normal-table" id="riwayat">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Perusahaan</th>
+                        <th>Judul Lowongan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if listproposal|length == 0 %}
+                    <tr class="text-center">
+                        <td colspan="4">Belum Ada Pelamar
+                            Baru</td>
+                    </tr>
+                    {% endif %}
+                    {% for post in listproposal %}
+                    <tr>
+                        <td width="15%">
+                            <img width="100px" style="object-fit: cover" src="{{post.post.authorCompanies.logo}}"></td>
+                        <td width="20%">
+                            <a target=" _blank"
+                                href="{{path_for('job-companies', {'companyname': post.post.authorCompanies.companyname})}}"><b class="font-weight-bold">{{post.post.authorCompanies.companyname}}</b></a>
+                            <div class="desc mt-1">
+                                {{post.post.authorCompanies.companysaddress}} <br>
+                                {{post.post.authorCompanies.provinsi.lokasi_nama}} -
+                                {{post.post.authorCompanies.kabupatenkota.lokasi_nama}} -
+                                {{post.post.authorCompanies.kecamatan.lokasi_nama}}
+                            </div>
+                        </td>
+                        <td><a target="_blank" href="{{path_for('job_detail', {'year': post.post.publish_at|date("Y"), 'month': post.post.publish_at|date("m"), 'day':
+post.post.publish_at|date("d"), 'slug': post.post.slug})}}"><b style="font-size: 12px;">{{post.post.nama_lowongan}}</b></a></td>
+                        <td>
+                            {% if post.status == 0 %}
+                            <span class="status status-yellow">BELUM REVIEW</span>
+                            {% elseif post.status == 1 %}
+                            <span class="status status-green">SUDAH DIREVIEW</span>
+                            {% elseif post.status == 2 %}
+                            <span class="status status-blue">KANDIDAT</span>
+                            {% elseif post.status == 3 %}
+                            <span class="status status-blue">UNDANGAN INTERVIEW</span>
+                            {% elseif post.status == 4 %}
+                            <span class="status status-blue">SUDAH INTERVIEW</span>
+                            {% elseif post.status == 5 %}
+                            <span class="status status-light-blue">DITERIMA</span>
+                            {% elseif post.status == 6 %}
+                            <span class="status status-red">SUDAH BERHENTI</span>
+                            {% endif %}
+                        </td>
+                        {# <td>{% if post.coverletter|length > 250 %} {{ content | raw }} {% else %}{{ content |
+                            raw}} {% endif %}</td> #}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center" style="{% if pagination is empty %}height: 20px;{% endif %}">
+                {{pagination|raw}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $('#riwayat').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,149 @@
+<!-- form -->
+<form action="{{ currentRoute }}" method="POST" role="form">
+	<div class="row clearfix">
+		<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+			<div class="card">
+				<div class="header">
+					<h2>
+						Judul dan Deskripsi
+					</h2>
+				</div>
+				<div class="body">
+				{# Title #}
+				<div class="form-group form-float{% if has_error('title') %} has-error{% endif %}">
+					<div class="form-line">
+						<label class="form-label" for="title">Judul <span style="color:red;">*</span></label>
+						<input type="text" name="title" class="form-control" id="title" value="{% if requestParams.title %}{{requestParams.title}}{% else %}{{post.title}}{% endif %}"
+						required="required">
+						<span class="help-block">{{ error('title') }}</span>
+					</div>
+				</div>
+
+			{# Description #}
+			<div class="form-group form-float{% if has_error('description') %} has-error{% endif %}">
+				<div class="form-line">
+					<label class="form-label" for="description">Deskripsi <span style="color:red;">*</span></label>
+					<input type="text" name="description" class="form-control" id="description"
+						value="{% if requestParams.description %}{{requestParams.description}}{% else %}{{post.description}}{% endif %}"
+						required="required">
+					<span class="help-block">{{ error('description') }}</span>
+				</div>
+			</div>
+
+			<div class="form-group{% if has_error('featured_image') %} has-error{% endif %} mb-4">
+				<label for="cl_upload">Fitur Gambar</label>
+				<span class="help-block">{{ error('featured_image') }}</span>
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="margin-bottom:0;">
+						<div class="form-group">
+							<a class="btn btn-block upload-featured-local">
+								<span class="fa fa-upload"></span> Lokal CMS
+							</a>
+						</div>
+					</div>
+					{% if hasCloudinary %}
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="margin-bottom:0;">
+						<div class="form-group">
+							<a class="btn btn-block upload-featured-cloudinary">
+								<span class="fa fa-upload"></span> Cloudinary
+							</a>
+						</div>
+					</div>
+					{% endif %}
+					<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+						<div class="help-info">Rekomendasi Ukuran 1200 x 630 (px)</div>
+						<div class="form-group" id="featured_thumbnail" delete-token="">
+							{% if not post.featured_image %}
+							<img src="https://placehold.it/400x210?text=No+Featured+Photo" class="img-responsive"
+								alt="Image" style="width: 100%;">
+							{% elseif requestParams.featured_image %}
+							<img src="{{requestParams.featured_image}}" class="img-responsive" alt="Image"
+								style="width: 100%;">
+							{% else %}
+							<img src="{{post.featured_image}}" class="img-responsive" alt="Image" style="width: 100%;">
+							{% endif %}
+						</div>
+						<input type="hidden" name="featured_image" id="featured_image" value="{% if requestParams.featured_image != "" %}{{ requestParams.featured_image }}{% else %}{{post.featured_image}}{% endif %}">
+					</div>
+				</div>
+			</div>
+
+			
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+			<div class="card">
+				<div class="header">
+					<h2>
+						Kategori dan Publikasi
+					</h2>
+				</div>
+				<div class="body">
+					{# Category #}
+					<div class="form-group{% if has_error('category') %} has-error{% endif %} mb-4">
+						<label for="category">Kategori <span style="color:red;">*</span></label>
+						{# <select name="category" id="category" class="form-control show-tick" required="required"> #}
+						<select name="category"  class="form-control show-tick" data-live-search="true" required="required">
+							<option value="">Pilih Kategori</option>
+							{% for category in categories %}
+							<option value="{{ category.id }}" {% if requestParams.category==category.id or
+								post.category_id==category.id %}SELECTED{% endif %}>{{ category.name }}</option>
+							{% endfor %}
+						</select>
+						<span class="help-block">{{ error('category') }}</span>
+					</div>
+
+					<div class="form-group{% if has_error('publish_at') %} has-error{% endif %}">
+						<label for="publish_at">Tanggal Publikasi <span style="color:red;">*</span> <span style="font-weight: normal;">({{config['timezone']}})</span></label>
+						<input type="text" name="publish_at" class="form-control datepicker"  placeholder="Tanggal Publikasi"
+							value="{% if requestParams.publish_at %}{{requestParams.publish_at}}{% else %}{{post.publish_at}}{% endif %}"
+							required="required">
+						<span class="help-block">{{ error('publish_at') }}</span>
+					</div>
+
+					<div class="form-group{% if has_error('status') %} has-error{% endif %}">
+						<label for="status">Status </label>
+						<div class="switch">
+                            <label>Draft<input name="status" id="status" class="form-control" type="checkbox" {% if requestParams.status %}checked{% elseif post.status %}checked{% endif %}>
+                                <span class="lever switch-col-blue"></span>Published
+                            </label>
+                        </div>
+						<span class="help-block">{{ error('status') }}</span>
+					</div>
+
+					<div class="form-group">
+						<a href="{{ path_for('admin-blog') }}" class="btn bg-red"><i class="material-icons">keyboard_arrow_left</i><span>BATAL</span></a>
+						<button type="submit" class="btn bg-blue"><i class="material-icons">save</i><span>SIMPAN</span></button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="card">
+				<div class="header">
+					<h2>
+						BODY
+					</h2>
+				</div>
+				<div class="body">
+					{# Content #}
+					<div class="form-group{% if has_error('post_content') %} has-error{% endif %}">
+						<label for="post_content">Konten <span style="color:red;">*</span></label>
+						<div class="form-line">
+						<textarea name="post_content" class="form-control tinymce" id="post_content" placeholder="Konten Berita"
+								required="required">
+									{% if requestParams.post_content %}{{requestParams.post_content}}{% else %}{{post.content|raw}}{% endif %}
+								</textarea>
+							<span class="help-block">{{ error('post_content') }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{ csrf() }}
+	</div>
+</form>

@@ -1,0 +1,116 @@
+<div class="row sidebar">
+  <div class="col-sm-12 p-3">
+  {% if auth.check() %}
+      {% if auth.hasAccess('jobseeker.view') %}
+      <div class="sidebar_ak1" style="background-image: url('{{ base_url() }}/img/bkol/daftar-ak1.jpg');">
+        <h3>Khusus Masyarakat Kota Cimahi</h3>
+        <p>Dapatkan Kartu Pencari Kerja (AK-1) dengan mendaftar sebagai Pencari Kerja di sini.</p>
+        {% if auth.check() %}
+        <a href="{{ path_for('pengajuan-ak1')}}" class="btn btn-daftar">DAFTAR</a>
+        {% else %}
+        <a href="{{ path_for('registerjobseeker')}}" class="btn btn-daftar">DAFTAR</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% else %}
+      <div class="sidebar_ak1" style="background-image: url('{{ base_url() }}/img/bkol/daftar-ak1.jpg');">
+        <h3>Khusus Masyarakat Kota Cimahi</h3>
+        <p>Dapatkan Kartu Pencari Kerja (AK-1) dengan mendaftar sebagai Pencari Kerja di sini.</p>
+        {% if auth.check() %}
+        <a href="{{ path_for('pengajuan-ak1')}}" class="btn btn-daftar">DAFTAR</a>
+        {% else %}
+        <a href="{{ path_for('registerjobseeker')}}" class="btn btn-daftar">DAFTAR</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="col-sm-12 p-3">
+    <div class="hr-theme d-flex align-items-center">
+      <div class="hr-title">
+        <h5 class="title-section">KATEGORI LOWONGAN</h5>
+      </div>
+      <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+
+    <ul class="kategori-list text-capitalize">
+      {% for category in jobCategories %}
+      <li class="d-flex justify-content-between align-items-center">
+        <a href="{{path_for('job-category', {'slug': category.slug})}}" style="padding: 0;">{{category.name}}
+        </a>
+        <span class="badge badge-primary badge-pill">{{category.posts_count}}</span>
+      </li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+  <div class="col-sm-12 p-3">
+    <div class="hr-theme d-flex align-items-center">
+      <div class="hr-title">
+        <h5 class="title-section">INFORMASI PELATIHAN</h5>
+      </div>
+      <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+    {% if listPelatihan|length == 0 %}
+    <div class="text-center">
+      <h4>Belum Ada Pelatihan</h4>
+    </div>
+    {% endif %}
+    {% for post in listPelatihan|slice(0, 3)%}
+    <div class="pelatihan-list">
+      <a class="pelatihan-list_title" href="{{path_for('pelatihan-post', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}">
+        <h5 class="">{{post.title}}</h5>
+      </a>
+      <div class="pelatihan-list_info d-flex row my-3">
+        <small class="col-4" style="max-width: 300px;overflow: hidden;white-space: nowrap;display: block;text-overflow: ellipsis;">
+          <i class="icon-calendar"></i><span>{{post.start_date}}</span>
+        </small>
+        <small class="col-4" style="max-width: 300px;overflow: hidden;white-space: nowrap;display: block;text-overflow: ellipsis;">
+          <i class="icon-location"></i><span>{{post.end_date}}</span>
+        </small>
+      </div>
+      <div class="pelatihan-list_status row">
+        <span class="col-md-2 col-2" for="">Status</span>
+        {% if post.status == 1 %}
+        <div class="col-md-10 col-10">
+          <span class="span-status status-buka">BUKA PENDAFTARAN</span>
+        </div>
+        {% endif %}
+        {% if post.status == 2 %}
+        <div class="col-md-10 col-10">
+          <span class="span-status  status-seleksi">PROSSES SELEKSI</span>
+        </div>
+        {% endif %}
+        {% if post.status == 0 %}
+        <div class="col-md-10 col-10">
+          <span class="span-status status-tutup">TUTUP</span>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+    <a class="btn btn-block btn-orange" href="/disnaker-pelatihan">LIHAT SEMUA PELATIHAN</a>
+
+  </div>
+  <div class="col-sm-12 p-3">
+    <div class="hr-theme d-flex align-items-center">
+      <div class="hr-title">
+        <h5 class="title-section">LINK TERKAIT</h5>
+      </div>
+      <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+
+    <div class="d-flex flex-row flex-warp">
+      <div class="col-6 mb-4"><a href="http://www.cimahikota.go.id/"><img class="img-fluid" src="{{base_url()}}/img/bkol/link-terkait-kota-cimahi.jpg"
+            alt=""></a></div>
+      <div class="col-6 mb-4"><a href="http://disnakercimahi.malayeka.id"><img class="img-fluid" src="{{base_url()}}/img/bkol/link-terkait-disnaker.jpg"
+            alt=""></a></div>
+      <div class="col-6 mb-4"><a href="http://kemnaker.go.id/"><img class="img-fluid" src="{{base_url()}}/img/bkol/link-terkait-kmenker.jpg"
+            alt=""></a></div>
+      <div class="col-6 mb-4"><a href="http://e-bursakerja.kemnaker.go.id/"><img class="img-fluid" src="{{base_url()}}/img/bkol/link-terkait-kota-ekmnaker.jpg"
+            alt=""></a></div>
+    </div>
+
+  </div>
+</div>

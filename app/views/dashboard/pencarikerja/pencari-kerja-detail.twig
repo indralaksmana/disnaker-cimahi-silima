@@ -1,0 +1,264 @@
+<fieldset disabled>
+	<div class="row">
+	    <div class="col-md-6 d-flex align-items-stretch grid-margin">
+	        <div class="row flex-grow">
+	            <div class="col-12">
+	                <div class="card">
+	                    <div class="card-body">
+	                        <h4>Data Pencari Kerja</h4>
+	                        <div class="form-group{% if has_error('tanggal_pendataan') %} has-error{% endif %}">
+	                            <label for="tanggal_pendataan">Tanggal Pendataan</label>
+	                            <input type="date" name="tanggal_pendataan" class="form-control" id="tanggal_pendataan" placeholder="pencarikerja" value="{{pencarikerja.tanggal_pendataan}}" required="required">
+	                            <span class="help-block">{{ error('tanggal_pendataan') }}</span>
+	                        </div>
+
+	                         <div class="form-group{% if has_error('petugas_pendata_id') %} has-error{% endif %}">
+	                            <label for="petugas_pendata_id">Petugas Pendata</label>
+	                             <input type="text" name="petugas_pendata_id" class="form-control" id="petugas_pendata_id" placeholder="-" value="{{pencarikerja.petugaspendata.nama}}" required="required">
+	                           <!--  <select name="petugas_pendata_id" {# id="category" #} class="form-control" required="required">
+	                                <option value="{{pencarikerja.petugaspendata.id}}">{{pencarikerja.petugaspendata.nama}}</option>
+	                                {% for post in petugaspendata %}
+	                                    <option value="{{ post.id }}" {% if requestParams.post == post.id %}SELECTED{% endif %}>{{ post.nama }}</option>
+	                                {% endfor %}
+	                            </select> -->
+	                            <span class="help-block">{{ error('petugas_pendata_id') }}</span>
+	                        </div>
+
+	                        <div class="form-group{% if has_error('nama_pencari_kerja') %} has-error{% endif %}">
+	                            <label for="nama_pencari_kerja">Nama Pencari Kerja</label>
+	                            <input type="text" name="nama_pencari_kerja" class="form-control" id="nama_pencari_kerja" placeholder="pencarikerja" value="{{pencarikerja.nama_pencari_kerja}}" required="required">
+	                            <span class="help-block">{{ error('nama_pencari_kerja') }}</span>
+	                        </div>
+
+	                        <div class="form-group{% if has_error('tempat_lahir') %} has-error{% endif %}">
+	                            <label for="tempat_lahir">Tempat Lahir</label>
+	                            <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir"  value="{{pencarikerja.tempat_lahir}}" required="required">
+	                            <span class="help-block">{{ error('tempat_lahir') }}</span>
+	                        </div>
+
+	                        <div class="form-group{% if has_error('tanggal_lahir') %} has-error{% endif %}">
+	                            <label for="tanggal_lahir">Tanggal Lahir</label>
+	                            <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir"  value="{{pencarikerja.tanggal_lahir}}" required="required">
+	                            <span class="help-block">{{ error('tanggal_lahir') }}</span>
+	                        </div>
+
+	                        <div class="form-group{% if has_error('jenis_kelamin') %} has-error{% endif %}">
+	                            <label for="">Jenis Kelamin</label>
+	                             <input type="text" name="jenis_kelamin" class="form-control" id="jenis_kelamin"  value="{{pencarikerja.jenis_kelamin}}" required="required">
+	                            <!-- <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
+	                              <option value="{{pencarikerja.jenis_kelamin}}">{{pencarikerja.jenis_kelamin}}</option>
+	                              {% for i in
+	                                [
+	                                'L','P'
+	                                ] %}
+	                                <option value="{{ i }}" {% if requestParams['jenis_kelamin'] == i %}selected{% endif %}>{{i }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('jenis_kelamin') }}</span> -->
+	                        </div>
+
+							<div class="form-group{% if has_error('no_kartu_keluarga') %} has-error{% endif %}">
+	                            <label for="">Provinsi</label>
+	                            <input class="form-control" value="{{pencarikerja.provinsi.lokasi_nama}}">
+	                        </div>
+
+							<div class="form-group{% if has_error('no_kartu_keluarga') %} has-error{% endif %}">
+	                            <label for="">Kabupaten / Kota </label>
+	                            <input class="form-control" value="{{pencarikerja.kabupatenkota.lokasi_nama}}">
+	                        </div>
+
+							<div class="form-group{% if has_error('no_kartu_keluarga') %} has-error{% endif %}">
+	                            <label for="">Kecamatan </label>
+	                            <input class="form-control" value="{{pencarikerja.kecamatan.lokasi_nama}}">
+	                        </div>
+
+							<div class="form-group{% if has_error('no_kartu_keluarga') %} has-error{% endif %}">
+	                            <label for="">Kelurahaan </label>
+	                            <input class="form-control" value="{{pencarikerja.kelurahan.lokasi_nama}}">
+	                        </div>
+
+	                        <div class="form-group">
+								<label for="alamat">Alamat pencarikerja</label>
+								<textarea name="alamat" class="form-control" id="alamat" placeholder="{{pencarikerja.alamat}}" rows="3"></textarea>
+							</div>
+
+	                        <div class="form-group{% if has_error('no_kartu_keluarga') %} has-error{% endif %}">
+	                            <label for="">Nomor Kartu Keluarga</label>
+	                            <input type="number" name="no_kartu_keluarga" class="form-control" id="no_kartu_keluarga" value="{{pencarikerja.no_kartu_keluarga}}">
+	                            <span class="help-block">{{ error('no_kartu_keluarga') }}</span>
+	                        </div>
+	                        <div class="form-group{% if has_error('no_induk_kependudukan') %} has-error{% endif %}">
+	                            <label for="">Nomor Induk Kependudukan</label>
+	                            <input type="number" name="no_induk_kependudukan" class="form-control" id="no_induk_kependudukan" value="{{pencarikerja.no_induk_kependudukan}}">
+	                            <span class="help-block">{{ error('no_induk_kependudukan') }}</span>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="col-md-6 d-flex align-items-stretch grid-margin">
+	        <div class="row flex-grow">
+	            <div class="col-12">
+	                <div class="card">
+	                    <div class="card-body">
+	                        <h4>Status Dalam Keluarga</h4>
+	                        <div class="form-group{% if has_error('status_perkawinan') %} has-error{% endif %}">
+	                            <label for="">Perkawinan (K/BK/CH/CM)</label>
+	                            <input type="text" name="status_perkawinan" class="form-control" id="status_perkawinan" value="{{pencarikerja.status_perkawinan}}">
+	                           <!--  <select name="status_perkawinan" class="form-control" id="status_perkawinan">
+	                              <option value="{{pencarikerja.status_perkawinan}}">{{pencarikerja.status_perkawinan}}</option>
+	                              {% for i in
+	                                [
+	                                'K','BK','CH','CM'
+	                                ] %}
+	                                <option value="{{ i }}" {% if requestParams['status_perkawinan'] == i %}selected{% endif %}>{{i }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('status_perkawinan') }}</span> -->
+	                        </div>
+
+	                        <div class="form-group{% if has_error('status_dalam_keluarga') %} has-error{% endif %}">
+	                            <label for="">Keluarga (S/I/A/K)</label>
+	                            <input type="text" name="status_dalam_keluarga" class="form-control" id="status_dalam_keluarga" value="{{pencarikerja.status_dalam_keluarga}}">
+	                            <!-- <select name="status_dalam_keluarga" class="form-control" id="status_dalam_keluarga">
+	                              <option value="{{pencarikerja.status_dalam_keluarga}}">{{pencarikerja.status_dalam_keluarga}}</option>
+	                              {% for i in
+	                                [
+	                                'S','I','A','K'
+	                                ] %}
+	                                <option value="{{ i }}" {% if requestParams['status_dalam_keluarga'] == i %}selected{% endif %}>{{i }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('status_dalam_keluarga') }}</span> -->
+	                        </div>
+	                    </div>
+	                </div>
+
+	                <div class="card" style="margin-top: 40px;">
+	                    <div class="card-body">
+	                        <h4>Status Pendidikan</h4>
+	                        <div class="form-group{% if has_error('sekolah') %} has-error{% endif %}">
+	                            <label for="">Sekolah (S/TS)</label>
+	                            <input type="text" name="sekolah" class="form-control" id="sekolah" value="{{pencarikerja.sekolah}}">
+	                            <!-- <select name="sekolah" class="form-control" id="sekolah">
+	                              <option value="{{pencarikerja.sekolah}}">{{pencarikerja.sekolah}}</option>
+	                              {% for i in
+	                                [
+	                                'S','TS'
+	                                ] %}
+	                                <option value="{{ i }}" {% if requestParams['sekolah'] == i %}selected{% endif %}>{{i }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('sekolah') }}</span> -->
+	                        </div>
+
+	                        <div class="form-group{% if has_error('lulusan') %} has-error{% endif %}">
+	                            <label for="">Pendidikan Terakhir</label>
+	                            <input type="text" name="lulusan" class="form-control" id="lulusan" value="{{pencarikerja.pendidikanterakhir.jenis_pendidikan}}">
+	                           <!--  <select name="lulusan" id="lulusan" class="form-control" required="required">
+	                                <option value="{{pencarikerja.lulusan.id}}">{{pencarikerja.lulusan.name}}</option>
+	                                {% for post in lulusan %}
+	                                    <option value="{{ post.id }}" {% if requestParams.post == post.id %}SELECTED{% endif %}>{{ post.name }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('lulusan') }}</span> -->
+	                        </div>
+
+	                        <div class="form-group{% if has_error('jurusan') %} has-error{% endif %}">
+	                            <label for="">Jurusan</label>
+	                            <input type="text" name="jurusan" class="form-control" id="jurusan" value="{{pencarikerja.jurusanpendidikan.jenis_pendidikan}}">
+	                           <!--  <select name="jurusan" id="jurusan" class="form-control" required="required">
+	                                <option value="{{pencarikerja.jurusan.id}}">{{pencarikerja.jurusan.name}}</option>
+	                                {% for post in jurusan %}
+	                                    <option value="{{ post.id }}" {% if requestParams.post == post.id %}SELECTED{% endif %}>{{ post.name }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('jurusan') }}</span> -->
+	                        </div>
+
+	                        <div class="form-group{% if has_error('kursuspelatihan') %} has-error{% endif %}">
+	                            <label for="">Pelatihan / Kursus</label>
+	                            <input type="text" name="kursuspelatihan" class="form-control" id="kursuspelatihan" value="{{pencarikerja.kursuspelatihan.name}}">
+	                            <!-- <select name="kursuspelatihan" id="kursuspelatihan" class="form-control">
+	                                <option value="{{pencarikerja.kursuspelatihan.id}}">{{pencarikerja.kursuspelatihan.name}}</option>
+	                                {% for post in kursuspelatihan %}
+	                                    <option value="{{ post.id }}" {% if requestParams.post == post.id %}SELECTED{% endif %}>{{ post.name }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('kursuspelatihan') }}</span> -->
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="col-md-6 d-flex align-items-stretch grid-margin">
+	        <div class="row flex-grow">
+	            <div class="col-12">
+	                <div class="card">
+	                    <div class="card-body">
+	                        <h4>Status Pekerjaan</h4>
+	                        <div class="form-group{% if has_error('pengalaman_bekerja') %} has-error{% endif %}">
+	                            <label for="">Pengalaman Bekerja</label>
+	                            <input type="text" name="pengalaman_bekerja" class="form-control" id="pengalaman_bekerja" value="{{pencarikerja.pengalaman_bekerja}}">
+	                           <!--  <select name="pengalaman_bekerja" class="form-control" id="pengalaman_bekerja">
+	                              <option value="{{pencarikerja.pengalaman_bekerja}}">{{pencarikerja.pengalaman_bekerja}}</option>
+	                              {% for i in
+	                                [
+	                                'Pernah','Belum'
+	                                ] %}
+	                                <option value="{{ i }}" {% if requestParams['pengalaman_bekerja'] == i %}selected{% endif %}>{{i }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('pengalaman_bekerja') }}</span> -->
+	                        </div>
+	                        <div class="form-group{% if has_error('keaktifan') %} has-error{% endif %}">
+	                            <label for="">Keaktifan</label>
+	                            <input type="text" name="keaktifan" class="form-control" id="keaktifan" value="{{pencarikerja.keaktifan}}">
+	                           <!--  <select name="keaktifan" class="form-control" id="keaktifan">
+	                              <option value="{{pencarikerja.keaktifan}}">{{pencarikerja.keaktifan}}</option>
+	                              {% for i in
+	                                [
+	                                'Aktif','Pasif'
+	                                ] %}
+	                                <option value="{{ i }}" {% if requestParams['keaktifan'] == i %}selected{% endif %}>{{i }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('keaktifan') }}</span> -->
+	                        </div>
+	                        <div class="form-group{% if has_error('bidangpekerjaan') %} has-error{% endif %}">
+	                            <label for="bidangpekerjaan">Bidang pekerjaan yang diminati</label>
+	                             <input type="text" name="bidangpekerjaan" class="form-control" id="bidangpekerjaan" value="{{pencarikerja.bidangkerja.name}}">
+	                           <!--  <select name="bidangpekerjaan" id="bidangpekerjaan" class="form-control" required="required">
+	                                <option value="{{pencarikerja.bidangkerja.id}}">{{pencarikerja.bidangkerja.name}}</option>
+	                                {% for post in bidangpekerjaan %}
+	                                    <option value="{{ post.id }}" {% if requestParams.post == post.id %}SELECTED{% endif %}>{{ post.name }}</option>
+	                                {% endfor %}
+	                            </select>
+	                            <span class="help-block">{{ error('bidangpekerjaan') }}</span> -->
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="col-md-6 d-flex align-items-stretch grid-margin">
+	        <div class="row flex-grow">
+	            <div class="col-12">
+	                <div class="card">
+	                    <div class="card-body">
+	                        <div class="form-group">
+	                            <label for="">AK-1/Kartu kuning</label>
+	                            <input type="text" name="kartu_kuning" class="form-control" id="kartu_kuning" value="{{pencarikerja.kartu_kuning}}">
+	                        </div>
+	                        <div class="form-group">
+	                            <label for="keterangan">Keterangan</label><textarea rows="3" cols="90" name="keterangan" class="form-control">{{pencarikerja.keterangan}}</textarea>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+    </div>
+</fieldset>

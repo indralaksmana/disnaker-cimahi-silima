@@ -1,0 +1,132 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block page %}
+<style>
+    .hr-theme .hr-title .title-section {
+            padding-left: 10px;
+        }
+        #tentang .title-section.pencari-kerja {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 24px;
+            letter-spacing: normal;
+            color: #333333;
+            padding-left: 0;
+        }
+        ul.tentang-page_list.pencari-kerja {
+            padding-left: 60px;
+        }
+        ul.tentang-page_list.pencari-kerja li {
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 22px;
+            margin-bottom: 15px;
+        }
+        ul.tentang-page_list.pencari-kerja li::before {
+            position: absolute;
+            margin-top: 5px;
+            font-family: 'icon-bkol';
+            content: '\e805';
+            color: #de8a43;
+            font-size: 35px !important;
+            margin-left: -3.1rem;
+        }
+</style>
+<div id="tentang" class="tentang-page container">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="hr-theme d-flex" style="margin-bottom: 50px;">
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+                    <div class="hr-title">
+                        <h5 class="title-section">Daftar Sebagai Admin Pelatihan</h5>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="tentang-page_section" style="padding-left: 0 !important;">
+                            <div class="hr-theme d-flex">
+                                <div class="hr-title">
+                                    <h3 class="title-section pencari-kerja">Manfaat Mendaftarkan Admin Pelatihan dalam SILIMA :</h3>
+                                </div>
+                            </div>
+                            <ul class="tentang-page_list pencari-kerja">
+                                <li>Pelatihan dalam hal ini Lembaga Pelatihan Kerja di Kota Cimahi memiliki kesempatan untuk menyebarkan informasi terkait LPK yang dikelolanya kepada warga Kota Cimahi.</li>
+                                <li>Dengan tergabung dalam SILIMA maka LPK dapat mengelola pelatihan yang dilaksanakan dan menjaring peserta pelatihan.</li>
+                                <li>LPK akan memiliki website sendiri dalam SILIMA ini untuk dapat menginformasikan Profil LPK, Berita, Kegiatan dan Foto-foto LPK.</li>
+                            </ul>
+                        </div>
+
+							<div class="hr-title" style="text-align:center">
+                                    <h3 class="btn btn-sm btn-block btn-success" style="cursor:default">Silahkan mendaftar dengan menghubungi 022-6631883</h3>
+                                </div>
+                    </div>
+                    <!--
+                    <div class="col-md-6">
+                        <div class="tentang-page_section_right">
+                            <div class="hr-theme d-flex">
+                                <div class="hr-title">
+                                    <h3 class="title-section pencari-kerja">Isi Form Untuk Mendaftar</h3>
+                                </div>
+                            </div>
+                            <form id="form"  method="POST" style="padding-top: 20px;">
+                                <div class="row">
+                                    <div class="col-12" style="border-bottom: 2px solid #3b3d93;margin-bottom: 1rem;">
+                                        <div class="form-group  row input-group-sm{% if has_error('lpk_id') %} has-error{% endif %}">
+                                            <label class="col-sm-4 col-form-label" for="kecamatan">Nama LPK
+                                                <span class="require">*</span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                            <select  class="form-control" name="lpk_id" required>
+                                                <option  value="">Pilih LPK</option>
+                                                {% for r in lpk %}
+                                                    <option value="{{r.id}}">{{r.nama_lpk}}</option>
+                                                {% endfor %}
+                                                </select>
+                                                <span class="help-block">{{ error('lpk_id') }}</span>
+                                            </div>
+                                        </div>
+                                        {{ form.text('fullname', requestParams['fullname'], 'fullname',
+                                        'Nama Lengkap', null, null, 'fa-user-circle') }}
+                                        {{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email',
+                                        'fa-envelope') }}
+                                        {{ form.text('phonenumber', requestParams['phonenumber'], 'phonenumber', 'Nomor Telepon', null, 'phonenumber',
+                                        'fa-phone') }}
+                                        
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form.text('username', requestParams['username'], 'username', 'Username',
+                                        null, 'username', 'fa-user-circle-o') }}
+                                        {{ form.text('password', null, 'password', 'Password', null,
+                                        'password','fa-key') }}
+                                        {{ form.text('password-confirm', null, 'password-confirm', 'Confirm password',
+                                        null, 'password', 'fa-key') }}
+                                        {{ form.custom('recaptcha', recaptcha()) }}
+                                        <div class="form-group">
+                                            <div class="btn btn-sm btn-block btn-green disabled">Silahkan mendaftar melalui email/telp dibawah</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ csrf() }}
+                            </form>
+                        </div>
+-->
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block javascript %}
+    {{ recaptchaJs() }}
+{% endblock %}

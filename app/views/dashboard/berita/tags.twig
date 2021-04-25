@@ -1,0 +1,156 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Blog Admin{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('assets/dashboard/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}"
+    rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
+<div id="app">
+    {% if auth.hasAccess('blog_tags.view') %}
+    <page-header></page-header>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="collapse" id="collapseAdd">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            TAMBAH TAGS BERITA BARU
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <div class="panel">
+                            <div class="panel-body">
+                                {% if auth.hasAccess('blog_tags.create') %}
+                                <form action="{{ path_for('admin-blog-tags-add') }}" method="POST" role="form">
+
+                                    <div class="form-group col-lg-6">
+                                        <label for="tag_name">Nama Tags <span style="color:red;">*</span></label>
+                                        <div class="form-line">
+                                            <input type="text" name="tag_name" class="form-control" id="tag_name"
+                                                placeholder="Nama Tags" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="tag_slug">Slug Tags <span style="color:red;">*</span></label>
+                                        <div class="form-line">
+                                            <input type="text" name="tag_slug" class="form-control" id="tag_slug"
+                                                placeholder="Nama Tags" required="required">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <button type="submit"
+                                            class="btn btn-primary m-t-15 waves-effect">SIMPAN</button>
+                                        <a class="btn btn-danger m-t-15 waves-effect" data-toggle="collapse"
+                                            href="#collapseAdd" role="button" aria-expanded="false"
+                                            aria-controls="collapseAdd">BATAL
+                                        </a>
+                                    </div>
+                                    {{ csrf() }}
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Exportable Table -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        LIST TAGS BERITA
+                    </h2>
+                </div>
+                <div class="body">
+                    <table width="100%" class="table table-responsive table-bordered table-striped table-hover dataTable"
+                        id="tags-table">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Slug</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tag in tags %}
+                            <tr>
+                                <td>{{ tag.name }}</td>
+                                <td>{{ tag.slug }}</td>
+                                <td>
+                                    {% if auth.hasAccess('blog_tags.update') %}
+                                    <a href="{{ path_for('admin-blog-tags-edit', {'tag_id': tag.id}) }}"
+                                        class="btn bg-blue btn-sm waves-effect"><i class="material-icons">edit</i>
+                                    </a>
+                                    {% endif %}
+                                    {% if auth.hasAccess('blog_tags.delete') %}
+                                    <form action="{{ path_for('admin-blog-tags-delete') }}" method="post"
+                                        style="display: inline;">
+                                        <input type="hidden" name="tag_id" value="{{ tag.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn bg-red btn-sm waves-effectswal-confirm"
+                                            data-swtitle="Are you sure?"
+                                            data-swmessage="This category will be permanently deleted.">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Exportable Table -->
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% include 'dashboard/scripts/datatables.twig' %}
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+
+        $('#tags-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+    });
+</script>
+<script>
+    Vue.component('page-header', {
+        data() {
+            return {
+                title: 'Tags Berita',
+                add: 'Tambah'
+            }
+        },
+        template: `
+                <div class="block-header">
+                <a data-toggle="collapse" href="#collapseAdd" role="button" aria-expanded="false" aria-controls="collapseAdd"
+                    class="btn bg-teal waves-effect">
+                    <i class="material-icons">add</i>
+                    <span v-text="add + ' ' + title + ' ' + 'Baru'"></span>
+                </a>
+                </div>
+                `
+    })
+    var vm = new Vue({
+        el: '#app',
+    }); 
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+
+  <div class="col-sm-12 p-3">
+  <div class="input-group">
+  <input data-jplist-control="textbox-filter" data-group="list-lowongan" data-name="my-filter-2"  type="text" value="" placeholder="Filter Berdasarkan Nama" data-clear-btn-id="author-clear-btn" class="form-control"/>
+  <div class="input-group-append">
+    <button class="btn btn-secondary" type="button" id="author-clear-btn">Clear</button>
+  </div>
+</div>
+</div>
+
+<form action="{{path_for('minisite-perusahaan')}}" method="GET" style="width: 100%">
+  <div class="col-sm-12 p-3">
+    <div class="hr-theme ">
+      <div class="hr-title">
+        <h5 class="title-section">LOWONGAN KERJA MAGANG</h5>
+      </div>
+      <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+    <ul class="kategori-list">
+        {% for r in jobs %}
+        <li class="d-flex justify-content-start align-items-center">
+          <a href="{{path_for('job_detail', {'year': r.publish_at|date("Y"), 'month': r.publish_at|date("m"), 'day': r.publish_at|date("d"), 'slug': r.slug})}}">
+            {{r.nama_lowongan}}
+          </a>
+        </li>
+        {% endfor %}
+    </ul>
+  </div>
+  <div class="col-sm-12 p-3">
+    <div class="hr-theme ">
+      <div class="hr-title">
+        <h5 class="title-section">INFO PELATIHAN</h5>
+      </div>
+      <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+    
+    {% for r in pelatihans %}
+    <div class="pelatihan-list">
+      <a class="pelatihan-list_title" href="{{path_for('pelatihan-post', {'year': r.publish_at|date("Y"), 'month': r.publish_at|date("m"), 'day': r.publish_at|date("d"), 'slug': r.slug})}}">
+        <h5 class="">{{r.title}}</h5>
+      </a>
+      <div class="pelatihan-list_info d-flex row my-3">
+        <small class="col-4" style="max-width: 300px;overflow: hidden;white-space: nowrap;display: block;text-overflow: ellipsis;">
+          <i class="icon-calendar"></i><span>{{r.start_date}}</span>
+        </small>
+        <small class="col-4" style="max-width: 300px;overflow: hidden;white-space: nowrap;display: block;text-overflow: ellipsis;">
+          <i class="icon-location"></i><span>{{r.end_date}}</span>
+        </small>
+      </div>
+      <div class="pelatihan-list_status row">
+        <span class="col-md-2 col-2" for="">Status</span>
+        {% if r.status == 1 %}
+        <div class="col-md-10 col-10">
+          <span class="span-status status-buka">BUKA PENDAFTARAN</span>
+        </div>
+        {% endif %}
+        {% if r.status == 2 %}
+        <div class="col-md-10 col-10">
+          <span class="span-status  status-seleksi">PROSSES SELEKSI</span>
+        </div>
+        {% endif %}
+        {% if r.status == 0 %}
+        <div class="col-md-10 col-10">
+          <span class="span-status status-tutup">TUTUP</span>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</form>

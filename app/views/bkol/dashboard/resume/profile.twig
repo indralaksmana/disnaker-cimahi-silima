@@ -1,0 +1,343 @@
+<form action="{{ currentRoute }}" method="POST" role="form">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group{% if has_error('photoprofile') %} has-error{% endif %}">
+                <label for="cl_upload">Foto Scan Photo (3x4)</label>
+                <span class="help-block">{{ error('photoprofile') }}</span>
+                {% if hasCloudinary %}
+                    <div class="form-group">
+                        <a class="btn btn-block upload-featured-cloudinary">
+                            <span class="fa fa-upload"></span> Cloudinary
+                        </a>
+                    </div>
+                {% endif %}
+                    <div class="form-group" id="featured_thumbnail" delete-token="">
+                    {% if requestParams.photoprofile  != "" %}
+                        <img src="https://placehold.it/400x210?text=No+Featured+Photo" class="img-responsive" alt="Image" style="width: 100%;">
+                    {% else %}
+                        <img src="{{ auth.user.photoprofile }}" class="img-responsive" alt="Image" style="width: 100%;">
+                    {% endif %}
+                    </div>
+                    <input type="hidden" name="photoprofile" id="featured_image" value="{% if requestParams.photoprofile %}{{requestParams.photoprofile}}{% else %}{{auth.user.photoprofile}}{% endif %}">
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-group{% if has_error('upload_file') %} has-error{% endif %}">
+                <label for="cl_upload">File Upload CV</label>
+                <span class="help-block">{{ error('upload_file') }}</span>
+                {% if hasCloudinary %}
+                    <div class="form-group">
+                        <a class="upload_file">
+                            <span class="fa fa-upload"></span> Upload
+                        </a>
+                    </div>
+                {% endif %}
+                    <div class="form-group" id="upload_file" delete-token="">
+                    {% if requestParams.upload_file  != "" %}
+                        <span>Belum Ada File CV</span>
+                    {% else %}
+                        <a target="_blank" href="{{ auth.user.upload_file }}">Lihat CV</a>
+                    {% endif %}
+                    </div>
+                    <input type="hidden" name="upload_file" id="upload_file_link" value="{% if requestParams.upload_file %}{{requestParams.upload_file}}{% else %}{{auth.user.upload_file}}{% endif %}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class=" col-md-6 form-group{% if has_error('nik') %} has-error{% endif %}">
+                    <label for="nik">No KTP</label>
+                    <input type="text" name="nik" class="form-control" id="nik" placeholder="No KTP" value="{% if requestParams.nik %}{{requestParams.nik}}{% else %}{{auth.user.nik}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('fullname') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('fullname') %} has-error{% endif %}">
+                    <label for="fullname">Nama Lengkap</label>
+                    <input type="text" name="fullname" class="form-control" id="fullname" placeholder="Nama Lengkap" value="{% if requestParams.fullname %}{{requestParams.fullname}}{% else %}{{auth.user.fullname}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('fullname') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('username') %} has-error{% endif %}">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Username" value="{% if requestParams.username %}{{requestParams.username}}{% else %}{{auth.user.username}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('username') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('placeofbirth') %} has-error{% endif %}">
+                    <label for="placeofbirth">Tempat  Lahir</label>
+                    <input type="text" name="placeofbirth" class="form-control" id="placeofbirth" placeholder="Tempat Lahir" value="{% if requestParams.placeofbirth %}{{requestParams.placeofbirth}}{% else %}{{auth.user.placeofbirth}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('placeofbirth') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('dateofbirth') %} has-error{% endif %}">
+                    <label for="dateofbirth">Tanggal Lahir</label>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select class="form-control" id="dateofbirth" name="dateofbirth" required="required">
+                                <option value="{% if requestParams.dateofbirth %}{{requestParams.dateofbirth}}{% else %}{{auth.user.dateofbirth }}{% endif %}">{% if requestParams.dateofbirth %}{{requestParams.dateofbirth}}{% else %}{{auth.user.dateofbirth }}{% endif %}</option>
+                                {% for i in 1..31 %}
+                                    <option value="{{ i }}"
+                                        {% if requestParams.dateofbirth == i %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ i }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('dateofbirth') }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" id="monthofbirth" name="monthofbirth" required="required">
+                                <option value="{% if requestParams.monthofbirth %}{{requestParams.monthofbirth}}{% else %}{{auth.user.monthofbirth }}{% endif %}">{% if requestParams.monthofbirth %}{{requestParams.monthofbirth}}{% else %}{{auth.user.monthofbirth }}{% endif %}</option>
+                                {% for i in 1..12 %}
+                                    <option value="{{ i }}"
+                                        {% if requestParams.monthofbirth == i %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ i }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('monthofbirth') }}</span>
+                        </div>
+                        <div class="col-md-5">
+                            <select class="form-control" id="yearofbirth" name="yearofbirth" required="required">
+                                <option value="{% if requestParams.yearofbirth %}{{requestParams.yearofbirth}}{% else %}{{auth.user.yearofbirth }}{% endif %}">{% if requestParams.yearofbirth %}{{requestParams.yearofbirth}}{% else %}{{auth.user.yearofbirth }}{% endif %}</option>
+                                {% for i in
+                                    [
+                                        'Januari',
+                                        'Februari',
+                                        'Maret',
+                                        'April',
+                                        'Mei',
+                                        'Juni',
+                                        'Juli',
+                                        'Agustus',
+                                        'September',
+                                        'Oktober',
+                                        'November',
+                                        'Desember'
+                                    ] %}
+                                    <option value="{{ i }}"
+                                        {% if requestParams.yearofbirth == i %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ i }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('yearofbirth') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('gender') %} has-error{% endif %}">
+                    <label for="gender">Jenis Kelamin</label>
+                    <select class="form-control" id="gender" name="gender" required="required">
+                        <option value="{% if requestParams.gender %}{{requestParams.gender}}{% else %}{{auth.user.gender }}{% endif %}">{% if requestParams.gender %}{{requestParams.gender}}{% else %}{{auth.user.gender }}{% endif %}</option>
+                        {% for i in
+                            [
+                                'Laki - Laki',
+                                'Perempuan'
+                            ] %}
+                            <option value="{{ i }}"
+                                {% if requestParams.gender == i %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('gender') }}</span>
+                </div>
+
+                <div class=" col-md-6 form-group{% if has_error('religion') %} has-error{% endif %}">
+                    <label for="religion">Agama</label>
+                    <select class="form-control" id="religion" name="religion" required="required">
+                        <option value="{% if requestParams.religion %}{{requestParams.religion}}{% else %}{{auth.user.religion }}{% endif %}">{% if requestParams.religion %}{{requestParams.religion}}{% else %}{{auth.user.religion }}{% endif %}</option>
+                        {% for i in
+                            [
+                                'Islam',
+                                'Budha',
+                                'Hindu',
+                                'Kristen',
+                                'Kristen Katolik',
+                                'Kristen Protestan'
+                            ] %}
+                            <option value="{{ i }}"
+                                {% if requestParams.religion == i %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('gender') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('nationality') %} has-error{% endif %}">
+                    <label for="nationality">Kewarganegaraan</label>
+                    <select class="form-control" id="nationality" name="nationality" required="required">
+                        <option value="{% if requestParams.nationality %}{{requestParams.nationality}}{% else %}{{auth.user.nationality }}{% endif %}">{% if requestParams.nationality %}{{requestParams.nationality}}{% else %}{{auth.user.nationality }}{% endif %}</option>
+                        {% for i in
+                            [
+                                'WNI',
+                                'WNA'
+                            ] %}
+                            <option value="{{ i }}"
+                                {% if requestParams.nationality == i %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('gender') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('maritalstatus') %} has-error{% endif %}">
+                    <label for="maritalstatus">Status</label>
+                    <select class="form-control" id="maritalstatus" name="maritalstatus" required="required">
+                        <option value="{% if requestParams.maritalstatus %}{{requestParams.maritalstatus}}{% else %}{{auth.user.maritalstatus }}{% endif %}">{% if requestParams.maritalstatus %}{{requestParams.maritalstatus}}{% else %}{{auth.user.maritalstatus }}{% endif %}</option>
+                        {% for i in
+                            [
+                                'Lajang',
+                                'Kawin',
+                                'Cerai'
+                            ] %}
+                            <option value="{{ i }}"
+                                {% if requestParams.maritalstatus == i %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('maritalstatus') }}</span>
+                </div>
+
+                <div class=" col-md-6 form-group{% if has_error('lasteducation') %} has-error{% endif %}">
+                    <label for="lasteducation">Pendidikan Terakhir</label>
+                    <select class="form-control" id="lasteducation" name="lasteducation" required="required">
+                        <option value="{% if requestParams.lasteducation %}{{requestParams.lasteducation}}{% else %}{{auth.user.lasteducation }}{% endif %}">{% if requestParams.lasteducation %}{{requestParams.lasteducation}}{% else %}{{auth.user.lasteducation }}{% endif %}</option>
+                        {% for i in
+                            [
+                                'SD',
+                                'SMP',
+                                'SMA',
+                                'SMK',
+                                'D1',
+                                'D2',
+                                'D3',
+                                'D4',
+                                'S1',
+                                'S2',
+                                'S3',
+                                'Akta IV',
+                                'Akuntan',
+                                'Apoteker',
+                                'Kedokteran',
+                                'Keperawatan',
+                                'Notaris',
+                                'Ners'
+                            ] %}
+                            <option value="{{ i }}"
+                                {% if requestParams.lasteducation == i %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('lasteducation') }}</span>
+                </div>
+
+                <div class=" col-md-12 form-group{% if has_error('address') %} has-error{% endif %}">
+                    <label for="address">Alamat</label>
+                    <textarea name="address" class="form-control" id="address" required="required">
+                        {% if requestParams.address %}{{requestParams.address}}{% else %}{{auth.user.address}}{% endif %}
+                    </textarea>
+                    <span class="help-block">{{ error('address') }}</span>
+                </div>
+
+                <div class=" col-md-6 form-group{% if has_error('districts') %} has-error{% endif %}">
+                    <label for="districts">Kecamatan / Keluaraan</label>
+                    <select class="form-control" id="districts" name="districts" required="required">
+                        <option value="{% if requestParams.districts %}{{requestParams.districts}}{% else %}{{auth.user.districts }}{% endif %}">{% if requestParams.districts %}{{requestParams.districts}}{% else %}{{auth.user.districts }}{% endif %}</option>
+                        {% for i in
+                            [
+                                'Cimahi Selatan / Cibeber / 40531',
+                                'Cimahi Selatan / Cibeureum / 40535',
+                                'Cimahi Selatan / Leuwigajah / 40532',
+                                'Cimahi Selatan / Melong / 40534',
+                                'Cimahi Selatan / Utama / 40533',
+                                'Cimahi Tengah / Baros / 40521',
+                                'Cimahi Tengah / Cigugur Tengah / 40522',
+                                'Cimahi Tengah / Cimahi  / 40522',
+                                'Cimahi Tengah / Karangmekar  / 40523',
+                                'Cimahi Tengah / Padasuka  / 40526',
+                                'Cimahi Tengah / Setiamanah  / 40524',
+                                'Cimahi Utara / Cibabat  / 40513',
+                                'Cimahi Utara / Cipageran  / 40511',
+                                'Cimahi Utara / Citeureup  / 40512',
+                                'Cimahi Utara / Pasirkaliki  / 40514'
+                            ] %}
+                            <option value="{{ i }}"
+                                {% if requestParams.districts == i %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('districts') }}</span>
+                </div>
+
+
+                <div class=" col-md-6 form-group{% if has_error('email') %} has-error{% endif %}">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{% if requestParams.email %}{{requestParams.email}}{% else %}{{auth.user.email}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('email') }}</span>
+                </div>
+
+                 <div class=" col-md-6 form-group{% if has_error('phonenumber') %} has-error{% endif %}">
+                    <label for="phonenumber">Nomor Telepon</label>
+                    <input type="phone" name="phonenumber" class="form-control" id="phonenumber" placeholder="Nomor Telepon" value="{% if requestParams.phonenumber %}{{requestParams.phonenumber}}{% else %}{{auth.user.phonenumber}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('phonenumber') }}</span>
+                </div>
+
+
+                <hr>
+                <div class=" col-md-6 form-group{% if has_error('expectedsalary') %} has-error{% endif %}">
+                    <label for="expectedsalary">Gajih Yang Di Harapkan</label>
+                    <input type="text" name="expectedsalary" class="form-control" id="expectedsalary" placeholder="Gajih Yang Di Harapkan" value="{% if requestParams.expectedsalary %}{{requestParams.expectedsalary}}{% else %}{{auth.user.expectedsalary}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('expectedsalary') }}</span>
+                </div>
+                <div class=" col-md-6 form-group{% if has_error('worklocation') %} has-error{% endif %}">
+                    <label for="worklocation">Lokasi Kerja Yang Di inginkan</label>
+                    <input required="required" type="text" name="worklocation" class="form-control" id="worklocation" placeholder="Lokasi Kerja Yang Di inginkan" value="{% if requestParams.worklocation %}{{requestParams.worklocation}}{% else %}{{auth.user.worklocation}}{% endif %}">
+                    <span class="help-block">{{ error('worklocation') }}</span>
+                </div>
+                <div class="col-md-12 form-group{% if has_error('additionalinformation') %} has-error{% endif %}">
+                    <label for="additionalinformation">Informasi Tambahan</label>
+                    <textarea name="additionalinformation" class="form-control" id="additionalinformation" placeholder="Informasi Tambahan">
+                        {% if requestParams.additionalinformation %}{{requestParams.additionalinformation}}{% else %}{{auth.user.additionalinformation}}{% endif %}
+                    </textarea>
+                    <span class="help-block">{{ error('additionalinformation') }}</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group ">
+            {{ csrf() }}
+            <input type="submit" name="update_account" value="Update Account" class="btn d-block btn-primary form-control" />
+        </div>
+    </div>
+</form>

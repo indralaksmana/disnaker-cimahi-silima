@@ -1,0 +1,319 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}}
+|| Add New Blog Post{% endblock %}
+
+{% block header_include %}
+<link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+<style media="screen">
+  hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid #3b3d93;
+  margin: 1em 0;
+  padding: 0;
+}
+  </style>
+{% endblock %}
+
+{% block page %}
+<div class="bg-white">
+  <div id="form-messages" class="alert success" role="alert" style="display: none;"></div>
+  <section class="p-3">
+    <form action="{{ currentRoute }}" id="myAwesomeForm" method="POST" role="form"
+      enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <div class="hr-theme">
+            <div class="hr-title">
+              <h3 class="title-section">Profile Pemerintah</h3>
+            </div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+          </div>
+        </div>
+        <div class="col-md-4 resume-item">
+          <div class="form-group logo-image">
+            <label for="item-img" class="cabinet center-block">
+              <img src="" class="gambar img-fluid" id="item-img-output" />
+            </label>
+            <label class="btn btn-secondary btn-small w-100 btn-upload" for="item-img">UPDATE LOGO PEMERINTAH</label>
+            <input id="logo" hidden="hidden" name="logo_upload">
+            <input id="item-img" hidden="hidden" type="file" accept="image/*" class="item-img file center-block" />
+          </div>
+        </div>
+        <div class="col-md-8 resume-item">
+          {% if p.logo != '' %}
+          <input type="hidden" value="{{ p.logo }}" name="logo">
+          {% else %}
+          {% endif %}
+
+          <div class="form-group input-group-sm{% if has_error('nama_instansi') %} has-error{% endif %} row">
+            <label style="background-color: #efefef;" for="nama_instansi" class="col-sm-4 col-form-label">Nama Perusahaan</label>
+            <div class="col-sm-8">
+              <input type="text" name="nama_instansi" class="form-control" id="nama_instansi" placeholder="Nama Perusahaan"
+                value="{% if r.nama_instansi %}{{r.nama_instansi}}{% else %}{{p.nama_instansi}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('nama_instansi') }}</span>
+            </div>
+          </div>
+          <div class="form-group row input-group-sm{% if has_error('jenis_instansi') %} has-error{% endif %}">
+              <label style="background-color: #efefef;" for="nama_instansi" class="col-sm-4 col-form-label">Jenis Instansi</label>
+              <div class="col-sm-8">
+                <select name="jenis_instansi_id" id="jenis_instansi" class="form-control" required="required">
+                    <option value="{{p.jenis_instansi_id}}">{{p.instansi.nama_instansi}}</option>
+                    {% for jenisinstansi in jenisinstansi %}
+                      <option name="jenis_instansi" value="{{ jenisinstansi.id }}">{{
+                        jenisinstansi.nama_instansi }}</option>
+                    {% endfor %}
+                  </select>
+                <label class="error">{{ error('jenis_instansi') }}</label>
+              </div>
+          </div>
+        
+        <!--
+                <div class="form-group row{% if has_error('slug') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Slug</label>
+            <div class="col-sm-8">
+              <input type="text" name="slug" class="form-control" id="slug" placeholder="slug"
+                value="{% if r.slug %}{{r.slug}}{% else %}{{p.slug}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('slug') }}</span>
+            </div>
+          </div>
+          -->
+
+          <div class="form-group input-group-sm{% if has_error('alamat_instansi') %} has-error{% endif %} row">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Alamat</label>
+            <div class="col-sm-8">
+              <input type="text" name="alamat_instansi" class="form-control" id="alamat_instansi" placeholder="Alamat Perusahaan"
+                value="{% if r.alamat_instansi %}{{r.alamat_instansi}}{% else %}{{p.alamat_instansi}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('alamat_instansi') }}</span>
+            </div>
+          </div>
+          
+          <div class="form-group row{% if has_error('no_telp') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Nomor Telepon</label>
+            <div class="col-sm-8">
+              <input type="number" name="no_telp" class="form-control" id="no_telp" placeholder="Nomor Telepon"
+                value="{% if r.no_telp %}{{r.no_telp}}{% else %}{{p.no_telp}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('no_telp') }}</span>
+            </div>
+          </div>
+
+          <div class="form-group row{% if has_error('no_fax') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Nomor Fax</label>
+            <div class="col-sm-8">
+              <input type="number" name="no_fax" class="form-control" id="no_fax" placeholder="Nomor Telepon"
+                value="{% if r.no_fax %}{{r.no_fax}}{% else %}{{p.no_fax}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('no_fax') }}</span>
+            </div>
+          </div>
+          
+          <div class="form-group row{% if has_error('website') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Website</label>
+            <div class="col-sm-8">
+              <input type="text" name="website" class="form-control" id="website" placeholder="website" value="{% if r.website %}{{r.website}}{% else %}{{p.website}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('website') }}</span>
+            </div>
+          </div>
+          <div class="form-group row{% if has_error('email_instansi') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Email Instansi</label>
+            <div class="col-sm-8">
+              <input type="text" name="email_instansi" class="form-control" id="email_instansi" placeholder="Email Instansi" value="{% if r.email_instansi %}{{r.email_instansi}}{% else %}{{p.email_instansi}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('email_instansi') }}</span>
+            </div>
+          </div>
+          <div class="form-group row{% if has_error('nama_lengkap_admin') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-sm-4 col-form-label">Nama Lengkap Admin</label>
+            <div class="col-sm-8">
+              <input type="text" name="nama_lengkap_admin" class="form-control" id="nama_lengkap_admin" placeholder="Nama Lengkap Admin" value="{% if r.nama_lengkap_admin %}{{r.nama_lengkap_admin}}{% else %}{{p.nama_lengkap_admin}}{% endif %}"
+                required="required">
+              <span class="help-block">{{ error('nama_lengkap_admin') }}</span>
+            </div>
+          </div>
+          <div class="form-group row{% if has_error('alamat_instansi') %} has-error{% endif %}">
+            <label style="background-color: #efefef;" class="col-12 col-form-label">Alamat Instansi</label>
+            <textarea name="alamat_instansi" class="form-control " id="alamat_instansi" 
+              required="required" rows="4" cols="50">{{p.alamat_instansi}}</textarea>
+            <span class="help-block">{{ error('alamat_instansi') }}</span>
+          </div>
+          <div class="form-group row{% if has_error('gmap_embed') %} has-error{% endif %}">
+              <label class="col-sm-4 col-form-label" for="gmap_embed">Embed Google Map</label>
+              <div class="col-sm-8">
+                  <textarea name="gmap_embed" class="form-control">{{ p.gmap_embed }}</textarea>
+                  <span class="help-block">{{ error('gmap_embed') }}</span>
+              </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col"></div>
+              <div class="col">
+                
+              </div>
+              <div class="col">
+                <button type="submit" name="update_account" class="btn btn-third w-100">SIMPAN</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      
+      {{ csrf() }}
+    </form>
+  </section>
+</div>
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+        <div id="upload-demo" class="center-block"></div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" id="cropImageBtn" class="btn btn-primary">Potong</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% include 'bkol/js/texteditor.twig' %}
+<script src="{{base_url()}}/libraries/croppie/croppie.js"></script>
+<script type="text/javascript">
+  function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    var blob = new Blob(byteArrays, {
+      type: contentType
+    });
+    return blob;
+  }
+
+  // Start upload preview image
+  $(".gambar").attr("src", "{{p.logo}}");
+  var $uploadCrop,
+    tempFilename,
+    rawImg,
+    imageId;
+
+  function readFile(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('.upload-demo').addClass('ready');
+        $('#cropImagePop').modal('show');
+        rawImg = e.target.result;
+      }
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      swal("Sorry - you're browser doesn't support the FileReader API");
+    }
+  }
+  $uploadCrop = $('#upload-demo').croppie({
+    viewport: {
+      width: 200,
+      height: 200
+    },
+    boundary: {
+      width: 300,
+      height: 300
+    },
+    enforceBoundary: false,
+    enableExif: true
+  });
+  $('#cropImagePop').on('shown.bs.modal', function () {
+    // alert('Shown pop');
+    $uploadCrop.croppie('bind', {
+      url: rawImg
+    }).then(function () {
+      console.log('jQuery bind complete');
+    });
+  });
+
+  $('.item-img').on('change', function () {
+    imageId = $(this).data('id');
+    tempFilename = $(this).val();
+    $('#cancelCropBtn').data('id', imageId);
+    readFile(this);
+  });
+  $('#cropImageBtn').on('click', function (ev) {
+    $uploadCrop.croppie('result', {
+      type: 'base64',
+      format: 'jpeg',
+      size: {
+        width: 200,
+        height: 200
+      }
+    }).then(function (resp) {
+      $('#logo').val(resp);
+      $("#myAwesomeForm").submit(function (e) {
+        e.preventDefault();
+        appendFileAndSubmit();
+      });
+      $('#item-img-output').attr('src', resp);
+      $('#cropImagePop').modal('hide');
+
+      function appendFileAndSubmit() {
+        var form = document.getElementById("myAwesomeForm");
+        var ImageURL = resp;
+        // Split the base64 string in data and contentType
+        var block = ImageURL.split(";");
+        // Get the content type
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "iVBORw0KGg...."
+        // Convert to blob
+        var blob = b64toBlob(realData, contentType);
+        // Create a FormData and append the file
+        var fd = new FormData(form);
+        fd.append("logo_upload", blob);
+        // Submit Form and upload file
+        $.ajax({
+          url: "{{path_for('dashboardpemerintah-profile')}}",
+          data: fd, // the formData function is available in almost all new browsers.
+          type: "POST",
+          contentType: false,
+          processData: false,
+          cache: false,
+          // Change this according to your response from the server.
+          error: function (err) {
+            console.error(err);
+            location.reload(true);
+          },
+          complete: function () {
+            console.log("Request finished.");
+            location.reload(true);
+          }
+        });
+      }
+    });
+  });
+  // End upload preview image
+</script>
+{% endblock %}

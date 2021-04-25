@@ -1,0 +1,87 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block page %}
+
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">Alumni BKK {{nama}}</h3>
+    </div>
+    
+    <form id="form_upload" enctype="multipart/form-data" action="{{ path_for('bkk-dashboard-jurusan-uploadaction') }}" method="post" style="display: inline; margin-left: 10px;">
+        <input type="hidden" name="id" value="{{data.id}}" />
+        <input type="hidden" name="nama" value="{{nama}}" />
+        {{csrf()}}
+        <input id="xls" type="file" name="xls" />
+    </form>
+
+  </div>
+  <br/>
+  <a target="_blank" href="https://drive.google.com/file/d/1-LjQXLNqjEF-xQLnHwhmcd6vi_m1jb9x/view?usp=sharing">download template xlsx</a>
+  <p/>
+  <div class="row">
+      <div class="col-md-7"></div>
+      <div class="col-md-5">
+        <form action="{{ path_for('bkk-dashboard-jurusan-upload', { 'id': data.id, 'nama': nama }) }}" method="post" class="d-flex">
+          {{csrf()}}
+          <input type="text" name="tahun_lulus" class="form-control" placeholder="Tahun Lulus">
+          <button type="submit" id="filter_tahun" class="btn btn-warning">Filter</button>
+          <a href="{{ path_for('bkk-dashboard-jurusan-upload', { 'id': data.id, 'nama': nama }) }}" class="btn btn-primary">Reset</a>
+        </form>
+      </div>
+  </div>
+  <p/>
+  <div class="table-responsive">
+        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="posts-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Nim</th>
+                    <th>Email</th>
+                    <th>Tahun Lulus</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users|length == 0 %}
+                    <tr class="text-center">
+                        <td colspan="6">Belum data alumni di upload</td>
+                    </tr>
+                {% endif %}
+                {% set count = 0 %}
+                {% for u in users %}
+                    {% set count = count + 1 %}
+                <tr>
+                    <td>{{ count }}</td>
+                    <td>{{u.fullname}}</td>
+                    <th>{{u.nim}}</th>
+                     <th>{{u.email}}</th>
+                    <th>{{u.tahun_lulus}}</th>
+                    <th><a class="btn btn-sm btn-success" href="{{path_for('bkk-dashboard-detail-alumni', {'username': u.nim})}}">Detail</a></th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>  
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$(document).ready(function () {
+    var url = $('meta[name="url"]').attr('content');
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $('#xls').change(function () {
+      var id = ""+{{data.id}};
+      $("#form_upload").submit();
+    });
+  });
+</script>
+{% endblock %}
+

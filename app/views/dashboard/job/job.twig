@@ -1,0 +1,293 @@
+
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || List Lowongan Kerja{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('assets/dashboard/plugins/data-table/skin/bootstrap/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/dashboard/plugins/data-table/skin/bootstrap/css/responsive.bootstrap4.min.css') }}" rel="stylesheet">
+<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"> -->
+<style>
+    .table td, .table th {
+        vertical-align: middle !important;
+        padding: 7px !important;
+        white-space: normal !important;
+    }
+    .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link{
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+</style>
+{% endblock %}
+
+{% block page %}
+<div id="app">
+    <div class="block-header">
+        
+    </div>
+    <!-- Exportable Table -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <a href="{{ path_for('admin-job-add') }}" class="btn bg-teal pull-right waves-effect">
+                        <i class="material-icons">add</i>
+                        <span>Tambah Lowongan Baru</span>
+                    </a>
+                    <h2>LIST LOWONGAN KERJA</h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive inline-button-actions">
+                        <table width="100%" class="table table-bordered table-striped table-hover dataTable" id="posts-table">
+                            <thead>
+                                <tr>
+                                    <th>Di Buat Tanggal</th>
+                                    <th>Judul Pekerjaan</th>
+                                    <th>Kategori</th>
+                                    <th>Tanggal Publikasi</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="row clearfix">
+    {% if auth.hasAccess('job_categories.view') %}
+        <div class="col-md-6 col-sm-12">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h2 class="h2">Berita Categories</h2>
+                </div>
+                <table width="100%" class="table table-striped table-bordered table-hover" id="categories-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                            <tr>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.slug }}</td>
+                                <td>
+                                    {% if auth.hasAccess('job_categories.update') and category.id != 1 %}
+                                            <a href="{{ path_for('admin-job-categories-edit', {'category': category.id}) }}" class="btn btn-primary waves-effect">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                    {% endif %}
+                                    {% if auth.hasAccess('job_categories.delete') and category.id != 1 %}
+                                        <form action="{{ path_for('admin-job-categories-delete') }}" method="post" style="display: inline;">
+                                            <input type="hidden" name="category_id" value="{{ category.id }}" />
+                                            {{csrf()}}
+                                            <button class="btn btn-danger waves-effect swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="This category will be permanently deleted.">
+                                            <i class="material-icons">delete</i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        <div class="col-md-6 col-sm-12">
+            {% if auth.hasAccess('job.category.create') %}
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h2 class="h3">Tambah Kategori Baru</h2>
+                </div>
+                <form action="{{ path_for('admin-job-categories-add') }}" method="POST" role="form">
+
+                    <div class="form-group col-md-6">
+                        <label for="">Name</label>
+                        <input type="text" name="category_name" class="form-control" id="category_name" placeholder="Category Name">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="">Slug</label>
+                        <input type="text" name="category_slug" class="form-control" id="category_slug" placeholder="Category Slug">
+                    </div>
+
+                    <div class="form-group col-md-4 col-md-offset-4">
+                        <button type="submit" class="btn btn-primary btn-primary">Tambah Kategori <span class="fa fa-fw fa-arrow-right"></span></button>
+                    </div>
+                    {{ csrf() }}
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+    </div>
+
+    <div class="row">
+    {% if auth.hasAccess('job_tags.view') %}
+        <div class="col-md-6 col-sm-12">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2 class="h2">Tags Berita</h2>
+            </div>
+            <table width="100%" class="table table-striped table-bordered table-hover" id="tags-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Slug</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tag in tags %}
+                        <tr>
+                            <td>{{ tag.name }}</td>
+                            <td>{{ tag.slug }}</td>
+                            <td>
+                                {% if auth.hasAccess('job_tags.update') %}
+                                    <a href="{{ path_for('admin-job-tags-edit', {'tag_id': tag.id}) }}" class="btn btn-primary btn-xs">
+                                        <span class="fa fa-fw fa-pencil"></span>
+                                    </a>
+                                {% endif %}
+                                {% if auth.hasAccess('job_tags.delete') %}
+                                    <form action="{{ path_for('admin-job-tags-delete') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="tag_id" value="{{ tag.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-danger btn-xs swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="This tag will be permanently deleted.">
+                                            <span class="fa fa-fw fa-close"></span>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+        {% if auth.hasAccess('job_tags.create') %}
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                     <h3 class="h3">Tambah Tag Baru</h3>
+                </div>
+
+                <form action="{{ path_for('admin-job-tags-add') }}" method="POST" role="form">
+
+                    <div class="form-group col-md-6">
+                        <label for="">Name</label>
+                        <input type="text" name="tag_name" class="form-control" id="tag_name" placeholder="Category Name">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="">Slug</label>
+                        <input type="text" name="tag_slug" class="form-control" id="tag_slug" placeholder="Category Slug">
+                    </div>
+
+                    <div class="form-group col-md-4 col-md-offset-4">
+                        <button type="submit" class="btn btn-primary btn-primary form-control">Tambah Tag <span class="fa fa-fw fa-arrow-right"></span></button>
+                    </div>
+                    {{ csrf() }}
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <!-- Jquery DataTable Plugin Js -->
+    {% include 'dashboard/scripts/datatables.twig' %}
+
+    
+
+    <!-- Custom Js -->
+    <script src="{{ asset('assets/dashboard/js/admin.js') }}"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+
+        $('#posts-table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            responsive: true,
+            stateSave: true,
+            "processing": true,
+            "serverSide": true,
+            columnDefs: [
+                { "width": "124px", "targets": [4] }
+            ],
+            "ajax":{
+                     "url": "/dashboard/job/datatables",
+                     "dataType": "json",
+                     "type": "GET"
+                   },
+            "columns": [
+                { "data": "created_at" },
+                { "data": "nama_lowongan" },
+                { "data": "category" },
+                { "data": "publish_at" },
+                {
+                    "data": function( data ){
+                        return data;
+                    },
+                    "orderable": false,
+                    "render": function ( data ) {
+                        var result = "";
+                        {% if auth.hasAccess('job.edit') %}
+                            var result = result + ' <a href="/dashboard/job/edit/'+data.id+'" class="btn btn-primary btn-sm waves-effect">'+
+                                '<i class="material-icons">edit</i>'+
+                            '</a>';
+                            if (data.status == 1) {
+                                var result = result + ' <form action="{{ path_for('admin-job-unpublish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-warning btn-sm waves-effect swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="Lowongan ini tidak akan di publikasikan.">'+
+                                        '<i class="material-icons">close</i>'+
+                                    '</button>'+
+                                '</form>';
+                            }else{
+                                var result = result + ' <form action="{{ path_for('admin-job-publish') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-success btn-sm waves-effect swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="Lowongan Kerja ini akan di publikasikan">'+
+                                        '<i class="material-icons">check</i>'+
+                                    '</button>'+
+                                '</form>'+
+                                ' <form action="{{ path_for('admin-job-delete') }}" method="post" style="display: inline;">'+
+                                    '<input type="hidden" name="post_id" value="'+data.id+'" />'+
+                                    '{{csrf()}}'+
+                                    '<button class="btn btn-danger btn-sm waves-effect swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="Lowongan Kerja Ini akan Di Hapus Secara Permanen">'+
+                                        '<i class="material-icons">delete</i>'+
+                                    '</button>'+
+                                '</form>';
+                            }
+                        {% endif %}
+
+                        return result;
+                    }
+                }
+            ],
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                if (aData.status) {
+                    $('td', nRow).addClass('success');
+                }else{
+                    $('td', nRow).addClass('danger');
+                }
+            }
+        });
+
+        $('#tags-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+        $('#categories-table').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+    </script>
+{% endblock %}

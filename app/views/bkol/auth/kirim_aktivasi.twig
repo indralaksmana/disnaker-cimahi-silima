@@ -1,0 +1,54 @@
+{% extends 'bkol/bkol.twig' %}
+{% import 'bkol/macros/form.twig' as form %}
+
+{% block stylesheets %}
+<style>
+#form-reactivation {
+    padding-top: 20px;
+    padding-left: 160px;
+    padding-right: 160px;
+}
+@media screen and (max-width: 425px) {
+    #form-reactivation {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+</style>
+{% endblock %}
+
+{% block title %}
+{{config['site-name']}}
+{% endblock %}
+
+{% block page %}
+<div class="row" style="background: url('{{ base_url() }}/img/bkol01.jpg');">
+    <div class="container">
+        <div class="card-body text-white" style="background: rgba(0,0,0,.3);margin: 0;">
+
+            <div class="row text-center pt-4">
+                <div class="col-md-12">
+                    <h1>Kirim Ulang Aktivasi</h1>
+                    {% include 'bkol/inc/flash.twig' %}
+                </div>
+            </div>
+
+            <div class="row text-center pt-4">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                <p>Masukkan NIK Anda. Kemudian klik tombol kirim untuk mengirim ulang aktivasi akun Anda.</p>
+                <form id="form-reactivation" action="{{ path_for('resend-activation') }}" method="POST">
+                   {{ form.text('no_ktp', requestParams['no_ktp'], 'identity_number',
+                        'Nomor Identitas', null, 'text', 'fa-user-circle', 16, true) }}
+                    {{ csrf() }}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-block btn-orange">KIRIM AKTIVASI</button>
+                    </div>
+                </form>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

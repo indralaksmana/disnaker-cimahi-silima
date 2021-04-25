@@ -1,0 +1,99 @@
+{% import 'bkol/macros/form.twig' as form %}
+<form id="form" action="{{ path_for('registerjobseeker') }}" method="POST">
+    <div class="row">
+        <div class="col">
+            {{ form.text('username', requestParams['username'], 'username', 'Username', null, 'username', 'fa-user') }}
+            {{ form.text('password', null, 'password', 'Password', null, 'password','fa-key') }}
+            {{ form.text('password-confirm', null, 'password-confirm', 'Confirm password', null, 'password', 'fa-key') }}
+            {{ form.text('nama_lengkap', requestParams['nama_lengkap'], 'first_name', 'Nama Lengkap', null, null, 'fa-address-book') }}
+            {{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email', 'fa-envelope') }}
+        </div>
+        <div class="col">
+        {{ form.textarea('alamat_lengkap', requestParams['alamat_lengkap'], 'alamat_lengkap', 'Alamat Lengkap', null, '5') }}
+      <div class="form-group input-group-sm">
+          <label for="kecamatan">Kecamatan
+              <span class="require">*</span>
+          </label>
+          <select name="kecamatan" id="kecamatan" class="form-control" required="required">
+              <option selected value="{{auth.user.datapencarikerja.kecamatan}}">{{auth.user.datapencarikerja.kecamatan}}</option>
+              <option value="CIMAHI SELATAN" id="32/77/1">CIMAHI SELATAN</option>
+              <option value="CIMAHI TENGAH" id="32/77/2">CIMAHI TENGAH</option>
+              <option value="CIMAHI UTARA" id="32/77/3">CIMAHI UTARA</option>
+          </select>
+      </div>
+      <div class="form-group input-group-sm">
+          <label for="kecamatan">Kelurahan
+              <span class="require">*</span>
+          </label>
+          <select name="kelurahan" id="kelurahan" class="form-control" required="required">
+
+            </select>
+      </div>
+
+            {{ form.custom('recaptcha', recaptcha()) }}
+            <div class="form-group">
+                <button type="submit" class="form-control btn btn-warning">Mendaftar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- {{ form.text('nik', requestParams['nik'], 'nik', 'No.KTP') }} -->
+    <!-- <div class="row">
+        <div class="col-md-6">
+            {{ form.text('placeofbirth', requestParams['placeofbirth'], 'placeofbirth', 'Tempat Lahir') }}
+        </div>
+        <div class="col-md-6">
+            {{ form.text('dateofbirth', requestParams['dateofbirth'], 'dateofbirth', 'Tanggal Lahir') }}
+        </div>
+    </div> -->
+   <!--  <div class="form-group">
+        <label for="gender">Jenis Kelamin</label>
+        <select name="gender" class="form-control" id="gender">
+          <option value="">- select -</option>
+          {% for i in ['Laki - Laki ','Perempuan'] %}
+                <option value="{{ i }}" {% if requestParams['dateofbirth'] == i %}selected{% endif %}>{{i }}</option>
+            {% endfor %}
+        </select>
+    </div> -->
+   <!--  <div class="form-group">
+        <label for="religion">Agama</label>
+        <select name="religion" class="form-control" id="religion">
+          <option value="">- select -</option>
+          {% for i in ['Islam ','Hindu', 'Kristen', 'Budha'] %}
+                <option value="{{ i }}" {% if requestParams['religion'] == i %}selected{% endif %}>{{i }}</option>
+            {% endfor %}
+        </select>
+    </div> -->
+  <!--   <div class="form-group">
+        <label for="status">Status</label>
+        <select name="status" class="form-control" id="status">
+          <option value="">- select -</option>
+          {% for i in ['Lajang ','Menikah'] %}
+                <option value="{{ i }}" {% if requestParams['status']  == i %}selected{% endif %}>{{i }}</option>
+            {% endfor %}
+        </select>
+    </div> -->
+ <!--    <div class="form-group">
+        <label for="nationality">Kewarganegaraan</label>
+        <select name="nationality" class="form-control" id="status">
+          <option value="">- select -</option>
+          {% for i in ['WNI ','WNA'] %}
+                <option value="{{ i }}" {% if requestParams['nationality'] == i %}selected{% endif %}>{{i }}</option>
+            {% endfor %}
+        </select>
+    </div> -->
+   <!--  <div class="form-group">
+        <label for="lasteducation">Pendidikan Terakhir</label>
+        <select name="lasteducation" class="form-control" id="status">
+          <option value="">- select -</option>
+          {% for i in ['SD ','SMP','SMA','SMK'] %}
+                <option value="{{ i }}" {% if requestParams['lasteducation'] == i %}selected{% endif %}>{{i }}</option>
+            {% endfor %}
+        </select>
+    </div> -->
+
+
+    <!-- {{ form.text('phonenumber', requestParams['phonenumber'], 'phonenumber', 'Nomor Telepon') }} -->
+
+    {{ csrf() }}
+</form>

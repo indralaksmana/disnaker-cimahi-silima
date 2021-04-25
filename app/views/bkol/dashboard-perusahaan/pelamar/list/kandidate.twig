@@ -1,0 +1,53 @@
+<table class="table table-dashboard" id="kandidate">
+  <thead>
+    <tr>
+      <th>Nama Pelamar</th>
+      <th>Judul Lowongan</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if pelamar|length == 0 %}
+    <tr class="text-center">
+      <td colspan="4">Belum Ada Pelamar Baru</td>
+    </tr>
+    {% endif %}
+    {% for post in pelamar if ( post.status == 2 ) or ( post.status == 3 ) %}
+    <tr>
+      <td><a href="{{path_for('pencarikerja-detail', {'username': post.user.username})}}" class="author-name title-section">{{post.user.datapencarikerja.nama_lengkap}}</a></td>
+      <td><a href="{{path_for('dashboardperusahaan-pelamar-details', {'username': post.user.username, 'id': post.id})}}">{{post.post.nama_lowongan}}</a></td>
+      <td>
+        {% if post.status == 2 %}
+        <span class="status status_belumreview">KANDIDAT</span>
+        {% elseif post.status == 3 %}
+        <span class="status status_sudahreview">UNDANG INTERVIEW </span>
+        {% endif %}
+      </td>
+      <td>
+        {% if post.status == 2 %}
+        <a href="javascript:void(0)" class="undanginterview btn btn-small btn-primary" data-href="{{ path_for('dashboardperusahaan-pelamar-undanginterview', {'username': post.user.username, 'id': post.id}) }}">UNDANG
+          INTERVIEW</a>
+        {% elseif post.status == 3 %}
+        <form action="{{path_for('dashboardperusahaan-pelamar-sudah-interview')}}" method="post" style="display: inline;">
+          <input type="hidden" name="apply" value="{{post.id}}" />
+          {{csrf()}}
+          <button class="btn btn-small swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="Pelamar ini sudah di interview?">
+            SUDAH INTERVIEW
+          </button>
+        </form>
+        {% endif %}
+        <form action="{{path_for('dashboardperusahaan-pelamar-delete')}}" method="post" style="display: inline;">
+          <input type="hidden" name="apply" value="{{post.id}}" />
+          {{csrf()}}
+          <button class="btn btn-delete btn-small swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="Hapus Pelamar ini"
+            data-toggle="tooltip" data-placement="top" title="Hapus">
+            <i class="fa fa-fw fa-close"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+    </div>
+    {% endfor %}
+  </tbody>
+</table>

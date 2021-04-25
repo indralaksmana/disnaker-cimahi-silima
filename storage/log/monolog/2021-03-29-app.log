@@ -1,0 +1,2 @@
+[2021-03-29 08:45:59] App.INFO: Pendaftaran pengguna baru. {"user":"[object] (App\\Model\\Users: {\"username\":\"elektra.nugraha023\",\"email\":\"elektra.nugraha@gmail.com\",\"bkk_id\":\"23\",\"fullname\":\"SMKS TI Bintang Harapan\",\"permissions\":{\"user.delete\":0},\"password\":\"$2y$10$xIi/ayvEhvm.q/Pz996S6OAbVyWhAf6nVAvZGhuxuySwL8S/jtASm\",\"updated_at\":\"2021-03-29 08:45:55\",\"created_at\":\"2021-03-29 08:45:55\",\"id\":2225})"} []
+[2021-03-29 10:57:46] App.INFO: Pendaftaran pengguna baru. {"user":null} []

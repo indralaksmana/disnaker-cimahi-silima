@@ -1,0 +1,4 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^silima\.insanardian\.com$
+RewriteRule ^/?$ "https\:\/\/insanardian\.com\/" [R=301,L]

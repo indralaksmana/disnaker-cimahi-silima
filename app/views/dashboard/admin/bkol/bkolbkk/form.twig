@@ -1,0 +1,32 @@
+<!-- form -->
+<form action="{{ currentRoute }}" method="POST" role="form">
+    
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="form-group form-float{% if has_error('bkk_id') %} has-error{% endif %}">
+                <select name="bkk_id" id="bkk_id" class="form-control" required="required">
+                    <option value="">-- Pilih BKK --</option>
+                    {% for lp in bkk %}
+                    <option value="{{ lp.id }}" {% if requestParams.bkk_id == lp.id or user.bkk_id == lp.id %}selected{% endif %}>
+                        {{ lp.nama_bkk }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label class="error">{{ error('bkk_id') }}</label>
+            </div>
+
+            {% include 'dashboard/admin/bkol/user-profile-fields.twig' %}
+
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="submit" name="submit" class="btn bg-teal form-control">{% if 'add' == form_state %}TAMBAH{% else %}SIMPAN{% endif %}</button>
+            </div>
+        </div>
+    </div>
+
+    {{ csrf() }}
+</form>

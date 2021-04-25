@@ -1,0 +1,265 @@
+{% extends 'bkol/bkol-dashboard2.twig' %}
+
+{% block page %}
+<div class="lembaga-profile text-left py-3 py-sm-5">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+
+				<div class="row text-left">
+					<div class="col-md-6 mb-3 mb-sm-0">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="hr-theme mb-3">
+									<div class="hr-title">
+										<h5 class="title-section text-body">Data Pribadi</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+                        <div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Nama</p>
+								<p>{{r.datapencarikerja.nama_lengkap}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">No KTP</p>
+								<p>{{ ktp }}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Tempat Lahir</p>
+								<p>{{r.datapencarikerja.tempat_lahir}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Tanggal Lahir</p>
+								<p>{{r.datapencarikerja.tanggal_lahir|date('d F Y')}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Jenis Kelamin</p>
+								<p>{{r.datapencarikerja.jenis_kelamin}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Agama</p>
+								<p>{{r.datapencarikerja.agama}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Kondisi Fisik/Disabilitas</p>
+								<p>{{r.datapencarikerja.kondisi_fisik}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Status Perkawinan</p>
+								<p>{{r.datapencarikerja.status_perkawinan}}</p>
+							</div>
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Tinggi/Berat Badan</p>
+								<p>{{r.datapencarikerja.tinggi_badan}} /
+									{{r.datapencarikerja.berat_badan}}</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 mb-3 mb-sm-0">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="hr-theme mb-3">
+									<div class="hr-title">
+										<h5 class="title-section text-body">Minat</h5>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Wilayah Pekerjaan</p>
+								<p>{{r.datapencarikerja.harapan_wilayah_pekerjaan}}</p>
+							</div>
+
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Jenis Jabatan</p>
+								<p>{{r.datapencarikerja.jabatan.jenis_golongan}}</p>
+							</div>
+
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Sistem Pembayaran</p>
+								<p>{{r.datapencarikerja.sistem_pembayaran}}</p>
+							</div>
+
+							<div class="col-6">
+								<p class="mb-1 text-small font-weight-bold">Harapan Gaji</p>
+								<p>{{r.datapencarikerja.gaji.name}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{{post.profile|raw}}
+		</div>
+	</div>
+
+<div class="bg-white">
+	<div id="home" class="container py-5">
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Pendidikan Formal</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				{% for post in r.riwayatpendidikan  %}
+				<div class="info-riwayat-box" style="border-bottom:0.001em solid gray">
+					<p class="mb-1 font-weight-bold">{{post.schoolmajors}}</p>
+					<p class="mb-2 text-small">{{post.schoolname}}</p>
+					<p class="mb-0 text-small">Lulus Tahun {{post.graduationyear}} dengan Nilai/IPK :
+						{{post.schoolgrades}}</p>
+				</div>
+
+				{% endfor %}
+			</div>
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Pendidikan Non Formal</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				{% for post in r.riwayatnonformalpendidikan  %}
+
+				<div class="info-riwayat-box" style="border-bottom:0.001em solid gray">
+					<p class="mb-1 font-weight-bold">{{post.nameofeducation}}</p>
+					<p class="mb-0 text-small">{{post.startingmonth}} {{post.startyear}} - {{post.finishedmonth}}
+						{{post.finishedyear}}</p>
+				</div>
+
+				{% endfor %}
+			</div>
+		</div>
+
+
+		<div class="row" style="margin-top:20px">
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Riwayat Pekerjaan</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				{% for post in r.riwayatpekerjaan  %}
+				<div class="info-riwayat-box" style="border-bottom:0.001em solid gray">
+					<p class="mb-1 font-weight-bold">{{post.position}}</p>
+					<p class="mb-1">{{post.companyname}}</p>
+					<p class="mb-2">{{post.typeofwork}}</p>
+					<p class="mb-1 text-small">Dari {{post.startmonth}} {{post.startyear}} sampai {{post.finishedmonth}}
+						{{post.finishedyear}}</p>
+					<p class="mb-3 text-small">Upah Terakhir : {{post.salary}}</p>
+					<p class="mb-0 text-small text-muted">{{post.descjob}}</p>
+				</div>
+
+				{% endfor %}
+			</div>
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Kompetensi</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				{% for post in r.riwayatkompetensi %}
+
+				<div class="info-riwayat-box" style="border-bottom:0.001em solid gray">
+					<p class="mb-1 font-weight-bold">{{post.jurusan_sertifikat}}</p>
+					<p>{{post.kompetensi.name}} di {{post.nama_lsp}}</p>
+					<p class="mb-2">Sertifikat No: {{post.no_sertifikat}}</p>
+					<p class="mb-1 text-small">Tanggal {{post.tanggal_terbit|date('d F Y')}}</p>
+				</div>
+
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="row" style="margin-top:20px">
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Riwayat Pelatihan</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				{% for post in r.pelatihandaftar  %}
+
+
+				<div class="info-riwayat-box" style="border-bottom:0.001em solid gray">
+					<p class="mb-1 font-weight-bold">{{post.post.title}}</p>
+					<p class="mb-2">{{post.post.tempat_pelaksanaan}}</p>
+					<p class="mb-0 text-small">Dari {{post.post.start_date|date('F Y')}} sampai
+						{{post.post.end_date|date('F Y')}}</p>
+				</div>
+
+				{% endfor %}
+			</div>
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">File Pendukung</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				<ul>
+					{% for post in r.datapencarikerja.dokumen if post.nama_file == true %}
+					<li
+						class="d-flex flex-column flex-sm-row justify-content-sm-between justify-content-start align-items-sm-center align-items-start mb-2">
+						<p class="mb-1 mb-sm-0">{{post.nama_file}}</p>
+						<div class="mb-2 mb-sm-0">
+							<a class="btn btn-sm py-1 px-4 text-uppercase font-weight-light" href="{{post.upload_file}}"
+								target="_blank" style="font-size: 12px;border-radius: 10em;">Lihat
+								File</a>
+						</div>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+        <div class="row" style="margin-top:20px">
+			<div class="col-md-6">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Riwayat Usaha</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+				{% for post in r.riwayatusaha  %}
+				<div class="info-riwayat-box" style="border-bottom:0.001em solid gray">
+					<p class="mb-1 font-weight-bold">{{post.nama_badanusaha}}</p>
+					<p class="mb-2">{{post.jenis_usaha}}</p>
+				</div>
+
+				{% endfor %}
+			</div>
+			
+		</div>
+
+	</div>
+</div>
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,84 @@
+/*********************
+page content layout untuk :
+- detail bkk
+- detail lpk
+*/
+@include media-breakpoint-down(sm) {
+
+    .lembaga-banner .card-body {
+        padding: 0 !important;
+    }
+
+    .container.mobile-remove-padding {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .page-warp {
+        padding: 0 !important;
+
+        .page-content {
+            padding: 15px !important;
+        }
+    }
+
+    .lembaga-detail {
+        text-align: left !important;
+    }
+}
+
+.bg-with-image {
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+/* page content style*/
+.page-warp {
+    padding: 30px;
+    background-color: #f5f5f9;
+
+    .page-content {
+        padding: 30px;
+        background-color: #ffffff;
+    }
+
+}
+
+figure {
+    margin: 0;
+}
+
+/* page content style end*/
+
+/* lembaga detail style*/
+.lembaga-banner {
+    line-height: 1;
+
+    .lembaga {
+        .lembaga-header-text {
+            color: #333399;
+            font-size: 18px;
+
+        }
+
+        .lembaga-header-name {
+            color: #333399;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+
+        }
+    }
+
+    .lembaga-detail {
+        text-align: right;
+    }
+}
+
+.list {
+    font-size: 14px;
+}
+
+/* lembaga detail style end*/

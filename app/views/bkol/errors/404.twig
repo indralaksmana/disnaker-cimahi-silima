@@ -1,0 +1,40 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% block title %}
+{{config['site-name']}}
+{% endblock %}
+
+{% block page %}
+<div class="row" style="background: url('http://localhost:8181/img/bkol01.jpg')">
+	<div class="container">
+		<div class="jumbotron text-white" style="background: rgba(0,0,0,.3);margin: 0;">
+
+			{# <div class="row text-center">
+				<div class="col-md-6 col-md-offset-3">
+					<img src="{{config['logo']}}" class="img-responsive" alt="{{ config['site-name'] }} Logo">
+				</div>
+			</div> #}
+
+			<div class="row text-center">
+				<div class="col-md-12">
+					<h1>Oops! Halaman tidak dapat ditemukan</h1>
+					<h3>404:</h3>
+				</div>
+			</div>
+
+			<div class="row text-center">
+				<div class="col-md-12">
+					<p>
+						Halaman yang Anda cari tidak dapat ditemukan. klik tombol dibawah untuk kembali ke Beranda.
+					</p>
+
+					<p>
+						<a href="{{ path_for('home') }}"><button type="button" class="btn btn-lg btn-primary">Kembali Ke Beranda</button></a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

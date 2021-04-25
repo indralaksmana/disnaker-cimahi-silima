@@ -1,0 +1,121 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% block seo %}
+	<title>{{ post.jobtitle }}</title>
+	<meta name="page-title" content="{{ post.title }}" />
+	<meta name="description" content="{{ post.description }}" />
+	<meta name="author" content="{{ post.author.username }}"/>
+	{# Open Graph #}
+	<meta property="og:title" content="{{ post.title }}" />
+	<meta property="og:type" content="{% if player_url %}video.other{% else %}article{% endif %}" />
+	<meta property="og:url" content="https://{{ config['domain'] }}{{ currentRoute }}" />
+	<meta property="og:image" content="{{ post.featured_image }}" />
+	<meta property="og:description" content="{{ post.description }}" /> 
+	<meta property="og:site_name" content="{{ config['site-name'] }}" />
+	{% if player_url %}
+	<meta property="og:video" content="{{ player_url }}" />
+	{% endif %}
+	{# Twitter Card #}
+	<meta name="twitter:card" content="{% if player_url %}player{% else %}summary_large_image{% endif %}">
+	<meta name="twitter:title" content="{{ post.title }}">
+	<meta name="twitter:description" content="{{ post.description }}">
+	<meta name="twitter:image" content="{{ post.featured_image }}">
+	{% if player_url %}
+	<meta property="twitter:player" content="{{ player_url }}" />
+	<meta property="twitter:player:stream" content="{{ player_url }}" />
+    <meta property="twitter:player:height" content="450" />
+    <meta property="twitter:player:width" content="800" />
+	{% endif %}
+	{# Google+ #}
+	<meta itemprop="name" content="{{ post.title }}">
+	<meta itemprop="description" content="{{ post.description }}">
+	<meta itemprop="image" content="{{ post.featured_image }}">
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.bg-white .card-body p {
+	margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block page %}
+<div class="bg-white">
+	<div class="container pt-3">
+		<div class="row">
+			<div class="col-xl-4 order-1 col-sm-4 order-2">
+				<div class="row sidebar">
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title">
+								<h5 class="title-section">KATEGORI BERITA</h5>
+							</div>
+							<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+						</div>
+
+						<ul class="kategori-list">
+							{% for r in categories %}
+							<li class="d-flex justify-content-start align-items-center">
+								<a href="{{path_for('detail-kategori', {'slug': r.slug})}}">{{r.name}}</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title">
+								<h5 class="title-section">5 BERITA TERBARU</h5>
+							</div>
+							<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+						</div>
+
+						<ul class="kategori-list">
+							{% for r in posts %}
+							<li>
+								<p class="mb-2"><a href="{{path_for('detail-berita', {'year': r.publish_at|date("Y"), 'month': r.publish_at|date("m"), 'day': r.publish_at|date("d"), 'slug': r.slug})}}">
+			                        {{ r.title }}
+			                    </a></p>
+			                    <strong>{{r.publish_at|date('d F Y')}}</strong>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xl-8 col-sm-8">
+				<div class="row leftside">
+					<div class="col-sm-12 p-3">
+						<div class="hr-theme ">
+							<div class="hr-title"><h5 class="title-section">Detail Berita</h5></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+						</div>
+
+						<div class="card border-0">
+							<div class="card-body pl-0 pr-0">
+								<h2 class="card-title">{{post.title}}</h2>
+								<p class="card-text"><small class="text-muted">{{post.publish_at|date('d/m/Y H:i:s A')}}</small></p>
+							</div>
+							{% if post.featured_image %}
+								<img alt="Card image cap" class="card-img-top img-responsive" src="{{post.featured_image}}">
+		                    {% endif %}
+		                    <div class="card-body pl-0 pr-0">
+								<p class="card-text">{{post.description}}</p>
+								<div class="card-text">{{post.content|raw}}</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- /.container -->
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ recaptchaJs() }}
+{% endblock %}

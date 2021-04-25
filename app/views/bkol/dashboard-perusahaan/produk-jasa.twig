@@ -1,0 +1,77 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}}
+|| Add New Blog Post{% endblock %}
+
+{% block header_include %}
+<style media="screen">
+
+.ck.ck-editor {
+    max-width: 100%;
+}
+.ck-editor__editable_inline {
+    min-height: 500px;
+}
+  </style>
+
+{% endblock %}
+
+{% block page %}
+<form action="{{ currentRoute }}" method="POST" role="form">
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">Produk / Jasa</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+     <button style="margin-left:10px;font-size:1rem;" type="submit" class="btn btn-sm btn-third">SIMPAN</button>
+  </div>
+  <br>
+  
+  
+      <div class="row">
+          <div class="col-md-12">
+              <div class="form-group{% if has_error('produk_jasa') %} has-error{% endif %}">
+                    <textarea name="produk_jasa" class="simple-editor form-control pt-0" id="produk_jasa" placeholder="Post Content"
+                      rows="4" cols="100">{% if requestParams.produk_jasa %}{{requestParams.produk_jasa}}{% else %}{{perusahaan.produk_jasa}}{% endif %}
+                    </textarea>
+                    <span class="help-block">{{ error('produk_jasa') }}</span>
+                  </div>
+              
+          </div>
+          
+          {{ csrf() }}
+      </div>
+        
+</div>
+</form> 
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
+
+<script type="text/javascript">
+  var allEditors = document.querySelectorAll('.simple-editor');
+  for (var i = 0; i < allEditors.length; ++i) {
+    ClassicEditor.create(allEditors[i], {
+      toolbar: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        'blockQuote'
+      ]
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+</script>
+
+
+
+{% endblock %}

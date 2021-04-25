@@ -1,0 +1,559 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Edit Role - {{role.name}}{% endblock %}
+{% block stylesheets %}
+<style>
+  table tr th {
+    background: #eee;
+    border-bottom: 1px solid #000 !important;
+  }
+  ul {
+    list-style: none;
+  }
+</style>
+
+{% endblock %}
+{% block page %}
+<div class="block-header">
+  <h2>User Management <small>Edit Role - {{role.name}}</small></h2>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="header">
+              <h2>Edit Role - {{role.name}}</h2>
+            </div>
+            <div class="body">
+                <form action="{{ currentRoute }}" method="POST" role="form" class="row">
+                    <div class="col-md-4">
+                        <div class="form-group{% if has_error('role_name') %} has-error{% endif %}">
+                            <label for="role_name">Role Name</label>
+                            <input type="text" name="role_name" class="form-control" id="role_name" placeholder="Role Name" value="{{role.name}}" rruired="rruired">
+                            <span class="help-block">{{ error('role_name') }}</span>
+                        </div>
+
+                        <div class="form-group{% if has_error('role_slug') %} has-error{% endif %}">
+                            <label for="role_slug">Role Slug</label>
+                            <input type="text" name="role_slug" class="form-control" id="role_slug" placeholder="Role Slug" value="{{role.slug}}" rruired="rruired">
+                            <span class="help-block">{{ error('role_slug') }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Role Menu Permissions</label>
+                        <ul class="options">
+                          {% set p_group = 0 %}
+                          {% for r in permissions_menu %}
+                              <li>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked"> {{ r.name}}
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}"> {{ r.name}}
+                                {% endif %}
+                              </li>
+                          {% endfor %}
+                          </ul></li>
+                        </ul>
+
+                        {# <div id="permissionsRow">
+                            {% for key,perm in role.permissions|jsonDecode %}
+                              {% set p = permissions[loop.index0] %}
+                                <div>
+                                    <div class="col-xs-6">
+                                        <div class="form-group{% if has_error(name) %} has-error{% endif %}">
+                                            <input type="text" name="perm_name[]" class="form-control" placeholder="Permission Name" value="{{key}}" rruired="rruired">
+                                              {{ p.name }}
+                                        </div>
+
+                                    </div> #}
+
+                                    {# <div class="col-xs-5">
+                                        <div class="form-group{% if has_error(name) %} has-error{% endif %}">
+                                            <select name="perm_value[]" class="form-control" rruired="rruired">
+                                                <option value="true" {% if perm == 1 %}selected{% endif %}>True</option>
+                                                <option value="false" {% if perm == 0 %}selected{% endif %}>False</option>
+                                            </select>
+                                        </div>
+                                    </div> #}
+                                    {# <div class="col-xs-1">
+                                        <a class="btn btn-primary btn-danger removePerm"><span class="fa fa-fw fa-close"></span> </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div> #}
+
+                        {# <div class="form-group" style="text-align: center;">
+                            <a class="btn btn-warning" id="addPermButton" style="margin-top: 15px;">
+                                <span class="fa fa-fw fa-gears"></span> Add New Permission
+                            </a>
+                        </div> #}
+                    </div>
+                    <div class="col-md-12">
+                        <label>Role Permissions</label>
+                        <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Nama Permission</th>
+                              <th>All</th>
+                              <th>Create</th>
+                              <th>Delete</th>
+                              <th>Edit</th>
+                              <th>View</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th>User</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'user' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Email</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'email' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Settings</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'settings' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Role</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'role' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Permission</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'permission' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Media</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'media' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Media</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'media' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Blog / Berita</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'blog' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Blog / Berita Tags</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'blog_tags' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Blog / Berita Kategori</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'blog_categories' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Dashboard</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'dashboard' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Perguruan Tinggi</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'perguruan-tinggi' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Contact</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'contact' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>SEO</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'seo' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Lowongan Kerja</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'job' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Pelatihan</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'pelatihan' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Resume</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'resume' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Halaman</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'page' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Agenda</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'agenda' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Agenda / Agenda Kategori</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'agenda_categories' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Gallery</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'gallery' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>BKOL Perusahaan</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'companies' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>BKOL Pencari Kerja</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'jobseeker' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Bursa Kerja Khusus</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'bkk' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Lembaga Pelatihan Kerja</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'lpk' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Admin Chimasistaker</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'adminchimasistaker' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Admin Web Disnaker</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'admindisnaker' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+
+                            <tr>
+                              <th>Admin Web Bkol</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'adminbkol' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                            <tr>
+                              <th>Developer</th>
+                              {% set p_group = 0 %}
+                              {% for r in permissions if r.group == 'developer' %}
+                              <td>
+                                {% if r.slug in (role.permissions) and  r.slug != '' %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}" checked="checked">
+                                {% else %}
+                                  <input type="checkbox" name="perm_name[]" value="{{ r.slug }}">
+                                {% endif %}
+                              </td>
+                              {% endfor %}
+                            </tr>
+                          </tbody>
+                        </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary form-control">Edit Role</button>
+                        </div>
+                    </div>
+                    {{ csrf() }}
+                    <input type="hidden" name="role_id" value="{{role.id}}" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% include 'dashboard/scripts/datatables.twig' %}
+<script>
+
+$(document).ready(function() {
+    var table = $('#table').DataTable( {
+    responsive: true
+    } );
+    new $.fn.dataTable.FixedHeader( table );
+});
+$(document).on('click', '#addPermButton', function() {
+    $("#permissionsRow").append(`   <div>
+                                        <div class="col-xs-6">
+                                            <div class="form-group">
+                                                <input type="text" name="perm_name[]" class="form-control" placeholder="Permission Name" rruired="rruired">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-5">
+                                            <div class="form-group">
+                                                <select name="perm_value[]" class="form-control" rruired="rruired">
+                                                    <option value="true">True</option>
+                                                    <option value="false">False</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-1">
+                                            <a class="btn btn-primary btn-danger removePerm"><span class="fa fa-fw fa-close"></span> </a>
+                                        </div>
+                                    </div>
+                                `);
+
+
+});
+$(document).on('click', '.removePerm', function() {
+    $(this).parent().parent().remove();
+})
+</script>
+{% endblock %}

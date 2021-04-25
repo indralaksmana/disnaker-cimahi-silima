@@ -1,0 +1,30 @@
+.status {
+    font-size: 10px;
+    font-weight: bold;
+    padding: 5px 10px;
+    color: #ffffff;
+    -moz-border-radius: 70px;
+    -webkit-border-radius: 70px;
+    border-radius: 70px;
+
+}
+
+.status-yellow {
+    background-color: #dec600;
+}
+
+.status-light-blue {
+    background-color: #00a4de;
+}
+
+.status-blue {
+    background-color: #3b3d93;
+}
+
+.status-green {
+    background-color: #0a9300;
+}
+
+.status-red {
+    background-color: #de0000;
+}

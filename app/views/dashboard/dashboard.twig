@@ -1,0 +1,76 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Dashboard{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<link href="{{ asset('bkol/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+
+    <div class="container-fluid">
+		<div class="block-header">
+                <h2>DASHBOARD</h2>
+        </div>
+	    <div class="row clearfix">
+	    	<div class="col-md-6">
+		    	<div class="card">
+					<div class="header">
+						<h2>Total Users Per Month</h2>
+					</div>
+					<div class="body">
+		    			<div id="users-per-month"></div>	
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="col-md-6">
+				<div class="card">
+					<div class="header">
+						<div class="header">
+							<h2>New Users Last 90 Days</h2>
+						</div>
+						<div class="body">
+							<div id="users-last-90"></div>	
+						</div>
+					</div>
+				</div>
+		    </div>
+	    </div>
+
+	</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+<script>
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+Morris.Bar({
+  element: 'users-per-month',
+  data: {{ usersByMonth|raw }},
+  xkey: 'month',
+  ykeys: ['total'],
+  labels: ['New Users'],
+  xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
+    var month = months[new Date(x.src.month).getMonth()];
+    return month;
+  },
+  dateFormat: function(x) {
+    var month = months[new Date(x.src.month).getMonth()];
+    return month;
+  },
+});
+
+Morris.Area({
+  element: 'users-last-90',
+  data: {{ usersByDay|raw }},
+  xkey: 'date',
+  ykeys: ['total'],
+  labels: ['New Users']
+});
+
+</script>
+{% endblock %}

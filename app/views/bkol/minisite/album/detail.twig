@@ -1,0 +1,79 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% if categoryPage %}
+{% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+{% set append = " || Tag: " ~ tag.name %}
+{% elseif authorPage %}
+{% set append = " || Author: " ~ author.username %}
+{% else %}
+{% set append = "" %}
+{% endif %}
+
+{% block seo %}
+<title>{{ seo.title }}{{ append }}</title>
+<meta name="page-title" content="{{ seo.title }}{{ append }}" />
+<meta name="description" content="{{ seo.description }}{{ append }}" />
+<meta name="author" content="{{ config['site-name'] }}" />
+
+{# Open Graph #}
+<meta property="og:title" content="{{ seo.title }}{{ append }}" />
+<meta property="og:type" content="{% if seo.video and seo.video != "" %}video.other{% else %}website{% endif %}" />
+<meta property="og:url" content="https://{{ config['domain'] }}{{ currentRoute }}" />
+<meta property="og:image" content="{{ seo.image }}" />
+<meta property="og:description" content="{{ seo.description }}{{ append }}" />
+<meta property="og:site_name" content="{{ config['site-name'] }}" />
+{% if seo.video and seo.video != "" %}
+<meta property="og:video" content="{{ seo.video }}" />{% endif %}
+
+{# Twitter Card #}
+<meta name="twitter:card"
+	content="{% if seo.video and seo.video != "" %}player{% else %}summary_large_image{% endif %}">
+<meta name="twitter:title" content="{{ seo.title }}{{ append }}">
+<meta name="twitter:description" content="{{ seo.description }}{{ append }}">
+<meta name="twitter:image" content="{{ seo.image }}">
+{% if seo.video and seo.video != "" %}
+<meta property="twitter:player" content="{{ seo.video }}" />
+<meta property="twitter:player:stream" content="{{ seo.video }}" />
+<meta property="twitter:player:height" content="450" />
+<meta property="twitter:player:width" content="800" />
+{% endif %}
+
+{# Google+ #}
+<meta itemprop="name" content="{{ seo.title }}{{ append }}">
+<meta itemprop="description" content="{{ seo.description }}{{ append }}">
+<meta itemprop="image" content="{{ seo.image }}">
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+{% block page %}
+<div class="container py-3 py-sm-5 bg-white">
+	<h2 class="font-weight-bold">{{post.title}}</h2>
+	<div class="row my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+		{% for img in imgs %}
+		<div class="col-sm-3 col-12 mb-3">
+			<div class="card">
+				<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+					<a href="{{ img }}" data-lightbox="image-item" itemprop="contentUrl" data-size="600x400">
+						<img src="{{ img }}" itemprop="thumbnail" alt="{{post.title}}" class="card-img-top" />
+					</a>
+				</figure>
+				<!-- <div class="card-body p-3">
+					<p class="card-text">
+						<figcaption itemprop="caption description">{{post.title}}
+						</figcaption>
+					</p>
+				</div> -->
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+</div>
+<!-- /.container -->
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

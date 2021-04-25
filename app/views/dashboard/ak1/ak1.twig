@@ -1,0 +1,291 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || User Management{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% if config['oauth2-enabled'] %}
+<link href="{{ asset('bkol/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endif %}
+{% endblock %}
+
+{% block page %}
+
+<div class="row card card-body">
+    <div class="col-lg-12">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">List Pengajuan AK1</h1>
+
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="{{ path_for('ak1-admin-add') }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-fw fa-plus"></span>
+                    Tambah Data Ak1 + Akun BKOL</a>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <p>List pencaker yang mengajukan permohonan untuk pembuatan ak-1 (kartu kuning)</p>
+        <div class="alert alert-info" role="alert">
+            <h5>Persyaratan Dan Kelengkapan Dokumen yang harus Dibawa oleh Pencari Kerja</h5>
+            <ul>
+                <li>Foto Copy KTP</li>
+                <li>Foto Copy Ijasah terakhir </li>
+                <li>Pas Foto 3x4 : 2 Buah </li>
+            </ul>
+        </div>
+        <div class="tab-wrapper">
+            <ul class="tabs clearfix" data-tabgroup="js-tabgroup">
+                <li class="tabs-list">
+                    <a href="#tab1" class="tabs-list-link is-active">Pengajuan Terbaru</a>
+                </li>
+                <li class="tabs-list">
+                    <a class="tabs-list-link" href="#tab2">
+                        Data Lengkap
+                    </a>
+                </li>
+                <li class="tabs-list">
+                    <a class="tabs-list-link" href="#tab3">AK1 Sudah Di Cetak</a>
+                </li>
+            </ul>
+            <section id="js-tabgroup" class="tabgroup">
+                <div id="tab1" class="tab-content">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="users_table">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nama Lengkap</th>
+                                <th>Nomor Pendaftaran</th>
+                                <th>Persyaratan <br>Dan<br> Kelengkapan Dokumen</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set row = 0 %}
+                            {% for sp in users %}
+                            {% set row = row + 1 %}
+                            <tr>
+                                <td><img src="{{ sp.photoprofile }}"/></td>
+                                <td>{{ sp.datapencarikerja.nama_lengkap }}</td>
+                                <td>{{ sp.pengajuanAK1.nomor_pendaftaran }}</td>
+                                <td>
+                                    {% if sp.pengajuanAK1.status_pengajuan == 0 %}
+                                    <b>Belum Lengkap<b>
+                                            {% endif %}
+                                </td>
+                                <td>
+                                    <a class="openDetail btn btn-secondary btn-sm" href="javascript:void(0);" data-href="{{ path_for('ak1-admin-detail', {'user_id': sp.id}) }}">
+                                        <span class="fa fa-fw fa-search"></span></a>
+                                    <a href="{{ path_for('ak1-admin-edit', {'user_id': sp.id}) }}" class="btn btn-primary btn-sm"
+                                        role="button"><span class="fa fa-fw fa-pencil"></span></a>
+                                    <br>
+                                    <form action="{{ path_for('ak1-admin-delete') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="user_id" value="{{ sp.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This category will be permanently deleted.">
+                                            <span class="fa fa-fw fa-close"></span>
+                                        </button>
+                                    </form>
+
+                                    <form action="{{ path_for('ak1-admin-syarat-lengkap') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="user_id" value="{{ sp.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-success btn-xs action-prosses" data-swtitle="Kamu Yakin Syarat Dan Dokumennya sudah Lengkap?"
+                                            data-swmessage="Jika Iya, Maka Data ini akan di pindahkan ke Data Lengkap">
+                                            Syarat Lengkap
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tab2" class="tab-content">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="datalengkap">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nama Lengkap</th>
+                                <th>Nomor Pendaftaran</th>
+                                <th>Persyaratan <br>Dan<br> Kelengkapan Dokumen</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set row = 0 %}
+                            {% for sp in datalengkap %}
+                            {% set row = row + 1 %}
+
+                            <tr>
+                                <td><img src="{{ sp.photoprofile }}" /></td>
+                                <td>{{sp.datapencarikerja.nama_lengkap }}</td>
+                                <td>
+                                    {% if sp.pengajuanAK1.status_pengajuan == 1 %}
+                                    <b>Lengkap<b>
+                                            {% endif %}
+                                </td>
+                                <td>{{ sp.pengajuanAK1.status_pengajuan }}</td>
+                                <td>
+                                    <a class="openDetail btn btn-secondary btn-sm" href="javascript:void(0);"  data-href="{{ path_for('ak1-admin-detail', {'user_id': sp.id}) }}">
+                                        <span class="fa fa-fw fa-search"></span></a>
+                                    <a href="{{ path_for('ak1-admin-edit', {'user_id': sp.id}) }}" class="btn btn-primary btn-sm"
+                                        role="button"><span class="fa fa-fw fa-pencil"></span></a>
+                                    <br>
+                                    <form action="{{ path_for('ak1-admin-syarat-belum-lengkap') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="user_id" value="{{ sp.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-danger btn-xs action-prosses" data-swtitle="Kamu Yakin Syarat Dan Dokumennya Belum Lengkap?"
+                                            data-swmessage="Jika Iya, Maka Data ini akan di pindahkan ke Pengajuan Terbaru">
+                                            Syarat Belum Lengkap
+                                        </button>
+                                    </form>
+                                    <br>
+                                    <form action="{{ path_for('ak1-admin-syarat-siap-cetak') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="user_id" value="{{ sp.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-success btn-xs action-prosses" data-swtitle="Kamu Yakin Pengajuan Ini Siap Cetak"
+                                            data-swmessage="Jika Iya, Maka Data ini akan di pindahkan ke List AK1 Sudah Jadi">
+                                            Siap Cetak
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tab3" class="tab-content">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="siapcetak">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nama Lengkap</th>
+                                <th>Nomor Pencaker</th>
+                                <th>Persyaratan <br>Dan<br> Kelengkapan Dokumen</th>
+                                <th>Masa Aktip</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set row = 0 %}
+                            {% for sp in sudahjadi %}
+                            {% set row = row + 1 %}
+                            <tr>
+                                <td><img src="{{ sp.photoprofile }}" /></td>
+                                <td>{{ sp.datapencarikerja.nama_lengkap }}</td>
+                                <td>
+                                {% if sp.datapencarikerja.nomor_pencaker == '' %}
+                                  Belum Ada Nomor Pencaker
+                                {% elseif sp.datapencarikerja.nomor_pencaker is defined%}
+                                  3277/{{ sp.datapencarikerja.tanggal_daftar|date("m/d/y")}}/{{ sp.datapencarikerja.nomor_pencaker}}
+                                {% endif %}
+
+                                </td>
+                                <td>
+                                    {% if sp.pengajuanAK1.status_pengajuan == 2 %}
+                                        <b>Lengkap<b>
+                                    {% endif %}
+                                </td>
+                                <td>{{ sp.pengajuanAK1.exp_date }}</td>
+                                <td>
+                                    <a class="openDetail btn btn-secondary btn-sm" href="javascript:void(0);" data-href="{{ path_for('ak1-admin-detail', {'user_id': sp.id}) }}">
+                                        <span class="fa fa-fw fa-search"></span></a>
+                                    <a href="{{ path_for('ak1-admin-edit', {'user_id': sp.id}) }}" class="btn btn-primary btn-sm"
+                                        role="button"><span class="fa fa-fw fa-pencil"></span></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+
+        $('#users_table, #datalengkap, #siapcetak, #sudahjadi').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+        $('.tab-content').hide();
+        $('.tab-content:first-child').show();
+
+        $('.tabs-list-link').click(function (e) {
+            e.preventDefault();
+            const $this = $(this),
+                TABGROUP = '#' + $this.parents('.tabs').data('tabgroup'),
+                OTHERS = $this.parents('.tabs-list').siblings().find('.tabs-list-link'),
+                IS_TARGET = $this.attr('href'),
+                IS_ACTIVE = 'is-active',
+                JS_TAB_CONTENT = '.tab-content';
+
+            OTHERS.removeClass(IS_ACTIVE);
+            $this.addClass(IS_ACTIVE);
+            $(TABGROUP).find(JS_TAB_CONTENT).hide();
+            $(IS_TARGET).show();
+        })
+    });
+
+    $('.action-prosses').click(function (e) {
+
+        e.preventDefault();
+        var swtitle = $(this).data('swtitle');
+        var swmessage = $(this).data('swmessage');
+        // var swmessage = 'Data Ini Akan Pindah ke List Data Lengkap';
+        var form = $(this).parents(form);
+
+        swal({
+            title: swtitle,
+            text: swmessage,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batalkan'
+        }).then(
+            function (result) {
+                swal("Berhasil!", "Data Sudah Di Pindahkan", "success").then(
+                    setTimeout(function () {
+                        form.submit();
+                    }, 1000)
+                );
+            },
+            function (dismiss) {
+                return false;
+            }
+        ).catch(swal.noop);
+
+    });
+
+    $('.openDetail').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('.modal-content').load(dataURL,function(){
+                $('#myModal').modal({show:true});
+                $("#example").rowspanizer({vertical_align: 'middle'});
+            });
+        });
+</script>
+{% endblock %}

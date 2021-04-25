@@ -1,0 +1,81 @@
+<form action="{{ currentRoute }}" method="POST" role="form">
+    <div class="row">
+        <div class="col-md-12">
+
+                    <div class="form-group{% if has_error('agendatitle') %} has-error{% endif %}">
+                        <label for="agendatitle">Judul Agenda</label>
+                        <div class="form-line">
+                        <input type="text" name="agendatitle" class="form-control" id="agendatitle" placeholder="Judul Agenda"
+                            value="{% if requestParams.agendatitle %}{{requestParams.agendatitle}}{% else %}{{post.agendatitle}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('agendatitle') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group{% if has_error('address') %} has-error{% endif %}">
+                        <label for="address">Tempat Agenda</label>
+                        <div class="form-line">
+                            <input type="text" name="address" class="form-control" id="address" placeholder="Tempat Agenda"
+                                value="{% if requestParams.address %}{{requestParams.address}}{% else %}{{post.address}}{% endif %}"
+                                required="required">
+                            <span class="help-block">{{ error('address') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group{% if has_error('post_content') %} has-error{% endif %}">
+                        <label for="post_content">Deskripsi</label>
+                        <div class="form-line">
+                            <textarea name="post_content" class="form-control tinymce" id="post_content" placeholder="Deskripsi"
+                                required="required">
+                                    {% if requestParams.post_content %}{{requestParams.post_content}}{% else %}{{post.content|raw}}{% endif %}
+                                </textarea>
+                            <span class="help-block">{{ error('post_content') }}</span>
+                        </div>
+                    </div>
+
+        </div>
+
+        <div class="col-md-12">
+           
+                    <div class="form-group{% if has_error('category') %} has-error{% endif %}">
+                        <label for="category">Kategori</label>
+                        <select name="category" id="category" class="form-control" required="required">
+                            <option value="">Pilih Kategori</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" {% if requestParams.category==category.id or post.category_id==category.id
+                                %}SELECTED{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="help-block">{{ error('category') }}</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group{% if has_error('dateagenda') %} has-error{% endif %}">
+                                <label for="dateagenda">Tanggal Agenda</label>
+                                <input type="text" name="publish_at" class="form-control" id="dateagenda" placeholder="Tanggal Agenda"
+                                    value="{% if requestParams.dateagenda %}{{requestParams.dateagenda}}{% else %}{{post.dateagenda}}{% endif %}"
+                                    required="required">
+                                <span class="help-block">{{ error('dateagenda') }}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group{% if has_error('status') %} has-error{% endif %}">
+                                <label for="status">Status </label>
+                                <br /><input type="checkbox" name="status" class="form-control" id="status" {% if
+                                    requestParams.status %}checked{% elseif post.status %}checked{% endif %}>
+                                <span class="help-block">{{ error('status') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Simpan</button>
+                <a href="{{ path_for('admin-agenda')}}" class="btn btn-secondary"><i class="fa fa-arrow-left"
+                        aria-hidden="true"></i> Batal</a>
+            </div>
+        </div>
+        {{ csrf() }}
+    </div>
+</form>

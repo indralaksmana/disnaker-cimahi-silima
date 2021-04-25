@@ -1,0 +1,30 @@
+.search-field {
+    /*width: 500px;*/
+    padding: 1rem 1.3rem;
+    background-color: #3399cc !important;
+    z-index: 999;
+    margin-bottom: 0 !important;
+    /*position: absolute;*/
+    top: 50%;
+    border-radius: 15px !important;
+    left: 50%;
+    /*transform: translate(-50%, -50%);*/
+    width: 60%;
+    margin: 0 auto;
+    @include media-breakpoint-down(md) {
+      width: 100% !important;
+    }
+    form {
+      input {
+        border-top-left-radius: 15px !important; 
+        border-bottom-left-radius: 15px !important
+      }
+      button {
+        border-top-right-radius: 15px !important; 
+        border-bottom-right-radius: 15px !important
+      }
+      .btn-img {
+        width: 100%;
+      }
+    }
+}

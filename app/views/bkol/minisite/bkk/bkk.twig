@@ -1,0 +1,334 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+    {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+	{% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+	{% set append = " || Author: " ~ companies.username %}
+{% else %}
+    {% set append = "" %}
+{% endif %}
+{% block page %}
+<style>
+@media screen and (max-width: 640px){
+  .list-container{
+    display: block;
+    width: 100%;
+    padding: 1em 0;
+  }
+}
+
+@media screen and (min-width: 900px){
+  .list-container{
+    width: 33.33333%;
+  }
+}
+
+.list-container .title{
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.content {
+  position: relative;
+  /*width: 90%;*/
+  max-width: 400px;
+  margin: auto;
+  overflow: hidden;
+}
+
+
+.content .content-overlay {
+  background: rgba(0,0,0,0.7);
+  position: absolute;
+  height: 99%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  -webkit-transition: all 0.4s ease-in-out 0s;
+  -moz-transition: all 0.4s ease-in-out 0s;
+  transition: all 0.4s ease-in-out 0s;
+}
+
+.content:hover .content-overlay{
+  opacity: 1;
+}
+
+.content-image{
+  width: 100%;
+}
+
+.content-details {
+  position: absolute;
+  text-align: center;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  -moz-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.content:hover .content-details{
+  top: 50%;
+  left: 50%;
+  opacity: 1;
+}
+
+.content-details h3{
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+
+.content-details p {
+    color: #fff;
+    font-size: 0.8em;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.fadeIn-bottom{
+  top: 80%;
+}
+
+.fadeIn-top{
+  top: 20%;
+}
+
+.fadeIn-left{
+  left: 20%;
+}
+
+.fadeIn-right{
+  left: 80%;
+}
+ /* card list*/
+.card-list-image {
+    border-bottom: 3px solid #f68633;
+    margin-bottom: 10px;
+    width: 100%;
+    min-height: 212.66px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.card-list-title {
+    margin-bottom: 15px;
+}
+
+.card-list-sub-list {
+    font-size: 12px;
+    font-family: "Open Sans", sans-serif !important;
+    line-height: 1.3;
+}
+
+.card-list-sub-list ul li {
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+.card-list-action {
+    text-align: center;
+}
+
+.card-list-action .col {
+    padding: 10px;
+    background: #efefef;
+    margin: 0 1%;
+}
+
+.card-list-action a img {
+    max-width: 24px;
+}
+.card-list-warp {
+    margin-bottom: 25px;
+}
+.leftside .hr-theme{
+  margin-bottom: 25px;
+}
+</style>
+<section id="page-hero" class="clearfix" style="background-image: url('{{ base_url() }}/img/bkol-pemberi-bg.jpg');">
+
+</section>
+{% include 'bkol/inc/flash.twig' %}
+<div id="home" class="container pt-3 pb-5">
+	<div class="row">
+		<div class="col-xl-4 order-1 col-sm-4 order-2">
+			<div class="row sidebar">
+        {% include 'bkol/minisite/bkk/filter.twig' %}
+			</div>
+		</div>
+		<div class="col-xl-8 col-sm-8">
+			<div class="row leftside">
+        <div class="col-sm-12">
+          <div class="p-3 bg-white list-job">
+              <div class="hr-theme ">
+                <div class="hr-title"><h5 class="title-section">BURSA KERJA KHUSUS</h5></div>
+                <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+              </div>
+							<div class="row" data-jplist-group="list-bkk">
+              <!-- <ul class="list-group list-group-flush col-md-12 col-sm-12"> -->
+                 {% for r in bkk %}
+                  {# {{r.kompetensikeahlian}} #}
+                      
+                      <div class="card-list-warp col-md-4 col-sm-6" data-jplist-item="data-jplist-item">
+                        {% if r.logo  != "" %}
+                        <div class="card-list-image" style="background-image: url({{r.logo}});"></div>
+                        {% else %}
+                        <div class="card-list-image" style="background-image: url({{ base_url() }}/img/nologo.jpg);"></div>
+                        {% endif %}
+                        <div class="card-list-title">
+                          <a href="{{path_for('minisite-bkk-detail',{'slug' : r.slug}  )}}" title="" rel="nofollow" class="author-name title-section">{{r.nama_bkk}}</a>
+                        </div>
+                        <div class="card-list-sub-list">
+                          <ul class="fa-ul">
+                            {% if r.kompetensikeahlian %}
+                            <li><i class="fa-li fa fa-building"></i>
+                              {% for jk in r.kompetensikeahlian %}
+                                {{jk.sk.kompetensi_keahlian}}{% if not loop.last %}, {% endif %}
+                                <span hidden class="kompetensikeahlian{{jk.sk.id}}">kompetensikeahlian{{jk.sk.id}}</span>
+                              {% endfor %}
+                            </li>
+                            {% else %}
+                            <li><i class="fa-li fa fa-building"></i>-</li>
+                            {% endif %}
+
+                            {% if r.kecamatan.lokasi_nama != "" and r.kelurahan.lokasi_nama != '' %}
+                            <li><i class="fa-li fa fa-map-marker"></i>{{r.kelurahan.lokasi_nama}}, {{r.kecamatan.lokasi_nama|title}}</li>
+                            {% else %}
+                            <li><i class="fa-li fa fa-map-marker"></i>-</li>
+                            {% endif %}
+                          </ul>
+                        </div>
+                        <div class="card-list-action d-flex flex-row no-gutters">
+                          <a href="{{path_for('minisite-bkk-detail',{'slug' : r.slug}  )}}" class="col"><img src="{{base_url()}}/img/bkol/icon/file.png" alt=""></a>
+                        </div>
+                      </div>
+             
+                      <!--
+                       <div class="col-lg-12 col-sm-12 mb-12" data-jplist-item>
+                      <li class="list-group-item">
+                         <a href="{{path_for('minisite-bkk-detail',{'slug' : r.slug}  )}}" title="" rel="nofollow" class="author-name title-section">{{r.nama_bkk}}</a>
+                      </li>
+                      {% for jk in r.kompetensikeahlian %}
+                        <span hidden class="kompetensikeahlian{{jk.sk.id}}">kompetensikeahlian{{jk.sk.id}}</span>
+                      {% endfor %}
+
+                      
+                      </div>
+                      -->
+                {% endfor %}
+                <!-- </ul>-->
+						</div>
+            {% if bkk|length == 0 %}
+              <div class="p-3 bg-warning">
+                <h6 class="big">Maaf, Bursa Kerja Khusus yang anda cari belum tersedia..</h6>
+              </div>
+            {% endif %}
+			</div>
+		</div>
+	</div>
+  
+	<div class="col-xl-12 col-sm-12" style="text-align:center;padding-top:20px">
+                  <div class="col flex flex-wrap justify-content-center">
+                    <!-- pagination control -->
+                    <nav data-jplist-control="pagination" data-group="list-bkk" data-items-per-page="9" data-current-page="0" data-disabled-class="disabled" data-selected-class="active" data-jump="top" data-name="pagination1" class="mb-2 mr-3">
+                      <!-- first and previous buttons -->
+                      <ul class="pagination d-inline-flex">
+                        <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="first">
+                          <a class="page-link" href="#">«</a>
+                        </li>
+                        <li class="page-item" data-type="prev">
+                          <a class="page-link" href="#">‹</a>
+                        </li>
+                      </ul>
+                      <!-- pages buttons -->
+                      <ul class="pagination d-none d-sm-none d-lg-inline-flex" data-type="pages">
+                        <li class="page-item" data-type="page">
+                          <a class="page-link" href="#">{pageNumber}</a>
+                        </li>
+                      </ul>
+
+                      <!-- next and last buttons -->
+                      <ul class="pagination d-inline-flex">
+                        <li class="page-item" data-type="next">
+                          <a class="page-link" href="#">›</a>
+                        </li>
+                        <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="last">
+                          <a class="page-link" href="#">»</a>
+                        </li>
+                      </ul>
+
+                      <!-- information labels -->
+                      <span data-type="info" class="d-none d-sm-none d-md-inline-flex badge badge-secondary ml-3 p-2">
+                        {startItem} - {endItem} of {itemsNumber}
+                      </span>
+
+
+
+                    </nav>
+
+                  </div>
+
+                </div>
+  <!--              
+	<div class="row">
+		<div class="col">
+			<div class="text-center" style="{% if pagination is empty %}height: 20px;{% endif %}">
+			{{pagination|raw}}
+			</div>
+		</div>
+	</div>
+  -->
+</div>
+</div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ModalLamaran" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content" id="modal-melamar">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+     <script src="//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+
+    <!-- jPList Library -->
+    <script src="{{ asset('/js/jplist/1.2.0/jplist.min.js') }}"></script>
+
+    <script>
+        $('.openPopup').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('#modal-melamar').load(dataURL,function(){
+                $('#ModalLamaran').modal({show:true});
+            });
+        });
+     jplist.init({
+    deepLinking: true
+  });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || User Management{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% if config['oauth2-enabled'] %}
+<link href="{{ asset('disnaker/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endif %}
+{% endblock %}
+
+{% block page %}
+
+
+{% if auth.hasAccess('role.view') %}
+<div class="row clearfix">
+    {% if auth.hasAccess('role.create') %}
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h2>Tambah Role Baru</h2>
+            </div>
+            <div class="body">
+                <form action="{{ path_for('admin-roles-add') }}" method="POST" role="form">
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <label class="form-label" for="">Role Name</label>
+                            <input type="text" name="role_name" class="form-control" id="role_name">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <label class="form-label" for="">Role Slug</label>
+                            <input type="text" name="role_slug" class="form-control" id="role_slug">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn bg-teal form-control"><span>Tambah Role</span><i class="material-icons">keyboard_arrow_right</i></button>
+                    </div>
+                    {{ csrf() }}
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-md-8">
+        <div class="card">
+            <div class="header">
+                <h2>User Roles</h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                <table width="100%" class="table inline-button-actions table-bordered table-hover" id="roles_table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Permissions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for role in roles %}
+                            <tr>
+                                <td>{{ role.name }}</td>
+                                <td>{{ role.slug }}</td>
+                                <td>
+                                {% for key,perm in role.permissions|jsonDecode %}
+                                            {% if perm == 1 %}
+                                                {{key}}
+                                            {% else %}
+                                                <span style="color: red;">{{key}}</span>
+                                            {% endif %}
+
+                                            {% if not loop.last %},{% endif %}
+                                        {% endfor %}
+                                </td>
+                                <td>
+                                    {% if auth.hasAccess('role.update') %}
+                                    <a href="{{ path_for('admin-roles-edit', {'role': role.id}) }}" class="btn bg-blue btn-sm">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    {% endif %}
+                                    {% if auth.hasAccess('role.delete') %}
+                                        {% if role.id != 1 %}
+                                            <form action="{{ path_for('admin-roles-delete') }}" method="post" style="display: inline;">
+                                                <input type="hidden" name="role_id" value="{{ role.id }}" />
+                                                {{csrf()}}
+                                                <button class="btn bg-red btn-sm swal-confirm" data-swtitle="Are you sure?" data-swmessage="This role will be permanently removed from all users and you will not be able to undo it!">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </form>
+
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+$(document).ready(function() {
+
+    $('#users_table').DataTable({
+        responsive: true,
+        stateSave: true,
+        "processing": true,
+        "serverSide": true,
+        "ajax":{
+                 "url": "/dashboard/users/datatables",
+                 "dataType": "json",
+                 "type": "GET"
+               },
+        "columns": [
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "roles",
+                "orderable": false,
+                "render": function ( data, type, full, meta ) {
+                    var roles = [];
+                        $.each(data, function( key, value ) {
+                            roles.push(value.name);
+                        });
+
+                    return roles.join(', ');
+                }
+            },
+            {
+                "data": "id",
+                "orderable": false,
+                "render": function ( data ) {
+                    var result = "";
+                    {% if auth.hasAccess('user.edit') %}
+                    var result = result + ' <a href="/dashboard/users/edit/'+data+'" class="btn btn-primary btn-xs">'+
+                        '<span class="fa fa-fw fa-pencil"></span>'+
+                    '</a>';
+                    {% endif %}
+                    if (data == 1 ) {
+                        return result;
+                    }
+                    {% if auth.hasAccess('user.delete') %}
+                        var result = result + ' <form action="/dashboard/users/delete" method="post" style="display: inline;">'+
+                            '<input type="hidden" name="user_id" value="'+data+'" />'+
+                            '{{csrf()}}'+
+                            '<button class="btn btn-danger btn-xs swal-confirm" data-swtitle="Are you sure?" data-swmessage="This account will be permanently deleted and you will not be able to recover it.">'+
+                                '<span class="fa fa-fw fa-close"></span>'+
+                            '</button>'+
+                        '</form>';
+                    {% endif %}
+                    return result;
+                }
+            }
+        ]
+
+    });
+
+    $('#roles_table').DataTable({
+        responsive: true,
+        stateSave: true,
+        columnDefs: [
+            { "width": "100px", "targets": [3] }
+        ]
+    });
+});
+</script>
+{% endblock %}

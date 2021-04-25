@@ -1,0 +1,62 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#provinsi').change(function(){
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function(val) {
+                    $('#kabupatenkota').html(val);
+                }
+            });
+        });
+        $('#kabupatenkota').change(function(){
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function(val) {
+                    $('#kecamatan').html(val);
+                }
+            });
+        });
+        $('#kecamatan').change(function(){
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kelurahan/' + id,
+                type: 'GET',
+                success: function(val) {
+                    $('#kelurahan').html(val);
+                }
+            });
+        });
+
+        $('#provinsi_dalam').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kabupatenkota_dalam').html(val);
+                }
+            });
+        });
+
+        $('#kabupatenkota_dalam').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kecamatan_dalam').html(val);
+                }
+            });
+        });
+    });
+</script>

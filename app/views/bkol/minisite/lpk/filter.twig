@@ -1,0 +1,29 @@
+
+<div class="col-sm-12 p-3">
+  <div class="input-group">
+  <input data-jplist-control="textbox-filter" data-group="list-lpk" data-name="my-filter-2"  type="text" value="" placeholder="Filter Berdasarkan Nama" data-clear-btn-id="author-clear-btn" class="form-control"/>
+  <div class="input-group-append">
+    <button class="btn btn-secondary" type="button" id="author-clear-btn">Clear</button>
+  </div>
+</div>
+
+</div>
+  <div class="col-sm-12 p-3">
+    <div class="hr-theme ">
+      <div class="hr-title">
+        <h5 class="title-section">KETERAMPILAN</h5>
+      </div>
+      <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+    </div>
+    <ul class="kategori-list">
+      {% for r in keterampilan %}
+        <li class="d-flex justify-content-start align-items-center">
+          <input id="keterampilan{{ r.id }}" data-name="tags-filter" data-or="filters" type="checkbox" data-jplist-control="checkbox-text-filter" data-path=".keterampilan{{ r.id }}" data-group="list-lpk" data-name="cb-filter" value="keterampilan{{ r.id }}"/>
+          <label for="keterampilan{{r.id}}" class='cat-check'>{{r.jenis_kursus}} <span class="badge badge-primary badge-pill">{{r.keterampilanlpk.count}}</span></label>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+        <button data-jplist-control="reset" data-group="list-lpk" class="btn btn-primary btn-block" data-name="reset" type="button">
+      Reset
+    </button>

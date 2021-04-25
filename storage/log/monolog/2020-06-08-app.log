@@ -1,0 +1,2 @@
+[2020-06-08 21:19:57] App.INFO: Pendaftaran pengguna baru. {"user":null} []
+[2020-06-08 21:20:02] App.INFO: Pendaftaran pengguna baru. {"user":"[object] (App\\Model\\Users: {\"email\":\"system.vidyarossa@gmail.com\",\"username\":\"13b73033ce14636e401a1d461aaed7fb\",\"fullname\":\"PUTRA\",\"jurusan_bkk_id\":\"72\",\"nim\":\"123457\",\"tahun_lulus\":2020,\"permissions\":{\"user.delete\":0},\"password\":\"$2y$10$v2EyDv4YelXT/2h2j///3eHllHsKXQxSDxSunE49IJ5qKxfFScCtK\",\"updated_at\":\"2020-06-08 21:19:57\",\"created_at\":\"2020-06-08 21:19:57\",\"id\":729})"} []

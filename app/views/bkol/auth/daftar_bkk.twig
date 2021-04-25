@@ -1,0 +1,39 @@
+
+{% import 'bkol/macros/form.twig' as form %}
+<form id="form" method="POST" style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-12" style="border-bottom: 2px solid #3b3d93;margin-bottom: 1rem;">
+            <div class="form-group input-group-sm{% if has_error('bkk_id') %} has-error{% endif %}">
+                <label for="kecamatan">Nama BKK
+                    <span class="require">*</span>
+                </label>
+                <select  class="form-control" name="bkk_id" required>
+                <option  value="">Pilih BKK</option>
+                {% for r in bkk %}
+                    <option value="{{r.id}}">{{r.nama_bkk}}</option>
+                {% endfor %}
+                </select>
+                <span class="help-block">{{ error('bkk_id') }}</span>
+            </div>
+            {{ form.text('fullname', requestParams['fullname'], 'fullname',
+            'Nama Lengkap', null, null, 'fa-user-circle') }}
+            {{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email',
+            'fa-envelope') }}
+            {{ form.text('phonenumber', requestParams['phonenumber'], 'phonenumber', 'Nomor Telepon', null, 'phonenumber',
+            'fa-phone') }}
+        </div>
+        <div class="col-12">
+            {{ form.text('username', requestParams['username'], 'username', 'Username',
+            null, 'username', 'fa-user-circle-o') }}
+            {{ form.text('password', null, 'password', 'Password', null,
+            'password','fa-key') }}
+            {{ form.text('password-confirm', null, 'password-confirm', 'Confirm password',
+            null, 'password', 'fa-key') }}
+            {{ form.custom('recaptcha', recaptcha()) }}
+               <div class="form-group">
+                                            <div class="btn btn-sm btn-block btn-green disabled">Silahkan mendaftar melalui email/telp dibawah</div>
+                                        </div>
+        </div>
+    </div>
+    {{ csrf() }}
+</form>

@@ -1,0 +1,407 @@
+{% extends "bkol/bkol.twig" %}
+{% block seo %}
+<title>{{ post.nama_lowongan }}</title>
+<meta name="page-title" content="{{ post.nama_lowongan }}" />
+{% endblock %}
+
+{% block page %}
+<style>
+#company_logo{
+	width: 120px;
+}
+.sub-title{
+	color: #949494;
+    font-size: 18px;
+    margin: 0;
+}
+div[class^="sm-padding"]{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+}
+.bg-with-image{
+	background-image: url('{{ base_url() }}/img/bkol/bg-tentang2.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+/*accordion*/
+.wrapper{
+  width:70%;
+}
+@media(max-width:992px){
+ .wrapper{
+  width:100%;
+}
+}
+.panel-heading {
+  padding: 0;
+	border:0;
+}
+.panel-title>a, .panel-title>a:active{
+	display:block;
+	padding:15px;
+  color:#555;
+  font-size:16px;
+  font-weight:bold;
+	text-transform:uppercase;
+	letter-spacing:1px;
+  word-spacing:3px;
+	text-decoration:none;
+}
+.panel-heading  a:before {
+    font-family: 'FontAwesome';
+    content: "\f078";
+    float: right;
+    transition: all 0.5s;
+    font-size: 18px;
+    margin-left: 10px;
+}
+.panel-heading.active a:before {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+#job-detail .panel-heading:hover {
+    cursor: pointer;
+}
+/*accordion end*/
+</style>
+<div class="d-flex flex-row bg-with-image">
+	<div class="container">
+		<div class="card-body d-flex flex-row align-items-center">
+					<div class="sm-padding job-company-logo col-sm-2 my-2">
+						{% if post.authorCompanies.logo  != "" %}
+						<img id="company_logo" alt="{{post.nama_lowongan}}" data-original="{{post.authorCompanies.logo}}" src="{{post.authorCompanies.logo}}" class="img-fluid">
+						{% else %}
+						<img id="company_logo" src="{{ base_url() }}/img/nologo.jpg" class="img-fluid">
+						{% endif %}
+					</div>
+					<div class="sm-padding job-company-title col-sm-6 my-2"><p id="position_title" class="job-position">{{post.nama_lowongan}}</p>
+						<a target="_blank" href="{{path_for('job-companies', {'companyname': post.authorCompanies.companyname})}}">{{post.authorCompanies.companyname}}</a>
+					</div>
+					<div class="sm-padding job-company-salary d-flex justify-content-md-end justify-content-sm-start col-sm-4 my-2">
+						<ul class="fa-ul">
+						<li class="mb-2"><i class="fa-li fa">IDR</i>
+							{% if not auth.check() %}
+							<a href="javascript:void(0)" class="openLogin" data-href="{{ path_for('login-modal')}}">Masuk untuk melihat gaji</a>
+							{% endif %}
+							{% if  auth.check() %}
+							<span>{{post.gaji.name}}</span>
+							{% endif %}
+						</li>
+						<li class="mb-2"><i class="fa-li fa fa-users"></i>
+							<span id="years_of_experience">Jumlah Kebutuhan : {{post.jumlah_kebutuhan_tenaga}}</span></li>
+						<li class="mb-2"><i class="fa-li fa fa-map-marker"></i>
+							<span id="single_work_location" class="single_work_location">{{post.provinsi.lokasi_nama}} - {{post.kabupatenkota.lokasi_nama}}</span>
+						</li>
+						</ul>
+					</div>
+				</div>
+	</div>
+</div>
+<div id="job-detail">
+	{% include 'bkol/inc/flash.twig' %}
+	<div class="container">
+
+			<div class="d-flex flex-row py-4" id="accordion">
+				<div class="sm-padding col-sm-6">
+					<div class="card card-body mb-2">
+
+						<div class="panel-heading active">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#detail-lowongan" aria-expanded="true" aria-controls="detail-lowongan">
+								<div class="hr-theme d-flex align-items-center" id="heading1">
+									<div class="hr-title"><h3 class="title-section sub-title">DETAIL LOWONGAN</h3></div>
+									<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+								</div>
+							</a>
+						</div>
+
+
+						<div id="detail-lowongan" class="panel-collapse collapse show" aria-labelledby="heading1" data-parent="#accordion">
+							<div class="pt-3">
+
+								<div class="item mb-2">
+									<h3 class="desc_subject">Nama Posisi Jabatan</h3>
+									<div>{{post.jabatan.jenis_golongan}}</div>
+								</div>
+
+								<div class="item mb-2">
+									<h3 class="desc_subject">Range Gaji</h3>
+									{% if not auth.check() %}
+									<div><a href="javascript:void(0)" class="openLogin" data-href="{{ path_for('login-modal')}}">Masuk untuk melihat gaji</a></div>
+									{% endif %}
+									{% if  auth.check() %}
+									<div>{{post.gaji.name}}</div>
+									{% endif %}
+								</div>
+
+								<div class="item mb-2">
+									<h3 class="desc_subject">Deskripsi Pekerjaan</h3>
+									{% autoescape %}
+									{{post.deskripsi_pekerjaan|raw}}
+									{% endautoescape %}
+								</div>
+
+								<div class="item mb-2">
+									<h3 class="desc_subject">Penempatan</h3>
+									<div>{{post.wilayah_pekerjaan}}, {{post.provinsi.lokasi_nama}} - {{post.kabupatenkota.lokasi_nama}}</div>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+					<div class="card card-body mb-2">
+
+						<div class="panel-heading">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#kualifikasi" aria-expanded="true" aria-controls="kualifikasi">
+						<div class="hr-theme d-flex align-items-center" id="heading2">
+							<div class="hr-title"><h3 class="title-section sub-title">KUALIFIKASI</h3></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+						</div>
+						</a>
+						</div>
+
+						<div id="kualifikasi" class="panel-collapse collapse" aria-labelledby="heading2" data-parent="#accordion">
+						<div class="pt-3">
+
+							<div class="item">
+								<h3 class="desc_subject">Jenis Kelamin</h3>
+								<p>{{post.jenis_kelamin}}</p>
+							</div>
+
+							<div class="item">
+								<h3 class="desc_subject">Usia Maksimal</h3>
+								<p>{{post.usia_maksimal}}</p>
+							</div>
+
+							<div class="item">
+								<h3 class="desc_subject">Pendidikan Terakhir</h3>
+								<p>{{post.pendidikanterakhir.jenis_pendidikan}}</p>
+							</div>
+
+							<div class="item">
+								<h3 class="desc_subject">Jurusan Pendidikan</h3>
+								<p>{{post.jurusanpendidikan.jenis_pendidikan}}</p>
+							</div>
+
+							<div class="item">
+								<h3 class="desc_subject">Nilai Minimal Ijazah</h3>
+								<p>{{post.nilai_minimal}}</p>
+							</div>
+
+							<div class="item">
+								<h3 class="desc_subject">Status Pernikahan</h3>
+								<p>{{post.status_perkawinan}}</p>
+							</div>
+
+							<div class="item">
+								<h3 class="desc_subject">Berlaku Hingga</h3>
+								<p>	<i>{{post.tanggal_pasang|date("j F  Y")}} - <b>s/d</b> - {{post.tanggal_berakhir|date("j F  Y")}}</i></p>
+							</div>
+						</div>
+					</div>
+					</div>
+					<div class="card card-body mb-2">
+
+						<div class="panel-heading">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#persyaratan_berkas" aria-expanded="true" aria-controls="persyaratan_berkas">
+						<div class="hr-theme d-flex align-items-center" id="heading3">
+							<div class="hr-title"><h3 class="title-section sub-title">PERSYARATAN BERKAS LOWONGAN</h3></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+						</div>
+						</a>
+						</div>
+
+						<div id="persyaratan_berkas" class="panel-collapse collapse" aria-labelledby="heading3" data-parent="#accordion">
+						<div class="pt-3">
+
+							<div class="item">
+								{% autoescape %}
+								{{post.kelengkapan_berkas|raw}}
+								{% endautoescape %}
+							</div>
+						</div>
+						</div>
+
+					</div>
+					<div class="card card-body mb-2">
+
+							<div class="panel-heading">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#persyaratan-umum" aria-expanded="true" aria-controls="persyaratan-umum">
+						<div class="hr-theme d-flex align-items-center" id="heading4">
+							<div class="hr-title"><h3 class="title-section sub-title">PERSYARATAN UMUM</h3></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+						</div>
+						</a>
+						</div>
+
+						<div id="persyaratan-umum" class="panel-collapse collapse" aria-labelledby="heading4" data-parent="#accordion">
+							<div class="pt-3">
+
+							<div class="item">
+								{% autoescape %}
+								{{post.persyaratan_umum|raw}}
+								{% endautoescape %}
+							</div>
+						</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="sm-padding col-sm-6">
+					<div class="card card-body mb-2">
+
+						<div class="panel-heading">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#gambaran-perusahaan" aria-expanded="true" aria-controls="gambaran-perusahaan">
+						<div class="hr-theme d-flex align-items-center" id="heading5">
+							<div class="hr-title"><h3 class="title-section sub-title">GAMBARAN PERUSAHAAN</h3></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+						</div>
+						</a>
+						</div>
+
+						<div id="gambaran-perusahaan" class="panel-collapse collapse" aria-labelledby="heading5" data-parent="#accordion">
+							<div class="pt-3">
+								<div class="row item">
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 id="average_processing_time" class="desc_subject align-left">
+											Waktu Proses Lamaran <span class="icon-question-mark icon_question" id="average_processing_time_info" data-toggle="tooltip" data-original-title="<button type='button' id='average_processing_time_button' class='close popover-close-btn hidden-lg'></button><b>Apa artinya?</b></br></br>Ini adalah rata-rata waktu (berdasarkan data) yang diperlukan perusahaan ini untuk membuat evaluasi dan memproses lamaran."></span>
+										</h3>
+
+										<p id="fast_average_processing_time" class="align-normal">
+											Lebih dari 2 minggu
+										</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Nomor Pendaftaran</h3>
+										<p>
+											<span id="company_registration_number">-</span>
+										</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Industri</h3>
+										<p id="company_industry">{{post.authorCompanies.industry}}</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Situs</h3>
+										<p>
+											<a id="company_website" target="_blank" href="htpp://{{post.authorCompanies.website}}">{{post.authorCompanies.website}}</a>
+										</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Nomor Telepon</h3>
+										<p id="company_contact">{{post.authorCompanies.phonenumber}}</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Ukuran Perusahaan</h3>
+										<p id="company_size">{{post.authorCompanies.companysize}}</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Waktu Bekerja</h3>
+										<p id="work_environment_waktu_bekerja">
+											{{post.authorCompanies.workingtime}}
+										</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Gaya Berpakaian</h3>
+										<p id="work_environment_gaya_berpakaian">
+											{{post.authorCompanies.fashionstyle}}
+										</p>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<h3 class="desc_subject">Bahasa yang Digunakan</h3>
+										<p id="work_environment_bahasa_yang_digunakan">
+											{{post.authorCompanies.languageused}}
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="card card-body mb-2">
+
+						<div class="panel-heading">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#info-perusahaan" aria-expanded="true" aria-controls="info-perusahaan">
+						<div class="hr-theme d-flex align-items-center" id="heading6">
+							<div class="hr-title"><h3 class="title-section sub-title">INFORMASI PERUSAHAAN</h3></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+						</div>
+						</a>
+						</div>
+
+						<div id="info-perusahaan" class="panel-collapse collapse" aria-labelledby="heading6" data-parent="#accordion">
+						<div class="pt-3">
+
+							<div class="item">
+								{{post.authorCompanies.about}}
+							</div>
+						</div>
+						</div>
+					</div>
+					<div class="card card-body mb-2">
+
+						<div class="panel-heading">
+							<a class="collapsed" role="button" data-toggle="collapse" data-target="#mengapa-bergabung" aria-expanded="true" aria-controls="mengapa-bergabung">
+						<div class="hr-theme d-flex align-items-center" id="heading7">
+							<div class="hr-title"><h3 class="title-section sub-title">MENGAPA BERGABUNG DENGAN KAMI?</h3></div>
+							<div class="hr-line flex-grow-1" style="background-image: url('http://localhost:8899/img/bkol/line.png')"></div>
+						</div>
+						</a>
+						</div>
+
+						<div id="mengapa-bergabung" class="panel-collapse collapse" aria-labelledby="heading7" data-parent="#accordion">
+							<div class="pt-3">
+								<div class="item">
+									{{post.authorCompanies.whyjoinus}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						{% if auth.check() %}
+						{# {% if auth.hasAccess('companies.view') %}
+						<a disabled href="javascript:void(0)" class="openPopup btn btn-small btn-success" data-href="{{ path_for('modal-lamaran', {'id': post.id, 'slug': post.slug }) }}">Lamar Sekarang</a>
+						{% endif %} #}
+						{% if auth.hasAccess('jobseeker.view') %}
+							{% if postlamaran.user_id != auth.user.id %}
+								{% for r in post.author.roles if r.slug != 'companies'%}
+								{% else %}
+									<a href="javascript:void(0)"  data-href="{{ path_for('modal-lamaran', {'id': post.id, 'slug': post.slug }) }}" class="openPopup btn btn-lg  btn-block">Lamar Sekarang</a>
+								{% endfor %}
+								
+							{% else %}
+								<span  class="btn btn-lg btn-block btn-disabled btn-disabled">Kamu Sudah Melamar Pekerjaan</span>
+						{% endif %}
+						{% endif %}
+						{% endif %}
+						{% if not auth.check() %}
+						<a href="javascript:void(0)" class="openLogin btn btn-lg btn-primary btn-block"  data-href="{{ path_for('login-modal')}}">Login untuk melamar pekerjaan ini</a>
+						{% endif %}
+					</div>
+				</div>
+				{% import 'bkol/macros/form.twig' as form %}
+			</div>
+
+		</div>
+	</div>
+	<div class="modal fade bd-example-modal-lg" id="ModalLamaran" role="dialog">
+	    <div class="modal-dialog modal-lg">
+	        <!-- Modal content-->
+	        <div class="modal-content" id="modal-melamar">
+	        </div>
+	    </div>
+	</div>
+	{% endblock %}
+	{% block javascript %}
+	    <script>
+	        $('.openPopup').on('click',function(){
+	            var dataURL = $(this).attr('data-href');
+	            $('#modal-melamar').load(dataURL,function(){
+	                $('#ModalLamaran').modal({show:true});
+	            });
+	        });
+	    </script>
+	{% endblock %}

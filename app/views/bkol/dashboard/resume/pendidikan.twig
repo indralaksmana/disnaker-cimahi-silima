@@ -1,0 +1,215 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+
+{% block title %}{{config['site-name']}} || Edit Resume{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style type="text/css">
+    .item .item-title {
+        margin-top: 10px;
+        font-size: 24px;
+        font-weight: 300;
+        color: #333;
+        line-height: 30px;
+    }
+
+    .item .item-period {
+        float: right;
+        right: 12px;
+        height: 20px;
+        margin-top: -10px;
+        color: #888;
+        font-style: italic;
+    }
+    .item a {
+    margin-bottom: 0px!important;
+    }
+
+    .item .sub-title {
+        color: #08d;
+        font-size: 18px;
+        line-height: 24px
+    }
+
+    .item .desc {
+        font-size: 14px;
+        line-height: 18px;
+        color: #888;
+    }
+</style>
+<div class="container">
+    <div class="row bg-white">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        <h3 class="title-section">Pendidikan Formal</h3>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row my-1">
+                <div class="col-12 col-sm-6">
+                    <a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseExample" role="button"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        TAMBAH PENDIDIKAN FORMAL
+                    </a>
+                </div>
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <form action="{{ path_for('resume-pendidikan-add') }}" method="POST" role="form">
+                        <h5 class="font-weight-bold">Pendidikan</h5>
+                        <div class="form-group input-group-sm{% if has_error('pendidikan_terakhir') %} has-error{% endif %}">
+                            <label for="pendidikan_terakhir">Tingkat Pendidikan
+                            </label>
+                            <select name="level" id="kodependidikan" class="form-control" required="required">
+                                {% for r in jenispendidikan %}
+                                <option name="level" value="{{ r.jenis_pendidikan }}" id="{{ r.kode_pendidikan }}">{{
+                                    r.jenis_pendidikan }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('level') }}</span>
+                        </div>
+                        <div class="form-group input-group-sm{% if has_error('schoolmajors') %} has-error{% endif %}">
+                            <label for="schoolmajors">Jurusan
+                            </label>
+                            <select name="schoolmajors" id="kodejurusan" class="form-control" required="required">
+                            </select>
+                            <span class="help-block">{{ error('schoolmajors') }}</span>
+                        </div>
+                        <div class="form-group input-group-sm{% if has_error('schoolname') %} has-error{% endif %}">
+                            <label for="schoolname">Nama Sekolah / Universitas</label>
+                            <input type="text" name="schoolname" class="form-control" id="schoolname"
+                                placeholder="Nama Sekolah / Universitas" value="{% if requestParams.schoolname %}{{requestParams.schoolname}}{% endif %}"
+                                required="required">
+                            <span class="help-block">{{ error('schoolname') }}</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group input-group-sm{% if has_error('graduationyear') %} has-error{% endif %}">
+                                    <label for="graduationyear">Tahun Lulus</label>
+                                    <select name="graduationyear" class="form-control">
+                                        <option value="0">Tahun Lulus</option>
+                                        {% for i in 2020..1950 %}
+                                        <option value="{{ i }}" {% if requestParams.graduationyear %}selected{% endif
+                                            %}>{{
+                                            i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('graduationyear') }}</span>
+                                </div>
+                                <div class="form-group input-group-sm{% if has_error('schoolgrades') %} has-error{% endif %}">
+                                    <label for="schoolgrades">Nilai / IPK</label>
+                                    <input type="text" name="schoolgrades" class="form-control" id="graduationyear"
+                                        placeholder="Nilai / IPK" value="{% if requestParams.schoolgrades %}{{requestParams.graduationyear}}{% endif %}">
+                                    <span class="help-block">{{ error('schoolgrades') }}</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 pt-2">
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-third btn-block">SIMPAN</button>
+                                    </div>
+                                    <div class="col">
+                                        <a data-toggle="collapse" href="#collapseExample"
+                                            role="button" aria-expanded="false" aria-controls="collapseExample" href="{# {{ path_for('my-account')}} #}"
+                                            class="btn btn-third btn-secondary btn-block" style="font-size: 16px;">BATAL</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ csrf() }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 border-top">
+            {% for post in posts %}
+            {% if posts|length == 0 %}
+            <span class="text-center">Belum Ada data Riwayat Pendidikan</span>
+            {% endif %}
+            <div class="item">
+                <div class="item-title bold">
+                    {{post.schoolmajors}}
+                </div>
+                <div class="item-period italic" style="margin-top: 5px">
+                    <a href="/dashboard/pencarikerja/resume/pendidikan/edit/{{post.id}}" class="btn btn-small btn-third">
+                        Edit <span class="fa fa-fw fa-pencil"></span>
+                    </a>
+                    {% if post.status == 1 %}
+                    <form action="{{ path_for('resume-pendidikan-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button style="margin-left: 15px" class="btn btn-small btn-warning btn-sm swal-confirm"
+                            data-swtitle="Anda Yakin?" data-swmessage="Data ini akan terhapus secara permanen">
+                            Hapus <span class="fa fa-fw fa-close"></span>
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{{ path_for('resume-pendidikan-publish') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-success btn-sm swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="This gallery post will be published at the specified date/time.">
+                            Publish <span class="fa fa-fw fa-check"></span>
+                        </button>
+                    </form>
+                    <form action="{{ path_for('resume-pendidikan-delete') }}" method="post" style="display: inline;">
+                        <input type="hidden" name="post_id" value="{{post.id}}" />
+                        {{csrf()}}
+                        <button class="btn btn-danger btn-sm swal-confirm" data-swtitle="Kamu Yakin?" data-swmessage="This post will be permanently deleted and you will not be able to recover it.">
+                            Hapus <span class="fa fa-fw fa-trash"></span>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                <div class="sub-title italic">
+                    {{post.schoolname}}
+                </div>
+                <div class="desc">
+                    <p>
+                        <span class="start italic">Tahun Lulus: {{post.graduationyear}} </span> <span class="start italic">Nilai / IPK : {{post.schoolgrades}}</span>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#kodependidikan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/jenispendidikan/namajurusan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kodejurusan').html(val);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

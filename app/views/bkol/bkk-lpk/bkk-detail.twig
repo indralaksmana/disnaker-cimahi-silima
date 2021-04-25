@@ -1,0 +1,87 @@
+{% extends "bkol/bkol.twig" %}
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+
+{% include 'bkol/inc/flash.twig' %}
+
+<div class="lembaga-banner">
+	<div class="d-flex flex-row bg-with-image">
+		<div class="container mobile-remove-padding">
+			<div class="card-body d-flex flex-row align-items-center">
+				<div class="sm-padding col-sm-2 my-2">
+					{% if post.logo != ''%}
+					<img class="img-fluid" src="{{baseChima}}{{post.logo}}" alt="">
+					{% else %}
+					<img class="img-fluid" src="{{base_url()}}/img/nologo.jpg" alt="">
+					{% endif %}
+				</div>
+				<div class="sm-padding col-sm-6 my-2">
+					<div class="lembaga">
+						<div class="lembaga-header-text">LEMBAGA BURSA KERJA KHUSUS</div>
+						<div class="lembaga-header-name">{{post.nama_bkk}}</div>
+						<div class="lembaga-header-footer">
+							<div class="list"><b>No. Izin:</b> {{post.no_izin}}</div>
+							<div class="list"><b>Nama Kepala:</b> {{post.nama_kepala_bkk}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="sm-padding d-flex justify-content-md-end justify-content-sm-start col-sm-4 my-2">
+					<div class="lembaga-detail">
+						<div class="mb-1 list"><b>Alamat :</b> {{post.alamat}}</div>
+						<div class="mb-1 list"><b>No Tlp :</b> {{post.no_telp}}</div>
+						<div class="mb-1 list"><b>Fax :</b> {{post.fax}}</div>
+						<div class="mb-1 list"><b>Email :</b> {{post.email}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container mobile-remove-padding">
+	<div class="page-warp">
+		<div class="page-content">
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-12">
+					<div class="left-side">
+						<div class="item">
+							<h3>Profil Singkat</h3>
+							<p>{{post.profile_bkk|raw}}</p>
+						</div>
+						<div class="item">
+							<h3>Jurusan</h3>
+							<p>{{post.jurusan_bkk|raw}}</p>
+						</div>
+						<div class="item">
+							<h3>Fasilitas</h3>
+							<p>{{post.fasilitas_bkk|raw}}</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 col-12">
+					<div class="right-side">
+						<div class="d-flex flex-row flex-warp my-gallery no-gutters" itemscope itemtype="http://schema.org/ImageGallery">
+							{% for img in imgs %}
+							<figure class="col-6" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+								<a href="{{base_url}}{{ img }}" data-lightbox="image-item" itemprop="contentUrl" data-size="600x400">
+									<img src="{{base_url}}{{ img }}" itemprop="thumbnail" class="img-fluid" />
+								</a>
+							</figure>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+
+{% endblock %}

@@ -1,0 +1,147 @@
+<form action="{{ currentRoute }}" method="POST" role="form">
+        <div class="row">
+        <div class="col-md-8">
+            <div class="form-group{% if has_error('title') %} has-error{% endif %}">
+                <label for="title">Nama Pelatihan</label>
+                <input type="text" name="title" class="form-control" id="title" placeholder="Title" value="{% if requestParams.title %}{{requestParams.title}}{% else %}{{post.title}}{% endif %}" required="required">
+                <span class="help-block">{{ error('title') }}</span>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group{% if has_error('start_date') %} has-error{% endif %}">
+                        <label for="start_date">Tanggal Mulai</label>
+                        <input type="date" style="font-size:13px !important"  name="start_date" class="form-control" placeholder="Tanggal Mulai" value="{% if requestParams.start_date %}{{requestParams.start_date}}{% else %}{{post.start_date}}{% endif %}" required="required">
+                        <span class="help-block">{{ error('start_date') }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group{% if has_error('end_date') %} has-error{% endif %}">
+                        <label for="end_date">Sampai Tanggal</label>
+                        <input type="date" style="font-size:13px !important" name="end_date" class="form-control" placeholder="Sampai Tanggal" value="{% if requestParams.end_date %}{{requestParams.end_date}}{% else %}{{post.end_date}}{% endif %}" required="required">
+                        <span class="help-block">{{ error('end_date') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <label for="">Kuota Peserta </label>
+                            </div>
+                            <div class="col">
+                                <label class="sr-only" for="kuoata_peserta">Orang</label>
+                                <div class="input-group mb-2">
+                                    <input type="number" class="form-control" name="kuoata_peserta" id="kuoata_peserta"
+                                        placeholder="" value="{% if requestParams.kuota_peserta %}{{requestParams.kuota_peserta}}{% else %}{{post.kuota_peserta}}{% endif %}">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <small>Orang</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group{% if has_error('tgl_seleksi') %} has-error{% endif %}">
+                 <label for="tgl_seleksi">Tanggal Seleksi</label>
+                 <input type="date" style="font-size:13px !important"  name="tgl_seleksi" class="form-control" placeholder="Tanggal Selaksi" value="{% if requestParams.tgl_seleksi %}{{requestParams.tgl_seleksi}}{% else %}{{post.tgl_seleksi}}{% endif %}" required="required">
+                 <span class="help-block">{{ error('tgl_seleksi') }}</span>
+            </div>
+            <div class="form-group{% if has_error('tempat_pelaksanaan') %} has-error{% endif %}">
+                <label for="tempat_pelaksanaan">Tempat Pelaksanaan</label>
+                <textarea name="tempat_pelaksanaan" class="form-control" id="tempat_pelaksanaan" placeholder="Tempat Pelaksanaan" required="required">{% if requestParams.tempat_pelaksanaan %}{{requestParams.tempat_pelaksanaan}}{% else %}{{post.tempat_pelaksanaan}}{% endif %}</textarea>
+                <span class="help-block">{{ error('tempat_pelaksanaan') }}</span>
+            </div>
+
+            <div class="form-group{% if has_error('sasaran') %} has-error{% endif %}">
+                <label for="sasaran">Sasaran</label>
+                <textarea name="sasaran" class="form-control" id="sasaran" placeholder="Sasaran" required="required">{% if requestParams.sasaran %}{{requestParams.sasaran}}{% else %}{{post.sasaran}}{% endif %}</textarea>
+                <span class="help-block">{{ error('sasaran') }}</span>
+            </div>
+            <div class="form-group{% if has_error('keterangan') %} has-error{% endif %}">
+                <label for="keterangan">Deskripsi</label>
+                <textarea name="keterangan" class="form-control" id="sararan" placeholder="Keterangan" required="required">{% if requestParams.keterangan %}{{requestParams.keterangan}}{% else %}{{post.keterangan}}{% endif %}</textarea>
+                <span class="help-block">{{ error('keterangan') }}</span>
+            </div>
+
+             <div class="form-group{% if has_error('persyaratan') %} has-error{% endif %}">
+                <label for="keterangan">Persyaratan</label>
+                <textarea name="persyaratan" class="form-control tinymce" id="persyaratan" placeholder="Persyaratan">{% if requestParams.persyaratan %}{{requestParams.persyaratan}}{% else %}{{post.persyaratan}}{% endif %}</textarea>
+                <span class="help-block">{{ error('persyaratan') }}</span>
+            </div>
+
+            <div class="form-group{% if has_error('keterangan_instruktur') %} has-error{% endif %}">
+                <label for="keterangan">Keterangan Instruktur</label>
+                <textarea name="keterangan_instruktur" class="form-control tinymce" id="keterangan_instruktur" placeholder="Keterangan instruktur">{% if requestParams.keterangan_instruktur %}{{requestParams.keterangan_instruktur}}{% else %}{{post.keterangan_instruktur}}{% endif %}</textarea>
+                <span class="help-block">{{ error('keterangan_instruktur') }}</span>
+            </div>
+
+            <div class="form-group{% if has_error('berbasis') %} has-error{% endif %}">
+                <label for="berbasis">Berbasis</label>
+                <select name="berbasis" class="form-control" id="berbasis">
+                    <option value="{% if requestParams.berbasis %}{{requestParams.berbasis}}{% else %}{{post.berbasis}}{% endif %}">{% if requestParams.berbasis %}{{requestParams.berbasis}}{% else %}{{post.berbasis}}{% endif %}</option>
+                    {% for i in ['Berbasis Kompetensi','Berbasis Masyarakat'] %}
+                    <option value="{{ i }}" {% if requestParams[ 'berbasis' ]==i %}selected{% endif %}>{{i
+                        }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">{{ error('berbasis') }}</span>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="form-group{% if has_error('category') %} has-error{% endif %}">
+                <label for="category">Jenis Pelatihan</label>
+                <select name="category" id="category" class="form-control" required="required">
+                    <option value="">Pilih Jenis Pelatihan</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if requestParams.category == category.id or post.category_id == category.id %}SELECTED{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">{{ error('category') }}</span>
+            </div>
+
+            <div class="form-group{% if has_error('tags') %} has-error{% endif %}">
+                <label for="tags">Tags</label>
+                <select data-placeholder="Choose some Tags..." name="tags[]" id="tags" class="form-control" multiple="" tabindex="3">
+                    <option value=""></option>
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" {% for tempTags in post.tags if tempTags.id == tag.id %}SELECTED{% endfor %}>{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-block">{{ error('tags') }}</span>
+            </div>
+            <div class="row">
+                <!--
+                <div class="col-md-10">
+                    <div class="form-group{% if has_error('publish_at') %} has-error{% endif %}">
+                        <label for="publish_at">Publish At <span style="font-weight: normal;">({{config['timezone']}})</span></label>
+                        <input type="date" name="publish_at" class="form-control" placeholder="Publish At" value="{% if requestParams.publish_at %}{{requestParams.publish_at}}{% else %}{{post.publish_at}}{% endif %}" required="required">
+                        <span class="help-block">{{ error('publish_at') }}</span>
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="row">
+                            <div class="col-md-12">
+                    <div class="form-group{% if has_error('status') %} has-error{% endif %}">
+                        <label for="status">Status (Open/Close) </label>
+                        <br /><input type="checkbox" name="status" class="form-control" id="status" {% if requestParams.status %}checked{% elseif post.status %}checked{% endif %}>
+                        <span class="help-block">{{ error('status') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-md-offset-4">
+            <div class="form-group">
+                <button type="submit" class="btn btn-success form-control">Save Pelatihan Post</button>
+            </div>
+        </div>
+        {{ csrf() }}
+         </div>
+    </form>

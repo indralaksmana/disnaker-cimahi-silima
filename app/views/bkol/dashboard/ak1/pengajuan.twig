@@ -1,0 +1,419 @@
+{% extends "bkol/bkol-dashboard.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% block page %}
+<style media="screen">
+  .list-tick li:before {
+    color: #000 !important;
+  }
+
+  .modal-lg {
+    max-width: 95% !important;
+  }
+</style>
+<style type="text/css" media="screen">
+  #dalamnegeri,
+  #sudahkerja {
+    display: none;
+  }
+
+  span.require {
+    color: red;
+  }
+
+  span#select2-jenisgoljabatanharapan-container {
+    font-size: 80%;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+    font-size: 14px;
+  }
+
+  .like-table .title {
+    border-bottom: 1px solid #3b3d93;
+  }
+
+  .like-table .content,
+  .like-table .title {
+    padding: 0.75rem;
+  }
+
+  .col.content {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .like-table .title {
+    border-bottom: 1px solid #3b3d93;
+  }
+
+  .list-tick li {
+    font-weight: normal;
+  }
+</style>
+<div class="container bg-white">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="mb-3">
+        <div class="hr-theme">
+          <div class="hr-title">
+            <h3 class="title-section">Daftar AK-1</h3>
+          </div>
+          <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;">
+          </div>
+        </div>
+        <div class="py-3">
+          <td width="70%" colspan="2">
+          <a href="javascript:void(0)" data-href="{{ path_for('contoh-pengajuan-ak1') }}"
+              class="openContoh">Lihat Contoh AK1 Kamu</a></td>
+              <br/>
+              {% if auth.user.pengajuanAK1.dok_ak1_final != '' %}
+          <a href="{{auth.user.pengajuanAK1.dok_ak1_final}}" target="_blank"
+              class="btn btn-success">Download AK-1</a></td>
+              {% endif %}
+        </div>
+      </div>
+    </div>
+    {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+    <div class="col-md-12">
+      <div class="container">
+        <div class="like-table">
+
+          <div class="row">
+            <div class="col-lg-4 col-md-3 col-12 qr-code-wrap">
+              <img src="{{baseChima}}/{{auth.user.qr_code}}" class="qr-code-image img-fluid" width="100%" />
+            </div>
+            <div class="col-lg-8 col-md-9 col-12 title">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-6 title">
+                  Jenis Pengajuan
+                </div>
+                <div class="col content">
+                  {{auth.user.pengajuanAK1.jenis_pengajuan}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-6 title">
+                  Nomor Pendaftaran
+                </div>
+                <div class="col content">
+                  {{ auth.user.pengajuanAK1.nomor_pendaftaran }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-6 title">
+                  Nomor Pencaker
+                </div>
+                <div class="col content">
+                  {{ auth.user.datapencarikerja.nomor_pencaker }}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-6 title" style="border-bottom: none;">
+                  Status AK1
+                </div>
+                <div class="col content" style="border-bottom: none;">
+
+                  {% if auth.user.pengajuanAK1.status_pengajuan == 0 %}
+                  <p>
+                    <b class="alert-danger px-2 py-1 rounded">Pengajuan Terkirim</b>
+                  </p>
+                  <br>
+                  <p>Silahkan Datang Ke Kantor Disnaker Kota Cimahi di <b>Jln. Raden Demang Hardjakusumah Komplek
+                      Perkantoran
+                      Pemkot Cimahi , Gedung C lantai II</b></a>
+                  </p>
+                  <br>
+                  <p>Dengan Menyertakan NOMOR PENDAFTARAN
+                    <b>{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</b>
+                    Dan Persyaratan Sebagai Berikut :</p>
+                  <form id="form_upload" 
+                  enctype="multipart/form-data" 
+                  action="{{ path_for('upload-syarat') }}" 
+                  method="post" style="display: inline; margin-left: 10px;">
+                   {{csrf()}}
+                  <ul class="list-tick">
+                    <li>Kartu tanda penduduk yang masih berlaku;</li> <br>
+                    <img src='{{ak1.file_ktp}}' width="100" height="100"/>
+                    <input id="ktp" type="file" accept="image/*" name="ktp"/>
+                    <hr>
+                    <li>Copy ijazah pendidikan terakhir bagi yang memiliki;</li> <br>
+                    <img src='{{ak1.file_ijazah}}' width="100" height="100"/>
+                    <input id="ijazah" type="file" accept="image/*" name="ijazah"/>
+                     <hr>
+                    <li>Copy sertifikat keterampilan bagi yang memiliki; dan</li> <br>
+                    <img src='{{ak1.file_sertifikat}}' width="100" height="100"/>
+                    <input id="sertifikat" type="file" accept="image/*" name="sertifikat"/>
+                     <hr>
+                    <li>copy surat keterangan pengalaman kerja bagi yang memiliki.</li> <br>
+                    <img src='{{ak1.file_pengalaman}}' width="100" height="100"/>
+                    <input id="pengalaman" type="file" accept="image/*" name="pengalaman"/>
+
+                    <li>Pas Foto 3x4.</li> <br>
+                    <img src='{{ak1.file_foto}}' width="100" height="100"/>
+                    <input id="foto" type="file"  accept="image/*" name="foto"/>
+                     <hr>
+                  </ul>
+                  <input type="submit" value="Upload Syarat" class="btn btn-success"/>
+                  </form>
+
+                  {% elseif auth.user.pengajuanAK1.status_pengajuan == 1 %}
+                  <b class="alert-success px-2 py-1 rounded">Syarat Lengkap</b>
+
+                  {% elseif auth.user.pengajuanAK1.status_pengajuan == 2 %}
+                  <b class="alert-success px-2 py-1 rounded">Kartu Sudah Di Cetak</b>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="row"> <div class="col-lg-9 offset-lg-3 col-md-12 col title" style="border-bottom: none;"> <p>Silahkan Datang Ke Kantor Disnaker Kota Cimahi di Jln. Raden Demang Hardjakusumah Komplek Perkantoran Pemkot Cimahi</p> </div> </div> <div class="row"> <div class="col-lg-9 offset-lg-3 col-md-12 col title" style="border-bottom: none;"> <p>Dengan Menyertakan NOMOR PENDAFTARAN <b>{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</b> Dan Persyaratan Sebagai Berikut :</p> <ul class="fa-ul"> <li> <i class="fa-li fa fa-check-circle"></i>Kartu tanda penduduk yang masih berlaku;</li> <li> <i class="fa-li fa fa-check-circle"></i>Copy ijazah pendidikan terakhir bagi yang memiliki;</li> <li> <i class="fa-li fa fa-check-circle"></i>Copy sertifikat keterampilan bagi yang memiliki; dan</li> <li> <i class="fa-li fa fa-check-circle"></i>Copy surat keterangan pengalaman kerja bagi yang memiliki.</li> </ul> </div> </div> <div class="row"> <div class="col-lg-9 offset-lg-3 col-md-12 col title" style="border-bottom: none;"></div> </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+      <div style="overflow-x:auto;">
+        <table class="table">
+          <tbody>
+            <!-- <tr> <th style="border-bottom: 1px solid #3b3d93;border-bottom: 1px solid #3b3d93;border-top: 0px;">Jenis Pengajuan</th> <td style="border-top: 0px;">{{auth.user.pengajuanAK1.jenis_pengajuan}}</td> </tr> <tr> <th style="border-bottom: 1px solid #3b3d93;" width="30%">Nomor Pendaftaran</th> <td width="70%">{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</td> </tr> <tr> <th style="border-bottom: 1px solid #3b3d93;" width="30%">Nomor Pencaker</th> <td width="70%">{{ auth.user.datapencarikerja.nomor_pencaker}}</td> </tr> <tr> <th width="30%" style="border-top: 0px;">Status AK1</th> <td width="70%"> {% if auth.user.pengajuanAK1.status_pengajuan == 0 %} <p> <b class="alert-danger">Pengajuan Terkirim</b> </p> <br> <p>Silahkan Datang Ke Kantor Disnaker Kota Cimahi di <a target="_blank" href="https://www.google.co.id/maps/dir/-6.8674625,107.5447689/Kantor+Pemerintah+Kota+Cimahi,+Jl.+Rd.+Demang+Hardjakusumah+Blok+Jati,+Cihanjuang,+Cibabat,+Cimahi+Utara,+Kota+Cimahi,+Jawa+Barat+40513/@-6.8716524,107.5394911,15z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x2e68e43e6a10e315:0x5aa5a7ac187d03a4!2m2!1d107.55506!2d-6.870728">Jln. Raden Demang Hardjakusumah Komplek Perkantoran Pemkot Cimahi</a> </p> <br> <p>Dengan Menyertakan NOMOR PENDAFTARAN <b>{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</b> Dan Persyaratan Sebagai Berikut :</p> <ul class="list-tick"> <li>Kartu tanda penduduk yang masih berlaku;</li> <li>Copy ijazah pendidikan terakhir bagi yang memiliki;</li> <li>Copy sertifikat keterampilan bagi yang memiliki; dan</li> <li>copy surat keterangan pengalaman kerja bagi yang memiliki.</li> </ul> {% elseif auth.user.pengajuanAK1.status_pengajuan == 1 %} Syarat Lengkap {% elseif auth.user.pengajuanAK1.status_pengajuan == 2 %} Kartu Sudah Di Cetak {% endif %} </td> </tr> -->
+            {% if auth.user.pengajuanAK1.status_pengajuan == 2 %}
+            <!-- <tr> <th width="30%">Masa Berlaku</th> <td width="70%"> {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %} {{ auth.user.pengajuanAK1.tanggal_cetak }} - {{ auth.user.pengajuanAK1.exp_date }} - <br> {% if tgl_exp < tgl_sekarang %} <br> <a href="#" class="btn btn-primary btn-small">Kartu Sudah Habis Masa Aktip Segera Perpanjang</a> {% else %} Masih Berlaku {% endif %} {% else %} NULL {% endif %} </td> </tr> -->
+            <tr>
+              <td colspan="2" style="border: 0px;">Masa berlaku AK 1 adalah 2 (dua) tahun, bagi pencari kerja yang
+                belum mendapatkan pekerjaan diwajibkan melaksanakan registrasi ulang setiap 6 (enam) bulan sekali
+                sedangkan bagi Pencari kerja yang sudah mendapatkan pekerjaan diharapkan melaporkan ke Dinas Tenaga
+                Kerja dan Transmigrasi Kota Cimahi dan kartu kuningnya akan di non aktifkan.</td>
+            </tr>
+            <tr>
+              <th>Apakamu sudah bekerja?</th>
+              <td>
+                {% if laporan_pertama > tgl_sekarang %}
+                <a href="javascript:void(0)" data-href="{{ path_for('laporan-pengajuan-ak1') }}"
+                  class="openPopup  btn btn-primary btn-small">Laporkan
+                  Jika anda sudah bekerja</a>
+                {% elseif laporan_kedua < tgl_sekarang %} <a class="btn-disabled btn btn-primary btn-small">Laporkan
+                  Jika anda sudah bekerja</a>
+                {% elseif laporan_ketiga < tgl_sekarang %} <a class="btn-disabled btn btn-primary btn-small">Laporkan
+                  Jika anda sudah bekerja</a>
+                {% else %}
+                <a class="btn-disabled btn btn-primary btn-small">Laporkan Jika anda sudah bekerja</a>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Laporan Pertama</th>
+              <td>
+                {% if laporan_pertama < tgl_sekarang %} <a href="javascript:void(0)"
+                  data-href="{{ path_for('laporan-pengajuan-ak1') }}" class="openPopup btn btn-primary">Laporkan</a>
+                {% else %}
+                <a class="btn btn-small btn-disabled " href="#">Laporkan</a>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Laporam Kedua</th>
+              <td>
+                {% if laporan_kedua < tgl_sekarang %} <a href="javascript:void(0)"
+                  data-href="{{ path_for('laporan-pengajuan-ak1') }}" class="openPopup btn btn-primary">Laporkan</a>
+                {% else %}
+                <a class="btn btn-small btn-disabled " href="#">Laporkan</a>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <th>Laporan Ketiga</th>
+              <td>
+                {% if laporan_ketiga < tgl_sekarang %} <a href="javascript:void(0)"
+                  data-href="{{ path_for('laporan-pengajuan-ak1') }}" class="openPopup btn btn-primary">Laporkan</a>
+                {% else %}
+                <a class="btn btn-small btn-disabled " href="#">Laporkan</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %}
+
+            <tr>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      {% endif %}
+    </div>
+    {% endif %}
+    <div class="col-md-12">
+      <div
+        class="card alert {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %}alert-success{% else %}alert-danger{% endif %} text-center"
+        id="kartu-ak1">
+        <div class="card-body">
+          <span class="label label-info">
+            {% if auth.user.pengajuanAK1.nomor_pendaftaran == '' %}
+            Anda Belum Memiliki AK-1
+            {% elseif auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+            <h5 class="card-header">Nomor Pendaftaran Ajuan AK-1 Anda Saat Ini</h5>
+            <h1>{{ auth.user.pengajuanAK1.nomor_pendaftaran }}</h1>
+            {% else %}
+            Belum Mengajukan Pembuatan AK-1
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      {% if auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+      <div id="editor"></div>
+      <button id="donwload" class="btn btn-primary col-lg-6 offset-lg-3 col-12"
+        style="margin-bottom:4px;white-space: normal;">DOWNLOAD
+        NOMOR PENDAFTARAN
+      </button>
+      {% endif %}
+      <form action="{{ currentRoute }}" method="POST" role="form">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              {% if auth.user.pengajuanAK1.nomor_pendaftaran == '' %}
+              <div class="form-group">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="jenis_pengajuan" type="radio" id="inlineCheckbox1"
+                    value="Pengajuan AK/1 Baru">
+                  <label class="form-check-label" for="inlineCheckbox1">Pengajuan AK/1 Baru</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="jenis_pengajuan" type="radio" id="inlineCheckbox2"
+                    value="Perpanjangan Pengajuan AK/1">
+                  <label class="form-check-label" for="inlineCheckbox2">Perpanjangan Pengajuan AK/1</label>
+                </div>
+              </div>
+              {# {{ form.custom('recaptcha', recaptcha()) }} #}
+              <button type="submit" class="btn btn-primary form-control">Pengajuan AK-1</button>
+              {% elseif auth.user.pengajuanAK1.nomor_pendaftaran != '' %}
+              {# <button type="submit" class="btn btn-primary form-control">Update AK-1</button> #}
+              {% else %}
+              <div class="form-group">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="jenis_pengajuan" type="radio" id="inlineCheckbox1"
+                    value="Pengajuan AK/1 Baru">
+                  <label class="form-check-label" for="inlineCheckbox1">Pengajuan AK/1 Baru</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" name="jenis_pengajuan" type="radio" id="inlineCheckbox2"
+                    value="Perpanjangan Pengajuan AK/1">
+                  <label class="form-check-label" for="inlineCheckbox2">Perpanjangan Pengajuan AK/1</label>
+                </div>
+              </div>
+              {{ form.custom('recaptcha', recaptcha()) }}
+              <button type="submit" class="btn btn-primary form-control">PENGAJUAN AK-1</button>
+              {% endif %}
+            </div>
+          </div>
+          {{ csrf() }}
+          <input type="hidden" name="user_id" value="{{user.id}}" />
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal fade bd-example-modal-md" id="ModalLamaran" role="dialog">
+  <div class="modal-dialog modal-md">
+    <!-- Modal content-->
+    <div class="modal-content" id="modal-melamar"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="ContohAk1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content" id="contoh-ak1"></div>
+  </div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript" src="{{base_url()}}/js/jspdf.min.js"></script>
+<script type="text/javascript" src="{{base_url()}}/js/html2canvas.min.js"></script>
+<script type="text/javascript">
+  var doc = new jsPDF();
+  var specialElementHandlers = {
+    '#editor': function (element, renderer) {
+      return true;
+    }
+  };
+  $('#donwload').click(function () {
+    doc.fromHTML($('#kartu-ak1').html(), 15, 15, {
+      'width': 170,
+      'elementHandlers': specialElementHandlers
+    });
+    doc.save('nomor-pendaftaran.pdf');
+  });
+
+  $('.openPopup').on('click', function () {
+    var dataURL = $(this).attr('data-href');
+    $('#modal-melamar').load(dataURL, function () {
+      $('#belum').click(function () {
+        $('#sudahkerja').hide('fast');
+        $('#dalamnegeri').show('fast');
+      });
+      $('#sudah').click(function () {
+        $('#dalamnegeri').hide('fast');
+        $('#sudahkerja').show('fast');
+      });
+      $('#ModalLamaran').modal({
+        show: true
+      });
+    });
+  });
+  $('.openContoh').on('click', function () {
+    var dataURL = $(this).attr('data-href');
+    $('#contoh-ak1').load(dataURL, function () {
+      $('#ContohAk1').modal({
+        show: true
+      });
+    });
+  });
+
+//file size
+var uploadKtp = document.getElementById("ktp");
+uploadKtp.onchange = function() {
+    if(this.files[0].size > 2097152){
+       alert("Maksimal ukuran file 2 MB");
+       this.value = "";
+    };
+};
+var uploadIjazah = document.getElementById("ijazah");
+uploadIjazah.onchange = function() {
+    if(this.files[0].size > 2097152){
+       alert("Maksimal ukuran file 2 MB");
+       this.value = "";
+    };
+};
+var uploadPengalaman = document.getElementById("pengalaman");
+uploadPengalaman.onchange = function() {
+    if(this.files[0].size > 2097152){
+       alert("Maksimal ukuran file 2 MB");
+       this.value = "";
+    };
+};
+var uploadSertifikat = document.getElementById("sertifikat");
+uploadSertifikat.onchange = function() {
+    if(this.files[0].size > 2097152){
+       alert("Maksimal ukuran file 2 MB");
+       this.value = "";
+    };
+};
+var uploadFoto = document.getElementById("foto");
+uploadFoto.onchange = function() {
+    if(this.files[0].size > 2097152){
+       alert("Maksimal ukuran file 2 MB");
+       this.value = "";
+    };
+};
+</script>
+
+{{ recaptchaJs() }}
+
+{% endblock %}

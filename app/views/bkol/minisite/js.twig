@@ -1,0 +1,24 @@
+<!-- jPList Library -->
+<script src="{{ asset('/js/jplist/1.2.0/jplist.min.js') }}"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC1uA_W24Wz2w0CedpKhj4-wXVAdXpw0pg&callback=initMap" async defer></script> -->
+<script>
+	jplist.init({
+		deepLinking: true
+	});
+
+	/*var map;
+	function initMap() {
+		if ( ! document.getElementById('instansi-map') ) return;
+		var el = document.getElementById('instansi-map'),
+			lat = parseFloat(el.getAttribute('data-lat')),
+			long = parseFloat(el.getAttribute('data-long'));
+		//console.log(lat, long, 'b');
+
+		var latlng = new google.maps.LatLng(lat,long);
+		var mapOptions = {
+			zoom: 8,
+			center: latlng
+		}
+		map = new google.maps.Map(document.getElementById('instansi-map'), mapOptions);
+	}*/
+</script>

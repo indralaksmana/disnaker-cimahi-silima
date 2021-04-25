@@ -1,0 +1,65 @@
+<form action="{{ currentRoute }}" method="POST" role="form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group form-float{% if has_error('nama_lengkap') %} has-error{% endif %}">
+                <div class="form-line">
+                    <label class="form-label" for="nama_lengkap">Nama Lengkap <span style="color:red;">*</span></label>
+                    <input type="text" name="nama_lengkap" class="form-control" id="nama_lengkap"
+                        value="{% if requestParams.nama_lengkap %}{{requestParams.nama_lengkap}}{% else %}{{profile.nama_lengkap}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('nama_lengkap') }}</span>
+                </div>
+            </div>
+            <div class="form-group form-float{% if has_error('email') %} has-error{% endif %}">
+                <div class="form-line">
+                    <label class="form-label" for="email">Email <span style="color:red;">*</span></label>
+                    <input type="email" name="email" class="form-control" id="email" value="{% if requestParams.email %}{{requestParams.email}}{% else %}{{user.email}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('email') }}</span>
+                </div>
+            </div>
+            <div class="form-group form-float">
+                <div class="form-line">
+                    <label class="form-label" for="alamat_lengkap">Alamat <span style="color:red;">*</span></label>
+                    <textarea rows="4" class="form-control" name="alamat_lengkap" required="required">{% if requestParams.alamat_lengkap %}{{requestParams.alamat_lengkap}}{% else %}{{profile.alamat_lengkap}}{% endif %}</textarea>
+                </div>
+            </div>
+            <div class="form-group form-float{% if has_error('username') %} has-error{% endif %}">
+                <div class="form-line">
+                    <label class="form-label" for="username">Username <span style="color:red;">*</span></label>
+                    <input type="text" name="username" class="form-control" id="username"
+                        value="{% if requestParams.username %}{{requestParams.username}}{% else %}{{user.username}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('username') }}</span>
+                </div>
+            </div>
+            {% if 'add' == form_state %}
+            <div class="form-group form-float{% if has_error('password') %} has-error{% endif %}">
+                <div class="form-line">
+                    <label class="form-label" for="password">Password <span style="color:red;">*</span></label>
+                    <input type="password" name="password" class="form-control" id="password"
+                        value="{% if requestParams.password %}{{requestParams.password}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('password') }}</span>
+                </div>
+            </div>
+            <div class="form-group form-float{% if has_error('password_confirm') %} has-error{% endif %}">
+                <div class="form-line">
+                    <label class="form-label" for="password_confirm">Konfirmasi Password <span style="color:red;">*</span></label>
+                    <input type="password" name="password_confirm" class="form-control" id="password_confirm"
+                         value="{% if requestParams.password_confirm %}{{requestParams.password_confirm}}{% endif %}" required="required">
+                    <span class="help-block">{{ error('password_confirm') }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="submit" class="btn bg-teal form-control">{% if 'add' == form_state %}TAMBAH{% else %}SIMPAN{% endif %}</button>
+            </div>
+        </div>
+        {{ csrf() }}
+        <input type="hidden" name="user_id" value="{{user.id}}" />
+    </div>
+</form>

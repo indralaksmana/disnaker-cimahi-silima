@@ -1,0 +1,148 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Blog applys{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+<style type="text/css">
+  li.tabs-list a {
+    font-size: 12px;
+}
+</style>
+{% endblock %}
+
+{% block page %}
+    <div class="card card-body">
+    <h3>List Pelamar Kerja</h3>
+    <div class="tab-wrapper">
+      <ul class="tabs clearfix" data-tabgroup="js-tabgroup">
+          <li class="tabs-list">
+              <a href="#tab1" class="tabs-list-link is-active">Pelamar Baru</a>
+          </li>
+          <li class="tabs-list">
+              <a class="tabs-list-link" href="#tab2">
+                  Prosses Lamaran
+              </a>
+          </li>
+          <li class="tabs-list">
+              <a class="tabs-list-link" href="#tab3">
+                  Calon Kandidat
+              </a>
+          </li>
+          <li class="tabs-list">
+              <a class="tabs-list-link" href="#tab4">
+                  Lamaran yang telah di terima
+              </a>
+          </li>
+          <li class="tabs-list">
+              <a class="tabs-list-link" href="#tab5">
+                  Keluar / Habis Kontrak
+              </a>
+          </li>
+
+      </ul>
+      <section id="js-tabgroup" class="tabgroup">
+          <div id="tab1" class="tab-content">
+              {% include 'dashboard/job/list/list-pelamar.twig' %}
+          </div>
+
+          <div id="tab2" class="tab-content">
+              {% include 'dashboard/job/list/list-prosses.twig' %}
+          </div>
+          <div id="tab3" class="tab-content">
+              {% include 'dashboard/job/list/list-candidate.twig' %}
+          </div>
+          <div id="tab4" class="tab-content">
+              {% include 'dashboard/job/list/list-keterima.twig' %}
+          </div>
+
+          <div id="tab5" class="tab-content">
+              {% include 'dashboard/job/list/list-out.twig' %}
+          </div>
+      </section>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    {% include 'dashboard/scripts/datatables.twig' %}
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+
+        $('#pelamar').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+        $('#prossess').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+
+        $('#listout').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+        $('#listketerima').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+        $('#listcandidate').DataTable({
+            responsive: true,
+            stateSave: true
+        });
+    });
+
+    $('.action-prosses').click(function (e) {
+        e.preventDefault();
+        var swtitle = $(this).data('swtitle');
+        var swmessage = $(this).data('swmessage');
+        // var swmessage = 'Data Ini Akan Pindah ke List Data Lengkap';
+        var form = $(this).parents(form);
+        swal({
+            title: swtitle,
+            text: swmessage,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batalkan'
+        }).then(
+            function (result) {
+                swal("Berhasil!", "Data Sudah Di Pindahkan", "success").then(
+                    setTimeout(function () {
+                        form.submit();
+                    }, 1000)
+                );
+            },
+            function (dismiss) {
+                return false;
+            }
+        ).catch(swal.noop);
+
+    });
+
+    $(document).ready(function () {
+        $('.tab-content').hide();
+        $('.tab-content:first-child').show();
+
+        $('.tabs-list-link').click(function (e) {
+            e.preventDefault();
+            const $this = $(this),
+                TABGROUP = '#' + $this.parents('.tabs').data('tabgroup'),
+                OTHERS = $this.parents('.tabs-list').siblings().find('.tabs-list-link'),
+                IS_TARGET = $this.attr('href'),
+                IS_ACTIVE = 'is-active',
+                JS_TAB_CONTENT = '.tab-content';
+
+            OTHERS.removeClass(IS_ACTIVE);
+            $this.addClass(IS_ACTIVE);
+            $(TABGROUP).find(JS_TAB_CONTENT).hide();
+            $(IS_TARGET).show();
+        })
+    });
+    </script>
+{% endblock %}

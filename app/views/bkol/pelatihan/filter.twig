@@ -1,0 +1,13 @@
+{% if pelatihanCategories|length > 0 %}
+    <ul class="kategori-list">
+        {% for pelatihan in pelatihanCategories %}
+            <li class="d-flex justify-content-between align-items-center">
+                <a href="{{path_for('pelatihan-category', {'slug': pelatihan.slug})}}">
+                {{pelatihan.name}}
+
+                </a>
+                  <span class="badge badge-primary badge-pill">{{pelatihan.posts_count}}</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,0 +1,187 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Job Admin{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/repostonsive/2.1.1/css/repostonsive.bootstrap4.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+{% endblock %}
+
+{% block page %}
+ 
+    <div class="row card">
+            <div class="card-header d-flex justify-content-between align-items-center mb-2">
+                <h2 class="card-title mb-0">List Pencari Kerja</h2>
+                <a href="{{ path_for('pencarikerja-add') }}" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah</a>
+            </div>
+        <div class="col-md-12 col-sm-12 card-body">
+            <div>
+                <table width="100%" class="table table-striped table-bordered table-hover" id="categories-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pendata</th>
+                            <th>Tanggal Pendataan</th>
+                            <th>Nama Tenaga Kerja</th>
+                            <th>Tempat Lahir</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Actions</th>
+                            <!-- <th rowspan="2">Jenis Kelamin <br> (L/P)</th>
+                            <th rowspan="2">Alamat</th>
+                            <th rowspan="2">Nomor KK</th>
+                            <th rowspan="2">Nomor Induk <br>Kependudukan</th>
+                            <th colspan="2">Status Dalam Keluarga</th>
+                            <th colspan="4">Status Pendidikan</th>
+                            <th colspan="3">Status Pekerjaan</th>
+                            
+                            
+                            <th rowspan="2">
+                                AK-1/Kartu kuning
+                            </th>
+                            <th rowspan="2">
+                               Keterangan
+                            </th>
+                            <th rowspan="2">
+                                Aksi
+                            </th> -->
+
+                        </tr>
+                      <!--   <tr>
+                            <th>Perkawinan <br> (K/BK/CH/CM)</th>
+                            <th>Keluarga <br> (S/I/A/K)</th>
+                            <th>
+                               
+                                Sekolah  <br> (S/TS)
+                            </th>
+                            <th>
+                                
+                                Pendidikan Terakhir
+                            </th>
+                            <th>
+                                
+                                Jurusan/Keahlian
+                            </th>
+                            <th>
+                               
+                                Pelatihan/Kursus <br> yang pernah diikuti
+                            </th>
+                            <th>
+                                       <br>
+                                Pengalaman Bekerjan <br>(pernah/belum)
+                            </th>
+                            <th>
+                                      <br>
+                                (aktif/pasif)
+                            </th>
+                            <th>
+                                       <br>
+                                Bidang pekerjaan yang diminati
+                            </th>
+                        </tr> -->
+                    </thead>
+                    <tbody>
+                        {% set row = 0 %}
+                        {% for post in pencarikerja %}
+                            {% set row = row + 1 %}
+                            <tr>
+                                <td>{{ row }}</td>
+                                <td>{{ post.petugaspendata.nama }}</td>
+                                <td>{{ post.tanggal_pendataan }}</td>
+                                <td>{{ post.nama_pencari_kerja }}</td>
+                                <td>{{ post.tempat_lahir }}</td>
+                                <td>{{ post.tanggal_lahir }}</td>
+                                <!-- <td>{{ post.jenis_kelamin }}</td>
+                                <td>{{ post.alamat}} </td>
+                                <td>{{ post.no_kartu_keluarga}} </td>
+                                <td>{{ post.no_induk_kependudukan}}</td>
+                                <td>{{ post.status_perkawinan }} </td>
+                                <td>{{ post.status_dalam_keluarga }} </td>
+                                <td>{{ post.sekolah }}</td>
+                                <td>{{ post.lulusan.name }}</td>
+                                <td>{{ post.jurusan.name }}</td>
+                                <td>{{ post.kursuspelatihan.name }}</td>
+                                <td>{{ post.pengalaman_bekerja }}</td>
+                                <td>{{ post.keaktifan }}</td>
+                                <td>{{ post.bidangkerja.name }}</td>
+                                <td>{{ post.kartu_kuning }}</td>
+                                <td>{{ post.keterangan }}</td> -->
+
+                                <td>
+                                    <a href="javascript:void(0)" class="openPopup btn btn-secondary btn-xs" data-href="{{ path_for('detail-pencari-kerja', {'pencari-kerja': post.id}) }}"> <span class="fa fa-fw fa-search"></span></a>
+                                    <a href="{{ path_for('pencarikerja-edit', {'pencari-kerja': post.id}) }}" class="btn-edit btn btn-primary btn-xs">
+                                        <span class="fa fa-fw fa-pencil"></span>
+                                    </a>
+                                    <form action="{{ path_for('pencarikerja-delete') }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="pencarikerja_id" value="{{ post.id }}" />
+                                        {{csrf()}}
+                                        <button class="btn btn-danger btn-xs swal-confirm" data-swtitle="Are you sure?" data-swmessage="This category will be permanently deleted.">
+                                            <span class="fa fa-fw fa-close"></span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+         </div>
+        
+   
+    </div>
+
+    <!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Detail Pencari Kerja</h4>
+             <a href="" class="btn btn-xs"><span class="fa fa-fw fa-pencil"></span></a>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>      
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#categories-table').DataTable({
+        });
+
+        $('.openPopup').on('click',function(){
+            var dataURL = $(this).attr('data-href');
+            $('.modal-body').load(dataURL,function(){
+                $('#myModal').modal({show:true});
+            });
+        });
+
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "bkol/bkol.twig" %}
+{% block page %}
+<style>
+	.company_logo {
+		width: 120px;
+	}
+
+	.sub-title {
+		color: #949494;
+		font-size: 22px;
+		margin: 0;
+	}
+
+	div[class^="sm-padding"] {
+		padding-left: 5px !important;
+		padding-right: 5px !important;
+	}
+
+	.bg-with-image {
+		background-image: url('{{ base_url() }}/img/bkol/bg-tentang2.png');
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center center;
+	}
+
+	/*accordion*/
+	.wrapper {
+		width: 70%;
+	}
+
+	@media(max-width:992px) {
+		.wrapper {
+			width: 100%;
+		}
+	}
+
+	.panel-heading {
+		padding: 0;
+		border: 0;
+	}
+
+	.panel-title>a,
+	.panel-title>a:active {
+		display: block;
+		padding: 15px;
+		color: #555;
+		font-size: 16px;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		word-spacing: 3px;
+		text-decoration: none;
+	}
+
+	.panel-heading a:before {
+		font-family: 'FontAwesome';
+		content: "\f078";
+		float: right;
+		transition: all 0.5s;
+		font-size: 18px;
+		margin-left: 10px;
+	}
+
+	.panel-heading.active a:before {
+		-webkit-transform: rotate(180deg);
+		-moz-transform: rotate(180deg);
+		transform: rotate(180deg);
+	}
+
+	#job-detail .panel-heading:hover {
+		cursor: pointer;
+	}
+
+	.warp {
+		padding: 30px 30px 0;
+	}
+
+	.warp-item {
+		padding: 20px;
+		background: #fff;
+	}
+
+	.hr-theme .hr-line {
+		top: 10px;
+	}
+
+	/*accordion end*/
+	@media (max-width: 575.98px) {
+		.warp {
+			padding: 0;
+		}
+	}
+</style>
+<div class="d-flex flex-row bg-with-image">
+	<div class="container mobile-remove-padding">
+		<div class="card-body d-flex flex-row align-items-center">
+			<div class="sm-padding col-sm-2 my-2">
+				<div class="logo_sm_wrap">
+					{% if post.authorCompanies.logo != "" %}
+					<img id="company_logo" src="{{ base_url() }}/img/nologo.jpg" class="img-responsive">
+					{% else %}
+					<img class="company_logo" id="img_company_logo_1" data-original="{{post.authorCompanies.logo}}" alt="{{post.nama_lowongan}}"
+					 src="{{authorCompanies.logo}}" style="display: inline;">
+					{% endif %}
+				</div>
+			</div>
+			<div class="sm-padding col-sm-10 my-2">
+				<h1>{{authorCompanies.companyname}}</h1>
+				<h3>{{authorCompanies.industry}}</h3>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container mobile-remove-padding">
+	<div class="d-flex flex-row">
+		<div class="sm-padding col">
+			<div class="d-flex flex-row align-items-center" style="background: #f5f5f9;">
+				<div class="col-sm-12 warp">
+					<div class="warp-item">
+						<div class="hr-theme d-flex">
+							<div class="hr-title">
+								<h3 class="title-section">Company Overview</h3>
+							</div>
+							<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+						</div>
+						<div class="row card-body">
+							<div class="col">
+								{{authorCompanies.about}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 warp">
+					<div class="warp-item">
+						<div class="hr-theme d-flex">
+							<div class="hr-title">
+								<h3 class="title-section">Jobs in {{authorCompanies.companyname}}</h3>
+							</div>
+							<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+						</div>
+						<div class="row card-body">
+							{% if jobs|length == 0 %}
+							<div class="text-center">
+								<h1>Belum Ada Lowongan</h1>
+							</div>
+							{% endif %}
+							{% for post in jobs %}
+							{% set content = post.content|split(' ') %}
+							{% set content = content[0] ~ ' ' ~ content[1] ~ ' ' ~ content[2] ~ ' ' ~ content[3] ~ ' ' ~ content[4] ~ ' ' ~
+							content[5] ~ ' ' ~ content[6] ~ ' ' ~ content[7] ~ ' ' ~ content[8] ~ '...' %}
+							<div class="col-sm-4 mb-4">
+								<div class="card">
+									<a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}">
+										<div class="card-body text-secondary">
+											<h5 class="card-title text-info">{{post.nama_lowongan}}</h5>
+											<p class="card-text"><small class="text-muted">{{post.authorCompanies.companyname}}</small></p>
+											<ul class="fa-ul" style="font-size: smaller;">
+												{# <li class="mb-2">
+													<i class="fa-li fa fa-briefcase"></i><span id="years_of_experience" class="text-dark">Min 2 tahun (Pegawai
+														(non-manajemen non-supervisor))</span>
+												</li> #}
+												<li class="mb-2">
+													<i class="fa-li fa fa-map-marker"></i><span id="single_work_location" class="text-dark">{{post.wilayah_pekerjaan}},
+														{{post.provinsi.lokasi_nama}} - {{post.kabupatenkota.lokasi_nama}}</span>
+												</li>
+												<li class="mb-2">
+													<i class="fa-li fa fa-usd"></i><span href="#" class="text-dark">{{ post.gaji.name }}</span>
+												</li>
+											</ul>
+										</div>
+									</a>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

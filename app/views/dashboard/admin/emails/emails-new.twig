@@ -1,0 +1,98 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Add Email Template{% endblock %}
+
+{% block stylesheets %}
+    {% include 'dashboard/css/formcss.twig' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+{% endblock %}
+
+{% block page %}
+<div class="block-header">
+    <h2>Kirim Email</h2>
+</div>
+<form action="{{ currentRoute }}" method="POST" role="form" class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group{% if has_error('send_to') %} has-error{% endif %}">
+                            <label for="send_to">Send To</label>
+                            <select name="send_to" id="send_to" class="form-control" required="required">
+                                <option value=""></option>
+                                {% for user in users %}
+                                    <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} - {{ user.email }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('send_to') }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group form-float{% if has_error('subject') %} has-error{% endif %}">
+                            <div class="form-line">
+                                <label class="form-label" for="subject">Subject</label>
+                                <input type="text" name="subject" class="form-control" id="subject" value="{% if requestParams.subject %}{{requestParams.subject}}{% endif %}" required="required">
+                                <span class="help-block">{{ error('subject') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group{% if has_error('html') %} has-error{% endif %}">
+                            <label for="html">HTML</label>
+                            <textarea name="html" class="form-control" id="html" required="required">{% if requestParams.html %}{{requestParams.html}}{% endif %}</textarea>
+                            <span class="help-block">{{ error('html') }}</span>
+                        </div>
+
+                        <div class="form-group{% if has_error('plain_text') %} has-error{% endif %}">
+                            <label for="plain_text">Plain Text</label>
+                            <div class="form-line">
+                            <textarea name="plain_text" class="form-control" id="plain_text" required="required" style="height: 200px;">{% if requestParams.plain_text %}{{requestParams.plain_text}}{% endif %}</textarea>
+                            <span class="help-block">{{ error('plain_text') }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success form-control">Send Email</button>
+                        </div>
+
+                        <div class="form-group">
+                            <div id="send-test" class="btn btn-warning form-control">Send Test</div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="body">
+                {% for key,item in placeholders %}
+                 <div class="row">
+                    <div class="col-md-12">
+                        <h6>{{key}}</h6>
+                    
+                {% for place in item %}
+                    <div style="float: left; margin: 5px;" class="btn btn-default placeholder-insert" data-insert="{{ '{{ ' }} {{place.name}} {{ ' }}' }}">{{ '{{ ' }} {{place.name}} {{ ' }}' }}</div>
+                {% endfor %}
+              </div>
+              </div>
+        
+              {% endfor %}
+            </div>
+      </div>
+       {{ csrf() }}
+    </div>
+  </form>
+
+
+{% endblock %}
+
+{% block javascript %}
+{% include 'dashboard/scripts/formjs.twig' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+<script src="https://cdn.ckeditor.com/4.7.2/standard-all/ckeditor.js"></script>
+<script src="{{ asset('dashboard/js/email-templates.min.js') }}"></script>
+
+{% endblock %}

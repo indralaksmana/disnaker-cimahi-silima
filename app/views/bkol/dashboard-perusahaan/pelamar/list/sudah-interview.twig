@@ -1,0 +1,42 @@
+<table class="table table-dashboard" id="kandidate">
+  <thead>
+    <tr>
+      <th>Nama Pelamar</th>
+      <th>Judul Lowongan</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if pelamar|length == 0 %}
+    <tr class="text-center">
+      <td colspan="4">Belum Ada Pelamar Baru</td>
+    </tr>
+    {% endif %}
+    {% for post in pelamar if post.status == 4 %}
+    <tr>
+      <td><a href="{{path_for('pencarikerja-detail', {'username': post.user.username})}}" class="author-name title-section">{{post.user.datapencarikerja.nama_lengkap}}</a></td>
+      <td><a href="{{path_for('dashboardperusahaan-pelamar-details', {'username': post.user.username, 'id': post.id})}}">{{post.post.nama_lowongan}}</a></td>
+      <td>
+        {% if post.status == 4 %}
+        <span class="status status_sudahreview">SUDAH DI INTERVIEW</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if post.status == 4 %}
+        <a href="javascript:void(0)" class="terimabekerja btn btn-small btn-primary" data-href="{{ path_for('dashboardperusahaan-pelamar-terima-bekerja', {'username': post.user.username, 'id': post.id}) }}"
+          data-toggle="tooltip" data-placement="top" title="Terima Bekerja">DITERIMA BEKERJA</a>
+        {% endif %}
+        <form action="{{path_for('dashboardperusahaan-pelamar-delete')}}" method="post" style="display: inline;">
+          <input type="hidden" name="apply" value="{{post.id}}" />
+          {{csrf()}}
+          <button class="btn btn-delete btn-small swal-confirm" data-swtitle="Anda Yakin?" data-swmessage="Hapus Pelamar ini">
+            <i class="fa fa-fw fa-close"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+    </div>
+    {% endfor %}
+  </tbody>
+</table>

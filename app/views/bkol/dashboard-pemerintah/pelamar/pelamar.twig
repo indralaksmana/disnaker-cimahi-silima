@@ -1,0 +1,133 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Blog applys{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+<style type="text/css">
+
+</style>
+{% endblock %}
+
+{% block page %}
+<div class="px-3 jobs-add">
+    <div class="hr-theme d-flex  align-items-center mb-3">
+        <div class="hr-title">
+            <h3 class="title-section">List Lamaran Kerja</h3>
+        </div>
+        <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+    </div>
+    <div class="tab-wrapper">
+        <ul class="tabs clearfix flex-wrap-reverse align-items-center d-flex justify-content-between" data-tabgroup="js-tabgroup"
+            style="margin-bottom: 0;">
+            <li class="tabs-list">
+                <a href="#tab1" class="tabs-list-link is-active">LAMARAN <br>BARU</a>
+            </li>
+            <li class="tabs-list">
+                <a class="tabs-list-link" href="#tab2">
+                    PENCAKER MASUK
+                    <br>
+                    KANDIDAT
+                </a>
+            </li>
+            <li class="tabs-list">
+                <a class="tabs-list-link" href="#tab3">
+                    PENCAKER SUDAH <br>
+                    DI INTERVIEW
+                </a>
+            </li>
+            <li class="tabs-list">
+                <a class="tabs-list-link" href="#tab4">
+                    PENCAKER DITERIMA <br>
+                    BEKERJA
+                </a>
+            </li>
+            <li class="tabs-list">
+                <a class="tabs-list-link" href="#tab5">
+                    PEKERJA SUDAH TIDAK <br>
+                    BEKERJA LAGI
+                </a>
+            </li>
+        </ul>
+        <section id="js-tabgroup" class="tabgroup">
+            <div id="tab1" class="tab-content">
+                {% include 'bkol/dashboard-pemerintah/pelamar/list/pelamarbaru.twig' %}
+            </div>
+            <div id="tab2" class="tab-content">
+                {% include 'bkol/dashboard-pemerintah/pelamar/list/kandidate.twig' %}
+            </div>
+            <div id="tab3" class="tab-content">
+                {% include 'bkol/dashboard-pemerintah/pelamar/list/sudah-interview.twig' %}
+            </div>
+            <div id="tab4" class="tab-content">
+                {% include 'bkol/dashboard-pemerintah/pelamar/list/diterima-bekerja.twig' %}
+            </div>
+
+            <div id="tab5" class="tab-content">
+                {% include 'bkol/dashboard-pemerintah/pelamar/list/sudah-tidak-bekerja.twig' %}
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="modal-undang" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="content-interview">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{% include 'dashboard/scripts/datatables.twig' %}
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        // $('#pelamarbaru, #kandidate').DataTable({
+        //     responsive: true,
+        //     stateSave: true
+        // });
+        $('.undanginterview').on('click', function () {
+            var dataURL = $(this).attr('data-href');
+            $('#content-interview').load(dataURL, function () {
+                $('#modal-undang').modal({
+                    show: true
+                });
+            });
+        });
+        $('.terimabekerja').on('click', function () {
+            var dataURL = $(this).attr('data-href');
+            $('#content-interview').load(dataURL, function () {
+                $('#modal-undang').modal({
+                    show: true
+                });
+            });
+        });
+
+
+
+        $('.tab-content').hide();
+        $('.tab-content:first-child').show();
+        $('.tabs-list-link').click(function (e) {
+            e.preventDefault();
+            const $this = $(this),
+                TABGROUP = '#' + $this.parents('.tabs').data('tabgroup'),
+                OTHERS = $this.parents('.tabs-list').siblings().find('.tabs-list-link'),
+                IS_TARGET = $this.attr('href'),
+                IS_ACTIVE = 'is-active',
+                JS_TAB_CONTENT = '.tab-content';
+            OTHERS.removeClass(IS_ACTIVE);
+            $this.addClass(IS_ACTIVE);
+            $(TABGROUP).find(JS_TAB_CONTENT).hide();
+            $(IS_TARGET).show();
+        })
+
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+{% endblock %}

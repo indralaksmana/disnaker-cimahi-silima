@@ -1,0 +1,226 @@
+{% spaceless %}
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="//gmpg.org/xfn/11">
+<meta name="theme-color" content="#317EFB"/>
+<title>{% block title %}Bursa Kerja Online Kota Cimahi{% endblock %}</title>
+<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/css/bkol.css' type='text/css' media='all'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/libraries/bootstrap/css/bootstrap.min.css' type='text/css' media='all'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/libraries/font-awesome-4.7.0/css/font-awesome.min.css' type='text/css' media='all'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/libraries/owlcarousel2/assets/owl.carousel.min.css' type='text/css' media='all'>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{{ base_url() }}/css/icons.css">
+<link rel="stylesheet" href="{{ base_url() }}/css/animate.css">
+<link rel="shortcut icon" href="{{ base_url() }}/favicon.ico">
+{% block header_include %}{# header include: js, css #}{% endblock %}
+{% block metarobot %}{# Metas definition #}{% endblock %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130589397-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-130589397-2');
+    </script>
+</head>
+<body {% block bodyclass %}{% endblock %}>
+<div id="page" class="hfeed site">
+{% import 'bkol/macros/form.twig' as form %}
+  {% block slide %}{% endblock %}
+  <div id="content" class="site-content" style="background-color: #e5e5e5;">
+  	{% block flash %}
+
+    {% endblock %}
+
+    {% block page %}
+
+    {% endblock %}
+
+    {% block sidebar %}
+
+    {% endblock %}
+
+  </div><!-- #content -->
+
+
+
+</div><!-- #page -->
+<!-- Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="#loginModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content loginmodal-container">
+			<div>
+				<h1>Login Akun</h1><br>
+				{% include 'bkol/login-modal.twig' %}
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="#registerModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content loginmodal-container">
+			<div>
+				<h1>Form Pendaftaran Akun Pencari Kerja</h1><br>
+				<form>
+					<input type="text" name="user" placeholder="">
+					<input type="password" name="pass" placeholder="">
+					<input type="submit" name="login" class="login loginmodal-submit" value="Login">
+				</form>
+				<div class="login-help">
+					<a href="#">Register</a> - <a href="#">Forgot Password</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+<div class="container">
+	<div class="row">
+		<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="#registerModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content registermodal-container">
+			<div class="modal-header">
+				<h5 class="modal-title">Form Pendaftaran Akun Pencari Kerja</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				{% include 'bkol/jobseeker_registration_modal.twig' %}
+				{# <form id="signupForm" method="post" class="form-horizontal" action="" novalidate="novalidate"> #}
+					{# <div class="form-group mb-2">
+						<label class="col-sm-4 control-label" for="ktp">No.KTP</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="ktp" name="ktp" placeholder="No.KTP">
+						</div>
+					</div> #}
+				{# </form> #}
+			</div>
+			{# <div class="modal-footer">
+				<button type="submit" class="btn btn-primary" name="signup" value="Sign up">Daftar</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+			</div> #}
+		</div>
+	</div>
+</div>
+	</div>
+</div>
+<script type="text/javascript" src="{{ base_url() }}/libraries/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/libraries/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/libraries/owlcarousel2/owl.carousel.min.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/libraries/jquery.mask.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/js/main.js"></script>
+<script>
+	// BY KAREN GRIGORYAN
+
+$(document).ready(function() {
+  /******************************
+      BOTTOM SCROLL TOP BUTTON
+   ******************************/
+
+  // declare variable
+  var scrollTop = $(".scrollTop");
+
+  $(window).scroll(function() {
+    // declare variable
+    var topPos = $(this).scrollTop();
+
+    // if user scrolls down - show scroll to top button
+    if (topPos > 100) {
+      $(scrollTop).css("opacity", "1");
+
+    } else {
+      $(scrollTop).css("opacity", "0");
+    }
+
+  }); // scroll END
+
+  //Click event to scroll to top
+  $(scrollTop).click(function() {
+    $('html, body').animate({
+      scrollTop: 0
+    }, 800);
+    return false;
+
+  }); // click() scroll top EMD
+
+}); // ready() END
+</script>
+
+<script type="text/javascript">
+$(".number").mask('000,000,000,000', {reverse: true});
+		$.validator.setDefaults( {
+			submitHandler: function () {
+				alert( "submitted!" );
+			}
+		} );
+
+		$( document ).ready( function () {
+			$( "#signupForm" ).validate( {
+				rules: {
+					ktp: {
+						required: true,
+						number: true,
+						minlength: 16,
+						maxlength: 16
+
+					},
+				},
+				messages: {
+					ktp: {
+						required: "NO.KTP harus diisi",
+						number: "Nomor KTP hanya diisi nomor",
+						minlength: "Harap masukkan setidaknya 16 digit",
+						maxlength: "batas nomor 16 digit"
+					}
+				},
+				errorElement: "em",
+				errorPlacement: function ( error, element ) {
+					// Add the `help-block` class to the error element
+					error.addClass( "help-block" );
+
+					if ( element.prop( "type" ) === "checkbox" ) {
+						error.insertAfter( element.parent( "label" ) );
+					} else {
+						error.insertAfter( element );
+					}
+				},
+				highlight: function ( element, errorClass, validClass ) {
+					$( element ).parents( ".col-sm-12" ).addClass( "has-error" ).removeClass( "has-success" );
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$( element ).parents( ".col-sm-12" ).addClass( "has-success" ).removeClass( "has-error" );
+				}
+			} );
+
+		} );
+	</script>
+	{# Ajax CSRF #}
+    <script src="{{ asset('dashboard/js/csrf.min.js') }}"></script>
+    <script type="text/javascript">AppCSRF.csrfUrl = "/csrf";</script>
+    {# Custom JS #}
+    <script src="{{ asset('bkol/js/custom.min.js') }}"></script>
+    <script>
+        if ('serviceWorker' in navigator ) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{{ base_url() }}/service-worker.js').then(function(registration) {
+                    // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+{% block javascript %}{% endblock %}
+
+</body>
+</html>
+{% endspaceless %}

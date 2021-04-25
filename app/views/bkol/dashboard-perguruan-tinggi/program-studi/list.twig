@@ -1,0 +1,60 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block page %}
+
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">Program Studi Perguruan Tinggi</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+    <a href="{{ path_for('pt-dashboard-program-studi-add') }}" class="btn btn-sm btn-primary waves-effect">
+        <span>Tambah Program Studi</span>
+    </a>
+  </div>
+  <br>
+  
+  <div class="table-responsive">
+        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="posts-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Program Studi</th>
+                    <th>Strata</th>
+                    <th>Akreditasi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if posts|length == 0 %}
+                    <tr class="text-center">
+                        <td colspan="4">Belum programstudi</td>
+                    </tr>
+                {% endif %}
+                {% set count = 0 %}
+                {% for r in posts %}
+                    {% set count = count + 1 %}
+                <tr>
+                    <td>{{ count }}</td>
+                    <td>{{r.program.nama}}</td>
+                    <td>{{r.strata}}</td>
+                    <td>{{r.akreditasi}}</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{{path_for('pt-dashboard-program-studi-edit', {'id': r.id })}}">Edit</a>
+                        <form action="{{ path_for('pt-dashboard-program-studi-delete') }}" method="post" style="display: inline; margin-left: 10px;">
+                            <input type="hidden" name="id" value="{{r.id}}" />
+                            {{csrf()}}
+                            <button class="btn btn-delete btn-danger btn-sm swal-confirm" data-toggle="tooltip" data-placement="top"
+                            title="Hapus" data-swtitle="Anda Yakin?" data-swmessage="Data ini akan dihapus secara permanen.">
+                            <span class="fa fa-fw fa-trash"></span>
+                            </button>
+                        </form>
+                        &nbsp;
+                        <a class="btn btn-sm btn-warning" href="{{path_for('pt-dashboard-program-studi-upload', {'id': r.id,'nama' : r.program.nama })}}">Upload Alumni</a>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>  
+</div>
+{% endblock %}

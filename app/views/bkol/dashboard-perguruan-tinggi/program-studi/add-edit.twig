@@ -1,0 +1,86 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{PageTitle}} Jurusan BKK{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<form action="{{ currentRoute }}" method="POST" role="form">
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">{{PageTitle}} Program Studi </h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+    <a  href="{{ path_for('pt-dashboard-program-studi')}}" role="button"
+                            class="btn btn-third btn-sm btn-secondary">BATAL</a>
+     <button style="margin-left:10px;font-size:1rem;" type="submit" class="btn btn-sm btn-third">SIMPAN</button>
+  </div>
+  <br>
+  
+  
+      <div class="row">
+          <div class="col-md-6">
+              <div class="form-group input-group-sm">
+                  <label >Jenis Program Studi</label>
+                  <select name="ps_id" class="form-control" id="bidang" required>
+                      <option value="{{data.program.id}}">{{data.program.nama}}</option>
+                      {% for k in k %}
+                      <option  value="{{ k.id }}">{{ k.nama }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="form-group input-group-sm">
+                  <label >Strata</label>
+                  <select name="strata" class="form-control" id="bidang" required>
+                      <option value="{{data.strata}}">{{data.strata}}</option>
+                      <option value="D-I">D-I</option>
+                      <option value="D-II">D-II</option>
+                      <option value="D-III">D-III</option>
+                      <option value="D-IV">D-IV</option>
+                      <option value="S1">S1</option>
+                      <option value="S2">S2</option>
+                      <option value="S3">S3</option>
+                      <option value="Profesi">Profesi</option>
+                      <option value="Spesialis">Spesialis</option>
+                  </select>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <div class="form-group input-group-sm">
+                  <label >Akreditasi</label>
+                  <select name="akreditasi" class="form-control" id="bidang" required>
+                        <option value="{{data.akreditasi}}">{{data.akreditasi}}</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="C">Belum</option>
+                  </select>
+              </div>
+          </div>
+          
+          {{ csrf() }}
+      </div>
+        
+</div>
+</form>         
+            
+        
+    
+
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+
+</script>
+{% endblock %}
+

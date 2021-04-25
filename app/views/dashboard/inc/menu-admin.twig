@@ -1,0 +1,169 @@
+{% if auth.hasAccess('AdminWeb.view') %}
+<div class="menu">
+        <ul class="list">
+            <li class="header">Menu General</li>
+            <li class="{% if currentRoute == '/dashboard' %}active{% endif %}" href="{{ path_for('dashboard')}}">
+                <a href="{{ path_for('dashboard')}}">
+                    <i class="material-icons">dashboard</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="{% if currentRoute starts with '/dashboard/bkol/pencarikerja' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">account_box</i>
+                    <span>Modul Pencari Kerja</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/bkol/pencarikerja' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('bkol-pencarikerja') }}">List Pencari Kerja</a></li>
+                    <li class="{% if currentRoute == '/dashboard/bkol/pencarikerja/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('bkol-pencarikerja-add')}}">Tambah User Pencari Kerja</a></li>
+                    <!-- <li class="{% if currentRoute == '/dashboard/bkol/master/' %}active{% endif %}"> <a class="nav-link" href="#">Data Master Tingkat Pendidikan dan Jurusan</a></li>
+                    <li class="{% if currentRoute == '/dashboard/bkol/master/' %}active{% endif %}"> <a class="nav-link" href="#">Data Master KBJI</a></li>
+                    <li class="{% if currentRoute == '/dashboard/bkol/master/' %}active{% endif %}"> <a class="nav-link" href="#">Data Master Kompetensi</a></li> -->
+                </ul>
+
+            </li>
+            <li class="{% if ( currentRoute starts with '/dashboard/admin/bkol/perusahaan' ) or ( currentRoute starts with '/dashboard/job' ) %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">domain</i>
+                    <span>Modul Perusahaan</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/perusahaan' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('bkol-perusahaan') }}">List Admin Perusahaan</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/perusahaan/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('bkol-perusahaan-add')}}">Tambah Admin Perusahaan</a></li>
+                    <!-- <li class="{% if currentRoute == '/dashboard/job' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-job') }}">List Lowongan Kerja</a></li> -->
+                    <!-- <li class="{% if currentRoute == '/dashboard/bkol/master/' %}active{% endif %}"> <a class="nav-link" href="#">Data Master KBLI</a></li> -->
+                </ul>
+            </li>
+
+            <li class="{% if ( currentRoute starts with '/dashboard/admin/bkol/pemerintah' ) or ( currentRoute starts with '/dashboard/job' ) %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">domain</i>
+                    <span>Modul Pemerintah</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/pemerintah' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-pemerintah') }}">List Admin Pemerintah</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/pemerintah/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-pemerintah-add')}}">Tambah Admin Pemerintah</a></li>
+                    <li class="{% if currentRoute == '/dashboard/job' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-job') }}">Data Master Jenis Instansi</a></li>
+                </ul>
+            </li>
+
+            <li class="{% if currentRoute starts with '/dashboard/admin/bkol/lpk' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">view_list</i>
+                    <span>Modul Pelatihan/LPK</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/lpk' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-lpk') }}">List Admin LPK</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/lpk/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-lpk-add') }}">Tambah Admin LPK</a></li>
+                    <!-- <li class="{% if currentRoute == '/dashboard/admin/bkol/master' %}active{% endif %}"> <a class="nav-link" href="#">Data Master Jenis Ketrampilan</a></li> -->
+                </ul>
+            </li>
+
+            <li class="{% if currentRoute starts with '/dashboard/admin/bkol/bkk' or ( currentRoute starts with '/dashboard/admin/bkol/perguruan-tinggi' ) %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">view_list</i>
+                    <span>Modul Akademi</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/bkk' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-bkk') }}">List Admin BKK</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/bkk/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-bkk-add') }}">Tambah Admin BKK</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/perguruan-tinggi' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-perguruan-tinggi') }}">List Admin Perguruan Tinggi</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/perguruan-tinggi/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-bkol-perguruan-tinggi-add')}}">Tambah Admin Perguruan Tinggi</a></li>
+                    <!-- <li class="{% if currentRoute == '/dashboard/admin/bkol/master' %}active{% endif %}"> <a class="nav-link" href="#">Data Master Spektrum Jurusan SMK</a></li>
+                    <li class="{% if currentRoute == '/dashboard/admin/bkol/master' %}active{% endif %}"> <a class="nav-link" href="#">Data Master Jurusan DIKTI</a></li> -->
+                </ul>
+            </li>
+
+            <li class="header">Admin SILIMA</li>
+            <li class="{% if currentRoute starts with '/dashboard/berita' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">view_list</i>
+                    <span>Berita</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/berita' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-blog')}}">List Semua Berita</a></li>
+                    <li class="{% if currentRoute == '/dashboard/berita/add' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-blog-add') }}">Tambah Berita</a></li>
+                    <li class="{% if currentRoute == '/dashboard/berita/kategori' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-blog-categories-add')}}">Kategori Berita</a></li>
+                    <li class="{% if currentRoute == '/dashboard/berita/tags' %}active{% endif %}"> <a class="nav-link" href="{{ path_for('admin-blog-tags-add')}}">Tagar Berita</a></li>
+                </ul>
+            </li>
+            <li class="{% if currentRoute starts with '/dashboard/gallery' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">view_list</i>
+                    <span>Galeri Foto</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/gallery' %}active{% endif %}">
+                        <a href="{{ path_for('admin-gallery')}}">List Album Foto</a>
+                    </li>
+                    <li class="{% if currentRoute == '/dashboard/gallery/add' %}active{% endif %}">
+                        <a href="{{ path_for('admin-gallery-add')}}">Tambah Album Foto</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{% if currentRoute starts with '/dashboard/agenda' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">view_list</i>
+                    <span>Agenda Kegiatan</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/agenda' %}active{% endif %}">
+                        <a href="{{ path_for('admin-agenda')}}">List Agenda Kegiatan</a>
+                    </li>
+                    <li class="{% if currentRoute == '/dashboard/agenda/add' %}active{% endif %}">
+                        <a href="{{ path_for('admin-agenda-add')}}">Tambah Agenda Kegiatan</a>
+                    </li>
+                    <li class="{% if currentRoute == '/dashboard/agenda/kategori' %}active{% endif %}">
+                        <a href="{{ path_for('admin-agenda-categories-add')}}">Kategori Agenda Kegiatan</a>
+                    </li>
+                    
+                </ul>
+            </li>
+            <li class="header">Pengaturan</li>
+            <li class="{% if currentRoute starts with '/dashboard/email' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">email</i>
+                    <span>Email</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/email' %}active{% endif %}">
+                        <a href="{{ path_for('admin-email')}}">Email Log</a>
+                    </li>
+                    <li class="{% if currentRoute == '/dashboard/email/templates' %}active{% endif %}">
+                        <a href="{{ path_for('admin-email-template')}}">Email Template</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{% if currentRoute starts with '/dashboard/users' %}active{% endif %}">
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">settings</i>
+                    <span>User Management</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="{% if currentRoute == '/dashboard/users' %}active{% endif %}">
+                        <a href="{{ path_for('admin-users')}}">List User</a>
+                    </li>
+                    <li class="{% if currentRoute == '/dashboard/users/roles' %}active{% endif %}">
+                        <a href="{{ path_for('admin-roles')}}">Roles</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{% if currentRoute starts with '/dashboard/settings' %}active{% endif %}">
+                <a href="{{ path_for('settings-global') }}">
+                    <i class="material-icons">settings</i>
+                    <span>Site Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path_for('logout') }}">
+                    <i class="material-icons">refresh</i>
+                    <span>Keluar</span>
+                </a>
+            </li>
+        
+        </ul>
+    </div>
+    <!-- #Menu -->
+
+{% endif %}

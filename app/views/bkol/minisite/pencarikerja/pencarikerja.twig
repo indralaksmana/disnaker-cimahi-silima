@@ -1,0 +1,261 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+  {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+  {% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+  {% set append = " || Author: " ~ companies.username %}
+{% else %}
+  {% set append = "" %}
+{% endif %}
+{% block page %}
+  {% include 'bkol/inc/flash.twig' %}
+  <style>
+  .pencaker-photo a img {
+    max-width: 95px;
+  }
+  .pencaker-card {
+    padding: 20px;
+    background: rgba(229,229,229,.5);
+  }
+  .pencaker-nama a {
+    font-weight: 600;
+  }
+  /* card list*/
+.card-list-image {
+    border-bottom: 3px solid #f68633;
+    margin-bottom: 10px;
+    width: 100%;
+    min-height: 212.66px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.card-list-title {
+    margin-bottom: 15px;
+}
+
+.card-list-sub-list {
+    font-size: 12px;
+    font-family: "Open Sans", sans-serif !important;
+    line-height: 1.3;
+}
+
+.card-list-sub-list ul li {
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+.card-list-action {
+    text-align: center;
+}
+
+
+.btn-follow {
+  background: #ddd !important;
+  border: none
+}
+.btn-following {
+  background: #00a4de !important;
+}
+.btn-unfollowing {
+  background: blue !important;
+}
+.card-list-action .col {
+    padding: 10px;
+    background: #efefef;
+    margin: 0 1%;
+}
+
+.card-list-action a img {
+    max-width: 24px;
+}
+.card-list-warp {
+    margin-bottom: 25px;
+}
+.icon-add-to-favourites {
+  font-size: 22px;
+  color: #DE8C45;
+}
+</style>
+<section id="page-hero" class="clearfix" style="background-image: url('{{ base_url() }}/img/bkol-pencari-bg.jpg');">
+
+</section>
+  <div id="ListPencariKerja" class="container pt-3 pb-5">
+    <div class="row">
+      <div class="col-xl-4 order-1 col-sm-4 order-2">
+       <div class="card">
+          <div class="row sidebar">
+          {% include 'bkol/minisite/pencarikerja/filter.twig' %}
+
+        </div>
+       </div>
+      </div>
+      <div class="col-xl-8 col-sm-8">
+
+        <div class="row">
+
+          <div class="col">
+
+            <div class="card list-job">
+
+                <div class="container">
+                  <div class="row">
+
+                  </div>
+                  <div class="row" data-jplist-group="pencaker">
+                    <div class="col-sm-12 py-3">
+                      <div class="hr-theme" style="margin-bottom: 10px;">
+                        <div class="hr-title"><h5 class="title-section">PENCARI KERJA</h5></div>
+                        <div class="hr-line flex-grow-1" style="background-image: url('{{base_url}}/img/bkol/line.png')"></div>
+                      </div>
+                    </div>
+                   <ul class="list-group list-group-flush col-md-12 col-sm-12">
+                    {% for r in pencarikerja %}
+                    <!--
+                      <div class="card-list-warp col-md-4 col-sm-6" data-jplist-item="data-jplist-item">
+                        {% if r.photoprofile  != "" %}
+                        <div class="card-list-image" style="background-image: url({{r.photoprofile}});"></div>
+                        {% else %}
+                        <div class="card-list-image" style="background-image: url({{ base_url() }}/img/bkol/no-foto.png);"></div>
+                        {% endif %}
+                        <div class="card-list-title">
+                          <a href="{{path_for('pencarikerja-detail', {'username': r.username})}}" class="author-name title-section">{{r.datapencarikerja.nama_lengkap}}</a>
+                        </div>
+                        <div class="card-list-sub-list">
+                          <ul class="fa-ul">
+                            <li><i class="fa-li fa fa-graduation-cap"></i><span class="pendidikan{{ r.datapencarikerja.pendidikanterakhir.id }}">{{r.datapencarikerja.pendidikanterakhir.jenis_pendidikan}}</span> - <span class="jurusan{{ r.datapencarikerja.jurusanpendidikan.id }}">{{r.datapencarikerja.jurusanpendidikan.jenis_pendidikan}}</span></li>
+                            <li><i class="fa-li fa fa-map-marker"></i><span class="kecamatan{{ r.datapencarikerja.kecamatan.id }}">{{r.datapencarikerja.kecamatan.lokasi_nama|title}}</span></li>
+                          </ul>
+                        </div>
+                        <div class="card-list-action d-flex flex-row no-gutters">
+                        {% if auth.check() %}
+                        {% if auth.hasAccess('companies.view') %}
+                            {% for user in r.perusahaan if user.perusahaan_id == auth.user.id %}
+                                <a class="col btn-follow btn-following" data-id="{{ r.id }}"><i class="icon-add-to-favourites"></i></a>
+                            {% else %}
+                                <a class="col btn-follow" data-id="{{ r.id }}"><i class="icon-add-to-favourites"></i></a>
+                            {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        {% if not auth.check() %}
+                            <a href="javascript:void(0)" class="openLogin col btn-follow"  data-href="{{ path_for('login-modal')}}"><i class="icon-add-to-favourites"></i></a>
+                        {% endif %}
+                          <a href="{{path_for('pencarikerja-detail',{'username': r.username})}}" class="col"><img src="{{base_url()}}/img/bkol/icon/file.png" alt=""></a>
+                          {# <a href="" class="col"><img src="{{base_url()}}/img/bkol/icon/telephone.png" alt=""></a> #}
+                        </div>
+                      </div>
+                      -->
+                      {% if r.datapencarikerja.nama_lengkap != '' %}
+                      <div class="col-lg-12 col-sm-12 mb-12" data-jplist-item>
+                      <li class="list-group-item">
+                         <a href="{{path_for('pencarikerja-detail', {'username': r.username})}}" class="author-name title-section">{{r.datapencarikerja.nama_lengkap}} <span style="font-size:12px !important;color:grey"> - {{r.datapencarikerja.pendidikanterakhir.jenis_pendidikan}}</span></a>
+                      </li>
+                      <span hidden class="pendidikan{{ r.datapencarikerja.pendidikanterakhir.id }}">pendidikan{{ r.datapencarikerja.pendidikanterakhir.id }}</span>
+                      </div>
+                      {% endif %}
+
+                    {% endfor %}
+                    </ul>
+
+
+                    <!-- no results control -->
+                    <div class="col text-center" data-jplist-control="no-results" data-group="pencaker" data-name="no-results">No Results Found</div>
+
+                  </div>
+
+                <div class="row mb-2 mr-3">
+                  <div class="col flex flex-wrap justify-content-center">
+                    <!-- pagination control -->
+                    <nav data-jplist-control="pagination" data-group="pencaker" data-items-per-page="20" data-current-page="0" data-disabled-class="disabled" data-selected-class="active" data-jump="top" data-name="pagination1" class="mb-2 mr-3">
+                      <!-- first and previous buttons -->
+                      <ul class="pagination d-inline-flex">
+                        <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="first">
+                          <a class="page-link" href="#">«</a>
+                        </li>
+                        <li class="page-item" data-type="prev">
+                          <a class="page-link" href="#">‹</a>
+                        </li>
+                      </ul>
+                      <!-- pages buttons -->
+                      <ul class="pagination d-none d-sm-none d-lg-inline-flex" data-type="pages">
+                        <li class="page-item" data-type="page">
+                          <a class="page-link" href="#">{pageNumber}</a>
+                        </li>
+                      </ul>
+
+                      <!-- next and last buttons -->
+                      <ul class="pagination d-inline-flex">
+                        <li class="page-item" data-type="next">
+                          <a class="page-link" href="#">›</a>
+                        </li>
+                        <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="last">
+                          <a class="page-link" href="#">»</a>
+                        </li>
+                      </ul>
+
+                      <!-- information labels -->
+                      <span data-type="info" class="d-none d-sm-none d-md-inline-flex badge badge-secondary ml-3 p-2">
+                        {startItem} - {endItem} of {itemsNumber}
+                      </span>
+
+
+
+                    </nav>
+
+                  </div>
+
+                </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+  {% endblock %}
+
+  {% block javascript %}
+    <!-- IE / Edge babel polyfill -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+
+    <!-- jPList Library -->
+    <script src="{{ asset('/js/jplist/1.2.0/jplist.min.js') }}"></script>
+    <script>
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          $('#kodependidikan').change(function () {
+              var id = $(this).children(":selected").attr("id");
+              $.ajax({
+                  url: '/p/kodejurusan/' + id,
+                  type: 'GET',
+                  success: function (val) {
+                      $('#kodejurusan').html(val);
+                  }
+              });
+          });
+      });
+      jplist.init();
+
+      $('.btn-follow').click(function(e){
+  			var cur = $(this);
+  			$.getJSON( "{{base_url()}}/u/follow/" + cur.data('id') ).done( function( data ) {
+  				cur.toggleClass("btn-following" );
+  			});
+  		});
+
+
+    </script>
+
+  {% endblock %}

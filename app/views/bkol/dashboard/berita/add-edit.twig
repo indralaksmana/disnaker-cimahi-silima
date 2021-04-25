@@ -1,0 +1,176 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+
+{% block title %}{{config['site-name']}} || Add New Blog Post{% endblock %}
+
+{% block stylesheets %}
+{% include 'dashboard/css/formcss.twig' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+<link rel="stylesheet" href="{{base_url()}}/libraries/summernote/dist/summernote.css">
+<link rel="stylesheet" href="{{base_url()}}/libraries/summernote/dist/summernote-bs4.css">
+{% endblock %}
+{% block page %}
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">{{TitlePage}}</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+  </div>
+  <br>
+  {% include 'bkol/dashboard/berita/form.twig' %}
+</div>
+{% endblock %}
+{% block javascript %}
+{% include 'dashboard/scripts/formjs.twig' %}
+<script src="{{base_url()}}/libraries/summernote/dist/summernote.min.js"></script>
+<script src="{{base_url()}}/libraries/summernote/dist/summernote-bs4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="{{base_url()}}/libraries/croppie/croppie.min.js"></script>
+<script>
+$('#post_content').summernote({
+  airMode: false,
+  height: 500,
+  toolbar: [
+          [ 'style', [ 'style' ] ],
+          [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
+          [ 'fontname', [ 'fontname' ] ],
+          [ 'fontsize', [ 'fontsize' ] ],
+          [ 'color', [ 'color' ] ],
+          [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
+          [ 'table', [ 'table' ] ],
+          [ 'insert', [ 'link'] ],
+          [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
+      ]
+  });
+  
+function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    var blob = new Blob(byteArrays, {
+      type: contentType
+    });
+    return blob;
+  }
+
+  // Start upload preview image
+  {% if post.featured_image != '' %}
+    $(".gambar").attr("src", "{{ post.featured_image }}");
+  {% else %}
+    $(".gambar").attr("src", "https://placehold.it/400x210?text=No+Featured+Photo");
+  {% endif %}
+
+  var $uploadCrop,
+    tempFilename,
+    rawImg,
+    imageId;
+
+  function readFile(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('.upload-crop').addClass('ready');
+        $('#cropImagePop').modal('show');
+        rawImg = e.target.result;
+      }
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      swal("Sorry - you're browser doesn't support the FileReader API");
+    }
+  }
+  $uploadCrop = $('#upload-crop').croppie({
+    viewport: {
+      width: 770,
+      height: 340
+    },
+    boundary: {
+      width: 770,
+      height:340
+    },
+    enforceBoundary: false,
+    enableExif: true
+  });
+  $('#cropImagePop').on('shown.bs.modal', function () {
+    // alert('Shown pop');
+    $uploadCrop.croppie('bind', {
+      url: rawImg
+    }).then(function () {
+      console.log('jQuery bind complete');
+    });
+  });
+
+  $('.item-img').on('change', function () {
+    imageId = $(this).data('id');
+    tempFilename = $(this).val();
+    $('#cancelCropBtn').data('id', imageId);
+    readFile(this);
+  });
+  $('#cropImageBtn').on('click', function (ev) {
+    $uploadCrop.croppie('result', {
+      type: 'base64',
+      format: 'jpeg',
+      size: {
+        width: 1200
+      }
+    }).then(function (resp) {
+      $('#logo').val(resp);
+      $("#form-update").submit(function (e) {
+        e.preventDefault();
+        appendFileAndSubmit();
+      });
+      $('#item-img-output').attr('src', resp);
+      $('#cropImagePop').modal('hide');
+
+      function appendFileAndSubmit() {
+        var form = document.getElementById("form-update");
+        var ImageURL = resp;
+        // Split the base64 string in data and contentType
+        var block = ImageURL.split(";");
+        // Get the content type
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "iVBORw0KGg...."
+        // Convert to blob
+        var blob = b64toBlob(realData, contentType);
+        // Create a FormData and append the file
+        var fd = new FormData(form);
+        fd.append("featured_image_upload", blob);
+        // Submit Form and upload file
+        $.ajax({
+          url: "{{currentRoute}}",
+          data: fd, // the formData function is available in almost all new browsers.
+          type: "POST",
+          contentType: false,
+          processData: false,
+          cache: false,
+          // Change this according to your response from the server.
+          error: function (err) {
+            console.error(err);
+            location.reload(true);
+          },
+          complete: function () {
+            console.log("Request finished.");
+            history.back();
+          }
+        });
+      }
+    });
+  });
+  </script>
+{% endblock %}

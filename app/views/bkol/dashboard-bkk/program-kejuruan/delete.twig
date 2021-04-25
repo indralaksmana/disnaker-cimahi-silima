@@ -1,0 +1,11 @@
+
+<form action="{{ currentRoute }}" method="POST" role="form" class="forms-sample">
+    <div class="row">
+        <div class="form-group col-md-12">
+            <h4>Kamu Yakin Akan Menghapus data Program Kejuruan {{pp.nama_program}}?</h4>
+            <button type="submit" class="btn btn-lg btn-primary btn-primary">Hapus</button>
+            <a class="btn btn-warning btn-lg " type="button" class="close" data-dismiss="modal" aria-label="Close">BATAL</a>
+        </div>
+        {{ csrf() }}
+    </div>
+</form>

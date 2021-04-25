@@ -1,0 +1,88 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{PageTitle}} Jurusan BKK{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<form action="{{ currentRoute }}" method="POST" role="form">
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">{{PageTitle}} Keterampilan LPK</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+    <a  href="{{ path_for('bkk-dashboard-jurusan')}}" role="button"
+                            class="btn btn-third btn-sm btn-secondary">BATAL</a>
+     <button style="margin-left:10px;font-size:1rem;" type="submit" class="btn btn-sm btn-third">SIMPAN</button>
+  </div>
+  <br>
+  
+  
+      <div class="row">
+          <div class="col-md-6">
+              <div class="form-group input-group-sm">
+                  <label >Jenis Keterampilan</label>
+                  <select name="k_id" class="form-control" id="bidang" required>
+                      <option value="{{data.jenisketerampilan.id}}">{{data.jenisketerampilan.jenis_kursus}}</option>
+                      {% for k in k %}
+                      <option  value="{{ k.id }}" id="{{ k.kode_bidang }}">{{
+                      k.jenis_kursus }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+              
+          </div>
+          
+          {{ csrf() }}
+      </div>
+        
+</div>
+</form>         
+            
+        
+    
+
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+$(document).ready(function () {
+    var url = $('meta[name="url"]').attr('content');
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $('#bidang').change(function () {
+      var id = $(this).children(":selected").attr("id");
+      $.ajax({
+        url: '/k/bidang/' + id,
+        type: 'GET',
+        success: function (val) {
+          $('#program').html(val);
+        }
+      });
+    });
+
+    $('#program').change(function () {
+      var id = $(this).children(":selected").attr("id");
+      $.ajax({
+        url: '/k/program/' + id,
+        type: 'GET',
+        success: function (val) {
+          $('#kompetensi').html(val);
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
+

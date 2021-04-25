@@ -1,0 +1,128 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+    {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+	{% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+	{% set append = " || Author: " ~ companies.username %}
+{% else %}
+    {% set append = "" %}
+{% endif %}
+
+
+{% block page %}
+{% include 'bkol/inc/flash.twig' %}
+<div class="container">
+	<div class="row">
+		<div class="col-xl-3 col-lg-4">
+			<div class="sidebar-container">
+
+				<!-- Location -->
+				<div class="sidebar-widget">
+					<h3>Location</h3>
+					<div class="input-with-icon">
+						<div id="autocomplete-container">
+							<input id="autocomplete-input" type="text" placeholder="Location" autocomplete="off">
+						</div>
+						<i class="icon-material-outline-location-on"></i>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+
+			</div>
+		</div>
+		<div class="col-xl-9 col-lg-8 content-left-offset">
+
+			<!-- pencarikerja List Container -->
+			<div class="row pencarikerja-container pencarikerja-list-layout compact-list margin-top-35">
+
+				{% for sp in pencarikerja %}
+				<!--pencarikerja -->
+				<div class="col-md-3 pencarikerja">
+					<!-- Overview -->
+					<div class="bg-white pencarikerja-overview">
+						<div class="pencarikerja-overview-inner">
+
+							<!-- Bookmark Icon -->
+							<span class="bookmark-icon"></span>
+							<!-- Avatar -->
+							<div class="pencarikerja-avatar">
+								<div class="verified-badge"></div>
+								<a href="single-pencarikerja-profile.html">
+								<img width="100%" src="{{ sp.userpencarikerja.photoprofile }}" alt=""></a>
+							</div>
+
+						{% endif %}
+						{% for post in jobs %}
+							{% set content = post.content|split(' ') %}
+                            {% set content = content[0] ~ ' ' ~ content[1] ~ ' ' ~ content[2] ~ ' ' ~ content[3] ~ ' ' ~ content[4] ~ ' ' ~ content[5] ~ ' ' ~ content[6] ~ ' ' ~ content[7] ~ ' ' ~ content[8] ~ '...' %}
+						<div class="card-body">
+						<div class="d-none d-lg-block pull-right" id="company_logo">
+							<a href="#" title="{{post.jobtitle}}" rel="nofollow">
+								<figure >
+								{% if post.photoprofile  == "" %}
+				                    <img id="company_logo" src="{{ base_url() }}/img/nologo.jpg" class="img-responsive" style="max-width: 60px;">
+				                {% else %}
+
+				                    <img class="img-company-logo" id="img_company_logo_1" data-original="{{post.photoprofile}}" alt="{{post.jobtitle}}" src="{{post.photoprofile}}" style="display: inline; max-width: 60px;">
+				                {% endif %}
+
+							</figure></a>
+						</div>
+							<h5 class="card-title job-name"><a href="{{ base_url() }}/bursa-kerja-online/jobseeker/{{ post.username }}" class="card-link font-weight-light">{{post.fullname}}</a></h5>
+						</div>
+						{% if auth.check() %}
+						{% else %}
+						<div class="modal fade" id="lamarSekarang" tabindex="-1" role="dialog" aria-labelledby="lamarSekarangLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-body" id="comments">
+									    <h4>Silahkan Login Terlebih Dahulu Untuk Melamar Pekerjaan ini</h4>
+									    <form action="{{ path_for('login') }}" method="post">
+									        <div class="row">
+									            <div class="col-sm-12">
+									                {{ form.text('login', null, 'login', 'Username or Email') }}
+									                {{ form.text('password', null, 'password', 'Password', null, 'password') }}
+									                <div class="row">
+									                    <div class="col-sm-12">
+									                        <div class="checkbox pull-left">
+									                            <label>
+									                                <input type="checkbox" name="remember"> Remember me
+									                            </label>
+									                        </div>
+									                        <div class="pull-right" style="padding-top: 10px;">
+									                            <a class="pull-right" href="{{ path_for('forgot-password') }}">Forgot Password?</a>
+									                        </div>
+									                        <div style="clear: both;"></div>
+									                    </div>
+									                </div>
+									            </div>
+									            <div class="col-sm-12">
+									                <div class="form-group" style="padding-top: 13px;">
+									                    <input type="submit" class="form-control btn btn-primary" name="login_submit" value="Login">
+									                </div>
+
+									                <div class="form-group" style="padding-top: 13px;">
+									                    <a href="{{ path_for('register') }}" class="form-control btn btn-success">Register</a>
+									                </div>
+									            </div>
+									            <input type="hidden" name="redirect" value="{{currentRoute}}?comment_login=1" />
+									            {{ csrf() }}
+									        </div>
+									    </form>
+									    <div style="clear: both;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<!-- pencarikerja Container / End -->
+		</div>
+	</div>
+</div>
+
+{% endblock %}

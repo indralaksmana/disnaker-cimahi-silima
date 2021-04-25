@@ -1,0 +1,169 @@
+{% spaceless %}
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="//gmpg.org/xfn/11">
+<title>{% block title %}Bursa Kerja Online Kota Cimahi{% endblock %}</title>
+<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/css/bkol.css' type='text/css' media='all'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/libraries/bootstrap/css/bootstrap.min.css' type='text/css' media='all'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/libraries/font-awesome-4.7.0/css/font-awesome.min.css' type='text/css' media='all'>
+<link rel='stylesheet' id='mysite-css'  href='{{ base_url() }}/libraries/owlcarousel2/assets/owl.carousel.min.css' type='text/css' media='all'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.2.2/lity.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{{ base_url() }}/css/icons.css">
+<link rel="stylesheet" href="{{ base_url() }}/css/animate.css">
+<link rel="shortcut icon" href="{{ base_url() }}/favicon.ico">
+{% block header_include %}{# header include: js, css #}{% endblock %}
+{% block metarobot %}{# Metas definition #}{% endblock %}
+{% block analytic %}{# Google Analytic Scripts#}{% endblock %}
+</head>
+<body {% block bodyclass %}{% endblock %}>
+<div id="page" class="hfeed site">
+  {% block header %}{% include 'bkol/header.twig' %}{% endblock %}
+  {% block slide %}{% endblock %}
+  	<div class="content-wrapper">
+    <div class="d-flex flex-row d-md-none d-sm-block bg-info py-1" style="justify-content: space-around;">
+    {% include 'bkol/dashboard/tabs.twig' %}
+    </div>
+  	<div class="container">
+        <div class="row">
+        	<div class="bkol-side-menu col-md-3 d-none d-lg-block d-md-block d-sm-none">
+            {% include 'bkol/dashboard/sidemenu.twig' %}
+            </div>
+            <!-- Sidebar -->
+            <!-- /#sidebar-wrapper -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-9">
+								<div class="content-wrapper bg-white bkol-main-content">
+									{% include 'dashboard/inc/flash.twig' %}
+									{% block page %}
+								</div>
+    			{% endblock %}
+            </main>
+        </div>
+    </div>
+    </div>
+
+
+
+    {% block sidebar %}
+
+    {% endblock %}
+
+  </div><!-- #content -->
+
+
+
+</div><!-- #page -->
+
+	</div>
+</div>
+<script type="text/javascript" src="{{ base_url() }}/libraries/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/libraries/owlcarousel2/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/js/main.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/js/bkol.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/libraries/jquery.mask.js"></script>
+
+<script>
+	// BY KAREN GRIGORYAN
+
+$(document).ready(function() {
+  /******************************
+      BOTTOM SCROLL TOP BUTTON
+   ******************************/
+
+  // declare variable
+  var scrollTop = $(".scrollTop");
+
+  $(window).scroll(function() {
+    // declare variable
+    var topPos = $(this).scrollTop();
+
+    // if user scrolls down - show scroll to top button
+    if (topPos > 100) {
+      $(scrollTop).css("opacity", "1");
+
+    } else {
+      $(scrollTop).css("opacity", "0");
+    }
+
+  }); // scroll END
+
+  //Click event to scroll to top
+  $(scrollTop).click(function() {
+    $('html, body').animate({
+      scrollTop: 0
+    }, 800);
+    return false;
+
+  }); // click() scroll top EMD
+
+}); // ready() END
+</script>
+
+<script type="text/javascript">
+	$(".number").mask('000,000,000,000', {reverse: true});
+		$.validator.setDefaults( {
+			submitHandler: function () {
+				alert( "submitted!" );
+			}
+		} );
+
+		$( document ).ready( function () {
+			$( "#signupForm" ).validate( {
+				rules: {
+					ktp: {
+						required: true,
+						number: true,
+						minlength: 16,
+						maxlength: 16
+
+					},
+				},
+				messages: {
+					ktp: {
+						required: "NO.KTP harus diisi",
+						number: "Nomor KTP hanya diisi nomor",
+						minlength: "Harap masukkan setidaknya 16 digit",
+						maxlength: "batas nomor 16 digit"
+					}
+				},
+				errorElement: "em",
+				errorPlacement: function ( error, element ) {
+					// Add the `help-block` class to the error element
+					error.addClass( "help-block" );
+
+					if ( element.prop( "type" ) === "checkbox" ) {
+						error.insertAfter( element.parent( "label" ) );
+					} else {
+						error.insertAfter( element );
+					}
+				},
+				highlight: function ( element, errorClass, validClass ) {
+					$( element ).parents( ".col-sm-12" ).addClass( "has-error" ).removeClass( "has-success" );
+				},
+				unhighlight: function (element, errorClass, validClass) {
+					$( element ).parents( ".col-sm-12" ).addClass( "has-success" ).removeClass( "has-error" );
+				}
+			} );
+
+		} );
+	</script>
+	{# Ajax CSRF #}
+    <script src="{{ asset('dashboard/js/csrf.min.js') }}"></script>
+    <script type="text/javascript">AppCSRF.csrfUrl = "/csrf";</script>
+    {# Custom JS #}
+    <script src="{{ asset('bkol/js/custom.min.js') }}"></script>
+{% block javascript %}{% endblock %}
+{% block footer %}{% include 'bkol/footer.twig' %}{% endblock %}
+
+</body>
+</html>
+{% endspaceless %}

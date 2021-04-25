@@ -1,0 +1,25 @@
+.theme-silima .inline-button-actions .btn:not(.btn-link):not(.btn-circle) i,
+.theme-silima .table-responsive .btn:not(.btn-link):not(.btn-circle) i {
+  top: 0; }
+
+.theme-silima .navbar {
+  background-color: #b5dcff; }
+.theme-silima .navbar-brand {
+  padding-top: 0;
+}
+.theme-silima .card .header h2 {
+  text-transform: uppercase;
+}
+@media screen and (min-width: 760px) {
+  .theme-silima .card .header h2 {
+    padding-top: 8px;
+  }
+
+  .theme-silima .users-admin-tabs {
+  	padding: 1em 1em 0 1em;
+  	display: flex;
+  	justify-content: center;
+  	text-align: center;
+  	align-items: flex-end;
+  }
+}

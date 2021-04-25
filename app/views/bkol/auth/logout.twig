@@ -1,0 +1,18 @@
+{% extends 'bkol/bkol.twig' %}
+
+{% block page %}
+
+<section class="container">
+
+<h1 class="page-title">Logout</h1> 
+
+	<p>Kamu Telah Logout</p>
+
+	{# <p>Login: {{ logout.lastlogin_date }}+09.00</p>
+	<p>Logout: {{ logout.logout_date }}+09.00</p>
+	<p>Duration: {{ logout.duration }}</p> #}
+
+	<p>Jika Kamu Ingin Login lagi klik di sini <a href="javascript:void(0)" class="openLogin" data-href="{{ path_for('login-modal')}}">log in</a>.
+
+</section>
+{% endblock %}

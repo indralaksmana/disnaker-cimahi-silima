@@ -1,0 +1,115 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || List Lowongan Kerja{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style>
+  .table td, .table th{
+  width: 20%;
+}
+</style>
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">Pencaker Favorit</h3>
+    </div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+  </div>
+  <table class="table-dashboard table" data-jplist-group="lists-lowongan">
+    <thead>
+      <tr>
+        <th>Foto</th>
+        <th>Nama Lengkap</th>
+        <th>Email</th>
+        <th>No Telp</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sp in users %}
+      <tr data-jplist-item>
+        <td><img class="img-fluid" src="{{ sp.pencaker.user.photoprofile }}" / style="max-width: 50%;"></td>
+        <td>{{sp.pencaker.nama_lengkap}}</td>
+        <td>{{ sp.pencaker.user.email }}</td>
+        <td>{{ sp.pencaker.no_telp }}</td>
+        <td>
+          <a  class="openDetail btn btn-secondary btn-sm text-white" data-toggle="tooltip"
+            data-placement="top" title="Lihat Detail" href="{{path_for('pencarikerja-detail',{'username': sp.pencaker.user.username,})}}">
+            <span class="fa fa-fw fa-search"></span></a>
+
+          <form action="{{ path_for('shortlist-admin-delete') }}" method="post" style="display: inline;">
+            <input type="hidden" name="perusahaan_id" value="{{ sp.id }}" />
+            {{csrf()}}
+            <button class="btn btn-danger btn-sm swal-confirm" data-toggle="tooltip" data-placement="right" title="Hapus Dari Daftar"
+              data-swtitle="Anda Yakin?" data-swmessage="Data Pencaker Ini akan dihapus dari daftar Pencaker Favorit.">
+              <span class="fa fa-fw fa-close"></span>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <!-- no results control -->
+    <tfoot class="p-3 bg-warning text-center" data-jplist-control="no-results" data-group="lists-lowongan" data-name="no-results">
+      <tr>
+        <td colspan="5">
+          <h6 class="big">Maaf, Belum Ada Pencaker Favorite..</h6>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <nav data-jplist-control="pagination" data-group="lists-lowongan" data-items-per-page="10" data-current-page="0"
+    data-disabled-class="disabled" data-selected-class="active" data-jump="top" data-name="pagination1" class="mb-2 mr-3">
+    <!-- first and previous buttons -->
+    <ul class="pagination d-inline-flex">
+      <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="first">
+        <a class="page-link" href="#">«</a>
+      </li>
+      <li class="page-item" data-type="prev">
+        <a class="page-link" href="#">‹</a>
+      </li>
+    </ul>
+    <!-- pages buttons -->
+    <ul class="pagination d-none d-sm-none d-lg-inline-flex" data-type="pages">
+      <li class="page-item" data-type="page">
+        <a class="page-link" href="#">{pageNumber}</a>
+      </li>
+    </ul>
+    <!-- next and last buttons -->
+    <ul class="pagination d-inline-flex">
+      <li class="page-item" data-type="next">
+        <a class="page-link" href="#">›</a>
+      </li>
+      <li class="page-item d-none d-sm-none d-lg-inline-block" data-type="last">
+        <a class="page-link" href="#">»</a>
+      </li>
+    </ul>
+    <!-- information labels -->
+    <span data-type="info" class="d-none d-sm-none d-md-inline-flex badge badge-secondary ml-3 p-2">
+      {startItem} - {endItem} of {itemsNumber}
+    </span>
+  </nav>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<!-- IE / Edge babel polyfill -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+<!-- jPList Library -->
+<script src="{{ asset('/js/jplist/1.2.0/jplist.min.js') }}"></script>
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+  jplist.init({
+    deepLinking: true
+  });
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+{% endblock %}

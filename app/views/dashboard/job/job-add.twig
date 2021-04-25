@@ -1,0 +1,94 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || Tambah Lowongan Kerja Baru{% endblock %}
+
+{% block stylesheets %}
+{% include 'dashboard/css/formcss.twig' %}
+<style type="text/css" media="screen">
+    .wilayah {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block page %}
+<div class="block-header">
+    <h1>Tambah Lowongan Kerja Baru</h1>
+</div>
+
+{# FORM #}
+{% include 'dashboard/job/form.twig' %}
+
+
+{% endblock %}
+
+{% block javascript %}
+{% include 'dashboard/scripts/formjs.twig' %}
+
+<script src="{{ asset('dashboard/js/lowongan.js') }}" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#provinsi').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kabupatenkota').html(val);
+                }
+            });
+        });
+
+        $('#kabupatenkota').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kecamatan').html(val);
+                }
+            });
+        });
+
+        $('#kodependidikan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/jenispendidikan/kodejurusan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kodejurusan').html(val);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#wilayahpekerjaan").change(function () {
+            $(this).find("option:selected").each(function () {
+                var optionID = $(this).attr("id");
+                if (optionID) {
+                    $(".wilayah").not("." + optionID).hide();
+                    $("." + optionID).show('fast');
+                } else {
+                    $(".wilayah").hide('fast');
+                }
+            });
+        }).change();
+    });
+
+    {# $(document).ready(function () {
+        $('#jenisgoljabatanharapan').select2({
+            width: '100%'
+        });
+    }); #}
+
+</script>
+{% endblock %}

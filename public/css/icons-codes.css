@@ -1,0 +1,17 @@
+
+.icon-right-open:before { content: '\e800'; } /* '' */
+.icon-location:before { content: '\e801'; } /* '' */
+.icon-calendar:before { content: '\e802'; } /* '' */
+.icon-ei-navicon:before { content: '\e803'; } /* '' */
+.icon-search:before { content: '\e804'; } /* '' */
+.icon-left-open:before { content: '\e805'; } /* '' */
+.icon-fax:before { content: '\e809'; } /* '' */
+.icon-message:before { content: '\e80a'; } /* '' */
+.icon-placeholder:before { content: '\e80b'; } /* '' */
+.icon-comment:before { content: '\e80c'; } /* '' */
+.icon-inspection:before { content: '\e80e'; } /* '' */
+.icon-mountain:before { content: '\e80f'; } /* '' */
+.icon-optometrist:before { content: '\e810'; } /* '' */
+.icon-candidate:before { content: '\e811'; } /* '' */
+.icon-users:before { content: '\e812'; } /* '' */
+.icon-building-front:before { content: '\e813'; } /* '' */

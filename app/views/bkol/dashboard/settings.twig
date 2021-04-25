@@ -1,0 +1,237 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+{% import 'bkol/macros/form.twig' as form %}
+
+{% block header_include %}
+  <link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+  <style media="screen">
+  hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid #3b3d93;
+  margin: 1em 0;
+  padding: 0;
+}
+  </style>
+{% endblock %}
+{% block page %}
+<div class="bg-white">
+    <section class="p-3">
+        <form action="{{ currentRoute }}" id="form-update" method="POST" role="form" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <div class="hr-theme">
+                        <div class="hr-title">
+                            <h3 class="title-section">Pengaturan Akun </h3>
+                        </div>
+                        <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 resume-item">
+                  <div class="form-group logo-image">
+                    <label for="item-img" class="cabinet center-block">
+                      <img src="" class="gambar img-fluid" id="item-img-output"/>
+                    </label>
+                    
+                    <label class="btn btn-secondary btn-small w-100 btn-upload" for="item-img">UPDATE FOTO PROFIL</label>
+                    <input id="logo" hidden="hidden" name="photoprofile_upload">
+                    <input id="item-img" hidden="hidden" accept="image/*" type="file" class="item-img file center-block"/>
+                    
+                  </div>
+                </div>
+                {% if auth.user.photoprofile != '' %}
+                <input type="hidden" value="{{ auth.user.photoprofile }}" name="photoprofile">
+                {% else %}
+                {% endif %}
+                <div class="col-md-8 resume-item">
+                    <div class="form-group input-group-sm{% if has_error('email') %} has-error{% endif %} row">
+                        <label style="background-color: #efefef;" for="email" class="col-sm-3 col-form-label">Email</label>
+                        <div class="col-sm-9">
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{% if requestParams.email %}{{requestParams.email}}{% else %}{{auth.user.email}}{% endif %}"
+                                required="required">
+                            <span class="help-block">{{ error('email') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group input-group-sm{% if has_error('username') %} has-error{% endif %} row">
+                        <label style="background-color: #efefef;" for="username" class="col-sm-3 col-form-label">Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Username"
+                                value="{% if requestParams.username %}{{requestParams.username}}{% else %}{{auth.user.username}}{% endif %}"
+                                required="required">
+                            <span class="help-block">{{ error('username') }}</span>
+                        </div>
+                    </div>
+                    <div class="form-group input-group-sm{% if has_error('username') %} has-error{% endif %} row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="submit" class="btn btn-third w-100">SIMPAN</button>
+                        </div>
+                    </div>
+                    <div class="form-group input-group-sm{% if has_error('username') %} has-error{% endif %} row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <label class="btn btn-primary form-control change_password" style="white-space: normal;">RUBAH
+                                PASSWORD </label>
+                        </div>
+                    </div>
+                    {{ csrf() }}
+                    <input type="hidden" name="user_id" value="{{user.id}}" />
+                </div>
+            </div>
+        </form>
+    </section>
+    {{csrf()}}
+</div><!-- /.container -->
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+        <div id="upload-demo" class="center-block"></div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+  <script src="{{ asset('bkol/js/change-password.min.js') }}"></script>
+  <script src="{{base_url()}}/libraries/croppie/croppie.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var url = $('meta[name="url"]').attr('content');
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+    });
+    function b64toBlob(b64Data, contentType, sliceSize) {
+      contentType = contentType || '';
+      sliceSize = sliceSize || 512;
+      var byteCharacters = atob(b64Data);
+      var byteArrays = [];
+      for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+      var blob = new Blob(byteArrays, {type: contentType});
+      return blob;
+    }
+
+    // Start upload preview image
+    {% if auth.user.photoprofile != '' %}
+      $(".gambar").attr("src", "{{auth.user.photoprofile}}");
+    {% else %}
+      $(".gambar").attr("src", "{{base_url()}}/img/bkol/no-foto.png");
+    {% endif %}
+
+    var $uploadCrop,
+      tempFilename,
+      rawImg,
+      imageId;
+    function readFile(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          $('.upload-demo').addClass('ready');
+          $('#cropImagePop').modal('show');
+          rawImg = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        swal("Sorry - you're browser doesn't support the FileReader API");
+      }
+    }
+    $uploadCrop = $('#upload-demo').croppie({
+      viewport: {
+        width: 200,
+        height: 200
+      },
+      boundary: {
+        width: 300,
+        height: 300
+      },
+      enforceBoundary: false,
+      enableExif: true
+    });
+    $('#cropImagePop').on('shown.bs.modal', function() {
+      // alert('Shown pop');
+      $uploadCrop.croppie('bind', {url: rawImg}).then(function() {
+        console.log('jQuery bind complete');
+      });
+    });
+
+    $('.item-img').on('change', function() {
+      imageId = $(this).data('id');
+      tempFilename = $(this).val();
+      $('#cancelCropBtn').data('id', imageId);
+      readFile(this);
+    });
+    $('#cropImageBtn').on('click', function(ev) {
+      $uploadCrop.croppie('result', {
+        type: 'base64',
+        format: 'jpeg',
+        size: {
+          width: 200,
+          height: 200
+        }
+      }).then(function(resp) {
+        $('#logo').val(resp);
+        $("#form-update").submit(function(e) {
+          e.preventDefault();
+          appendFileAndSubmit();
+        });
+        $('#item-img-output').attr('src', resp);
+        $('#cropImagePop').modal('hide');
+
+        function appendFileAndSubmit() {
+          var form = document.getElementById("form-update");
+          var ImageURL = resp;
+          // Split the base64 string in data and contentType
+          var block = ImageURL.split(";");
+          // Get the content type
+          var contentType = block[0].split(":")[1]; // In this case "image/gif"
+          // get the real base64 content of the file
+          var realData = block[1].split(",")[1]; // In this case "iVBORw0KGg...."
+          // Convert to blob
+          var blob = b64toBlob(realData, contentType);
+          // Create a FormData and append the file
+          var fd = new FormData(form);
+          fd.append("photoprofile_upload", blob);
+          // Submit Form and upload file
+          $.ajax({
+            url: "{{ currentRoute }}",
+            data: fd, // the formData function is available in almost all new browsers.
+            type: "POST",
+            contentType: false,
+            processData: false,
+            cache: false,
+            // Change this according to your response from the server.
+            error: function(err) {
+              console.error(err);
+              location.reload(true);
+            },
+            complete: function() {
+              console.log("Request finished.");
+              location.reload(true);
+            }
+          });
+        }
+      });
+    });
+    // End upload preview image
+  </script>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% spaceless %}
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#317EFB"/>
+    <link rel="profile" href="//gmpg.org/xfn/11">
+    <link rel="manifest" href="{{ base_url() }}/manifest.json"></link>
+    {% block seo %}{% endblock %}
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    
+    <link rel='stylesheet'  href='{{ base_url() }}/libraries/bootstrap/css/bootstrap.min.css' type='text/css'
+        media='all'>
+    <link rel='stylesheet'  href='{{ base_url() }}/libraries/font-awesome-4.7.0/css/font-awesome.min.css'
+        type='text/css' media='all'>
+    <link rel='stylesheet'  href='{{ base_url() }}/libraries/owlcarousel2/assets/owl.carousel.min.css'
+        type='text/css' media='all'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.2.2/lity.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ base_url() }}/css/icons.css">
+    <link rel="stylesheet" href="{{ base_url() }}/css/icon-bkol.css">
+    <link rel="stylesheet" href="{{ base_url() }}/css/animate.css">
+    <link rel="shortcut icon" href="{{ base_url() }}/favicon.ico">
+    <link rel='stylesheet'  href='{{ base_url() }}/css/bkol.min.css' type='text/css' media='all'>
+    <link rel='stylesheet'  href='{{ base_url() }}/css/docs.min.css' type='text/css' media='all'>
+    {% block stylesheets %}{# header include: js, css #}{% endblock %}
+    {% block metarobot %}{# Metas definition #}{% endblock %}
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130589397-2"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-130589397-2');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+</head>
+
+<body {% block bodyclass %}{% endblock %}>
+    <div id="page" class="hfeed site">
+        <div class="fixed-top">
+            {% block header %}{% include 'bkol/header.twig' %}{% endblock %}
+        </div>
+        {% import 'bkol/macros/form.twig' as form %}
+        {% block slide %}{% endblock %}
+        <div id="content" class="site-content" style="background-color: #efefef;">
+            {% block flash %}
+
+            {% endblock %}
+
+            {% block page %}
+
+            {% endblock %}
+
+            {% block sidebar %}
+
+            {% endblock %}
+        </div><!-- #content -->
+    </div><!-- #page -->
+    <!-- Modal -->
+
+
+
+    <div class="modal fade" id="ModalLogin">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content loginmodal-container" id="modalLoginModal">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ base_url() }}/libraries/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/js/app.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/js/manup.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/libraries/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.2.2/lity.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/js/main.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/js/lazysizes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.5/jquery.nicescroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+
+    <script>
+        // BY KAREN GRIGORYAN
+        $(document).ready(function () {
+            /******************************
+                BOTTOM SCROLL TOP BUTTON
+             ******************************/
+
+            // declare variable
+            var scrollTop = $(".scrollTop");
+
+            $(window).scroll(function () {
+                // declare variable
+                var topPos = $(this).scrollTop();
+
+                // if user scrolls down - show scroll to top button
+                if (topPos > 100) {
+                    $(scrollTop).css("opacity", "1");
+
+                } else {
+                    $(scrollTop).css("opacity", "0");
+                }
+
+            }); // scroll END
+
+            //Click event to scroll to top
+            $(scrollTop).click(function () {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+
+            }); // click() scroll top EMD
+
+        }); // ready() END
+    </script>
+
+    <script type="text/javascript">
+        $('.openLogin').on('click', function () {
+            var dataURL = $(this).attr('data-href');
+            $('#modalLoginModal').load(dataURL, function () {
+                $('#ModalLogin').modal({
+                    show: true
+                });
+            });
+        });
+    </script>
+    </script>
+    {# Ajax CSRF #}
+    <script src="{{ asset('dashboard/js/csrf.min.js') }}"></script>
+    <script type="text/javascript">
+        AppCSRF.csrfUrl = "/csrf";
+    </script>
+    {# Custom JS #}
+    <script src="{{ asset('bkol/js/custom.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = $('meta[name="url"]').attr('content');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+
+            $('#kecamatan').change(function () {
+                var id = $(this).children(":selected").attr("id");
+                $.ajax({
+                    url: '/daerah/kelurahan/' + id,
+                    type: 'GET',
+                    success: function (val) {
+                        $('#kelurahan').html(val);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator ) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{{ base_url() }}/service-worker.js').then(function(registration) {
+                    // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+
+    {% block javascript %}{% endblock %}
+    {% block footer %}{% include 'bkol/footer.twig' %}{% endblock %}
+
+</body>
+
+</html>
+{% endspaceless %}

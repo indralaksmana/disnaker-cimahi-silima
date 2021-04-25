@@ -1,0 +1,124 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New gallery Post{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="container">
+    <div class="bg-white">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <div class="hr-theme">
+                        <div class="hr-title">
+                            <h3 class="title-section">Edit Riwayat Pendidikan Formal</h3>
+                        </div>
+                        <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <form action="{{ currentRoute }}" method="POST" role="form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group input-group-sm{% if has_error('pendidikan_terakhir') %} has-error{% endif %}">
+                            <label for="pendidikan_terakhir">Tingkat Pendidikan
+                            </label>
+                            <select name="level" id="kodependidikan" class="form-control" required="required">
+                                <option name="level" value="{% if requestParams.level %}{{requestParams.level}}{% else %}{{post.level}}{% endif %}">{% if requestParams.level %}{{requestParams.level}}{% else %}{{post.level}}{% endif %}</option>
+                                {% for r in jenispendidikan %}
+                                <option name="level" value="{{ r.jenis_pendidikan }}" id="{{ r.kode_pendidikan }}">{{
+                                    r.jenis_pendidikan }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="help-block">{{ error('level') }}</span>
+                        </div>
+                    <div class="form-group input-group-sm{% if has_error('schoolmajors') %} has-error{% endif %}">
+                        <label for="schoolmajors">Jurusan
+                        </label>
+                        <select name="schoolmajors" id="kodejurusan" class="form-control" required="required">
+                            <option value="{% if requestParams.schoolmajors %}{{requestParams.schoolmajors}}{% else %}{{post.schoolmajors}}{% endif %}">{% if requestParams.schoolmajors %}{{requestParams.schoolmajors}}{% else %}{{post.schoolmajors}}{% endif %}</option>
+                        </select>
+                        <span class="help-block">{{ error('schoolmajors') }}</span>
+                    </div>
+                    <div class="form-group input-group-sm{% if has_error('schoolname') %} has-error{% endif %}">
+                        <label for="schoolname">Nama Sekolah / Universitas</label>
+                        <input type="text" name="schoolname" class="form-control" id="schoolname" placeholder="Nama Sekolah / Universitas"
+                            value="{% if requestParams.schoolname %}{{requestParams.schoolname}}{% else %}{{post.schoolname}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('schoolname') }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group input-group-sm{% if has_error('graduationyear') %} has-error{% endif %}">
+                        <label for="graduationyear">Tahun Lulus</label>
+                        <select name="graduationyear" class="form-control">
+                            <option value="{% if requestParams.graduationyear %}{{requestParams.graduationyear}}{% else %}{{post.graduationyear}}{% endif %}">{%
+                                if requestParams.graduationyear %}{{requestParams.graduationyear}}{% else
+                                %}{{post.graduationyear}}{% endif %}</option>
+                            {% for i in 2020..1950 %}
+                            <option value="{{ i }}" {% if requestParams.graduationyear %}selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="help-block">{{ error('graduationyear') }}</span>
+                    </div>
+                    <div class="form-group input-group-sm{% if has_error('schoolgrades') %} has-error{% endif %}">
+                        <label for="schoolgrades">Nilai / IPK</label>
+                        <input type="text" name="schoolgrades" class="form-control" id="schoolgrades" placeholder="Tahun Lulus"
+                            value="{% if requestParams.schoolgrades %}{{requestParams.schoolgrades}}{% else %}{{post.schoolgrades}}{% endif %}"
+                            required="required">
+                        <span class="help-block">{{ error('schoolgrades') }}</span>
+                    </div>
+
+                    {# <div class="form-group input-group-sm{% if has_error('numberofdiplomas') %} has-error{% endif %}">
+                        <label for="numberofdiplomas">Nomor Izasah</label>
+                        <input type="text" name="numberofdiplomas" class="form-control" id="numberofdiplomas"
+                            placeholder="Tahun Lulus" value="{% if requestParams.numberofdiplomas %}{{requestParams.numberofdiplomas}}{% else %}{{post.numberofdiplomas}}{% endif %}">
+                        <span class="help-block">{{ error('numberofdiplomas') }}</span>
+                    </div> #}
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group input-group-sm">
+                        <button type="submit" class="btn btn-third">SIMPAN</button>
+                        <a style="margin-left:10px;font-size:1rem;" href="{{ path_for('resume-pendidikan')}}" role="button"
+                            class="btn btn-third btn-secondary">BATAL</a>
+                    </div>
+                </div>
+                {{ csrf() }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#kodependidikan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/jenispendidikan/namajurusan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kodejurusan').html(val);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

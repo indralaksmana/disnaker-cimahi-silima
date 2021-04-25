@@ -1,0 +1,363 @@
+{% extends "bkol/bkol.twig" %}
+{% block seo %}
+<title>{{ post.nama_lowongan }}</title>
+<meta name="page-title" content="{{ post.nama_lowongan }}" />
+{% endblock %}
+{% block stylesheets %}
+<style>
+	.leftside .hr-theme {
+		margin-bottom: 25px;
+	}
+
+	.bg-teal {
+		background: #018989;
+	}
+
+	.table td {
+		padding: 0 0 .5rem 0;
+		font-size: 14px;
+	}
+</style>
+{% endblock %}
+
+{% block page %}
+{% include 'bkol/inc/flash.twig' %}
+
+<div class="lembaga-header bg-teal">
+	<div class="container">
+		{% if post.pemerintah.id == '' %}
+
+<div class="row text-center text-sm-left">
+			<div class="col-12 col-sm-6">
+				<div class="card mb-3">
+					<div class="row no-gutters">
+						<div class="col-md-4 text-center mb-3">
+							{% if post.authorCompanies.logo != ''%}
+							<img class="img-fluid" src="{{base_url}}{{post.authorCompanies.logo}}" alt="">
+							{% else %}
+							<img class="img-fluid" src="{{base_url()}}/img/nologo.jpg" alt="">
+							{% endif %}
+						</div>
+						<div class="col-md-8">
+							<div class="px-3">
+								<h3 class="card-title mb-3 font-weight-bold">{{post.authorCompanies.companyname}}</h3>
+								<dl class="attribute-list mb-3">
+									<dd>
+										<span class="badge badge-light d-block">
+											<strong>No. Izin :</strong>
+											{% if post.authorCompanies.no_izin != ''%}{{post.authorCompanies.no_izin}}{% else %}-{% endif %}
+										</span>
+									</dd>
+								</dl>
+								<dl class="attribute-list">
+									<dt class="mb-0">Industri</dt>
+									<dd class="mb-0">{{post.authorCompanies.industry}}</dd>
+								</dl>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-12 col-sm-6">
+
+				<div class="card mb-3">
+					<div class="row no-gutters">
+						<div class="col-md-8">
+							<div class="px-sm-4 px-0">
+								<dl class="attribute-list attribute-list-right">
+									<div class="mb-3">
+										<dt class="mb-0">Alamat</dt>
+										<dd>{{post.authorCompanies.companysaddress}}</dd>
+									</div>
+									<div class="mb-3">
+										<dt class="mb-0">Kontak</dt>
+										<dd>
+											<span><strong>No. Telp
+													: </strong>{{post.authorCompanies.phonenumber}}</span><br>
+											<!-- <span><strong>No. Fax :</strong> {{post.authorCompanies.fax}}</span><br> -->
+											<!-- <span>
+												<strong>Email : </strong> {% if post.authorCompanies.email %}<a
+													href="mailto:{{post.authorCompanies.email}}">{{post.authorCompanies.email}}</a>{% endif %}
+											</span><br> -->
+											<span>
+												{% if post.authorCompanies.website != '' %}
+												<a href="{{post.authorCompanies.website}}"
+													target="_blank">{{post.authorCompanies.website}}</a>
+												{% endif %}
+											</span>
+										</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<!-- map here -->
+							<div id="instansi-map" class="map-profile-box"
+								data-lat="{{post.authorCompanies.alamat_lat}}"
+								data-long="{{post.authorCompanies.alamat_long}}"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		{% else %}
+
+<div class="row text-center text-sm-left">
+			<div class="col-12 col-sm-6">
+				<div class="card mb-3">
+					<div class="row no-gutters">
+						<div class="col-md-4 text-center mb-3">
+							{% if post.pemerintah.logo != ''%}
+							<img class="img-fluid" src="{{base_url}}{{post.pemerintah.logo}}" alt="">
+							{% else %}
+							<img class="img-fluid" src="{{base_url()}}/img/nologo.jpg" alt="">
+							{% endif %}
+						</div>
+						<div class="col-md-8">
+							<div class="px-3">
+								<h3 class="card-title mb-3 font-weight-bold">{{post.pemerintah.nama_instansi}}</h3>
+								<dl class="attribute-list">
+									<dt class="mb-0">Intansi</dt>
+									<dd class="mb-0">{{post.pemerintah.instansi.nama_instansi}}</dd>
+								</dl>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-12 col-sm-6">
+
+				<div class="card mb-3">
+					<div class="row no-gutters">
+						<div class="col-md-8">
+							<div class="px-sm-4 px-0">
+								<dl class="attribute-list attribute-list-right">
+									<div class="mb-3">
+										<dt class="mb-0">Alamat</dt>
+										<dd>{{post.pemerintah.alamat_instansi}}</dd>
+									</div>
+									<div class="mb-3">
+										<dt class="mb-0">Kontak</dt>
+										<dd>
+											<span><strong>No. Telp
+													: </strong>{{post.pemerintah.no_telp}}</span><br>
+											<!-- <span><strong>No. Fax :</strong> {{post.authorCompanies.fax}}</span><br> -->
+											<!-- <span>
+												<strong>Email : </strong> {% if post.authorCompanies.email %}<a
+													href="mailto:{{post.authorCompanies.email}}">{{post.authorCompanies.email}}</a>{% endif %}
+											</span><br> -->
+											<span>
+												{% if post.pemerintah.website != '' %}
+												<a href="{{post.authorCompanies.website}}"
+													target="_blank">{{post.pemerintah.website}}</a>
+												{% endif %}
+											</span>
+										</dd>
+									</div>
+								</dl>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<!-- map here -->
+							<div id="instansi-map" class="map-profile-box"
+								data-lat="{{post.authorCompanies.alamat_lat}}"
+								data-long="{{post.authorCompanies.alamat_long}}"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		{% endif %}
+		
+
+
+	</div>
+</div>
+
+<div class="lembaga-profile text-left py-3 py-sm-5">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 mb-4 mb-sm-0">
+				<div class="hr-theme mb-3">
+					<div class="hr-title">
+						<h5 class="title-section text-body">Lowongan : {{post.nama_lowongan}}</h5>
+					</div>
+				</div>
+				<div style="float:right;color:red;font-weight:bold;">
+				<b>Berakhir {{post.tanggal_berakhir|date("d-m-Y")}}</b>
+				</div>
+				<br/>
+				{{post.deskripsi_pekerjaan|raw}}
+			</div>
+
+			<div class="col-md-4 mb-4 mb-sm-0">
+				<div class="hr-theme mb-3">
+					<div class="hr-title">
+						<h5 class="title-section text-body">Kualifikasi</h5>
+					</div>
+				</div>
+
+				<div class="row no-gutters">
+
+					<table class="table table-borderless">
+						<tr>
+							<td class="font-weight-bold">Jabatan</td>
+							<td>:</td>
+							<td><span class="text-capitalize">{{post.jabatan.jenis_golongan}}</span></td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold">Range Gaji</td>
+							<td>:</td>
+							<td> {% if not auth.check() %}
+								<p><a href="javascript:void(0)" class="openLogin"
+										data-href="{{ path_for('login-modal')}}">Masuk
+										untuk melihat gaji</a></p>
+								{% else %}
+								<p>{{post.gaji.name}}</p>
+								{% endif %}</td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold">Jenis Kelamin</td>
+							<td>:</td>
+							<td>{{post.jenis_kelamin}}</td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold">Usia Maksimal</td>
+							<td>:</td>
+							<td>{{post.usia_maksimal}}</td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold" width="45%">Pendidikan Terakhir</td>
+							<td width="3%">:</td>
+							<td>{{post.pendidikanterakhir.jenis_pendidikan}}</td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold">Jurusan Pendidikan</td>
+							<td>:</td>
+							<td>{{post.jurusanpendidikan.jenis_pendidikan}}</td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold">Nilai Min. Ijazah</td>
+							<td>:</td>
+							<td>{{post.nilai_minimal}}</td>
+						</tr>
+						<tr>
+							<td class="font-weight-bold">Status Pernikahan</td>
+							<td>:</td>
+							<td>{{post.status_perkawinan}}</td>
+						</tr>
+					</table>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="bg-white py-3 py-sm-3">
+	<div id="home" class="container">
+
+		<div class="row">
+			<div class="col-12 col-sm-6 p-3">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Persyaratan Umum</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				<div class="pt-3 pb-3">
+					{% autoescape %}
+					{{post.persyaratan_umum|raw}}
+					{% endautoescape %}
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 p-3">
+				<div class="hr-theme ">
+					<div class="hr-title">
+						<h5 class="title-section">Persyaratan Dokumen</h5>
+					</div>
+					<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')">
+					</div>
+				</div>
+
+				<div class="pt-3 pb-3">
+					{% autoescape %}
+					{{post.kelengkapan_berkas|raw}}
+					{% endautoescape %}
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="bg-teal">
+	<div class="container">
+		<div class="row">
+			<div class="col p-3 text-center">
+				{% if auth.check() %}
+				{% if auth.hasAccess('jobseeker.view') %}
+				{% if postlamaran.user_id != auth.user.id %}
+				{% for r in post.author.roles if r.slug != 'companies'%}
+				{% else %}
+				{% if auth.user.datapencarikerja.iscimahi == 1 %}
+				<a href="javascript:void(0)"
+					data-href="{{ path_for('modal-lamaran', {'id': post.id, 'slug': post.slug }) }}"
+					class="openPopup btn text-uppercase">Kirim Lamaran untuk lowongan ini</a>
+								 {% else %}
+                              warga cimahi yang dapat melamar pekerjaan
+                          {% endif %}
+				{% endfor %}
+
+				{% else %}
+				{% if auth.user.datapencarikerja.iscimahi == 1 %}
+				<span class="btn btn-lg btn-block btn-disabled btn-disabled">Kamu Sudah Melamar Pekerjaan</span>
+				 {% else %}
+                              warga cimahi yang dapat melamar pekerjaan
+                          {% endif %}
+				{% endif %}
+				{% endif %}
+				{% endif %}
+				{% if not auth.check() %}
+				 {% if post.user_id != "" %}
+				<a href="javascript:void(0)" class="openLogin btn text-uppercase"
+					data-href="{{ path_for('login-modal')}}">Login untuk melamar pekerjaan ini</a>
+				{% endif %}
+				{% endif %}
+			</div>
+
+			{% import 'bkol/macros/form.twig' as form %}
+			<div class="modal fade bd-example-modal-lg" id="ModalLamaran" role="dialog">
+				<div class="modal-dialog modal-lg">
+					<!-- Modal content-->
+					<div class="modal-content" id="modal-melamar">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+	$('.openPopup').on('click', function () {
+		var dataURL = $(this).attr('data-href');
+		$('#modal-melamar').load(dataURL, function () {
+			$('#ModalLamaran').modal({ show: true });
+		});
+	});
+</script>
+{% include 'bkol/minisite/js.twig' %}
+{% endblock %}

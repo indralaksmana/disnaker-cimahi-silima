@@ -1,0 +1,78 @@
+/** side menu */
+%highlight {
+    border-color: #3b3d93;
+}
+
+.bkol-side-menu {
+    .sidebar {
+        padding: 0 !important;
+
+        .hr-theme {
+            margin-bottom: 0;
+        }
+
+        .title-section {
+            font-size: 20px;
+        }
+    }
+
+    .side-menu-item {
+        .list-group-item {
+            @extend %highlight;
+            background-color: #cccccc;
+
+            a {
+                color: #333333;
+            }
+
+            a:hover {
+                opacity: .5;
+                padding-left: 1px;
+            }
+
+            &:first-child {
+                border-top: none;
+                border-bottom: none;
+            }
+
+            &:nth-child(2) {
+                border-top: none;
+            }
+        }
+    }
+}
+
+.card.bkol-side-menu {
+    border: none;
+}
+
+/** side menu end */
+
+/** main content */
+.bkol-main-content {
+    padding: 35px 5px;
+
+    .user {
+        color: #de8a43;
+        text-transform: capitalize;
+    }
+
+    .overview {
+        padding: 30px 0;
+
+        .card-body {
+            background-color: #efefef;
+            text-align: center;
+
+            .overview-total {
+                h1 {
+                    color: #de8a43;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}
+
+/** main content end */

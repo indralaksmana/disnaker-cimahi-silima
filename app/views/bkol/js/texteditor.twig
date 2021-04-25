@@ -1,0 +1,20 @@
+<script src="https://cdn.ckeditor.com/ckeditor5/10.1.0/classic/ckeditor.js"></script>
+<script type="text/javascript">
+  var allEditors = document.querySelectorAll('.simple-editor');
+  for (var i = 0; i < allEditors.length; ++i) {
+    ClassicEditor.create(allEditors[i], {
+      toolbar: [
+        'heading',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        'blockQuote',
+      ]
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+</script>

@@ -1,0 +1,566 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}}{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{base_url()}}/libraries/croppie/croppie.css">
+
+{% endblock %}
+
+{% block page %}
+<form action="{{ currentRoute }}" id="form" method="POST" role="form"  enctype="multipart/form-data">
+    <div class="col-md-12 mb-3">
+        <div class="hr-theme">
+            <div class="hr-title">
+                <h3 class="title-section">Profil Perguruan Tinggi</h3>
+            </div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+            <button type="submit" class="btn btn-sm btn-warning">SIMPAN PERUBAHAN</button>
+        </div>
+    <br>
+   
+    <div class="row" style="border-bottom: 2px solid #5c85e8;margin-bottom: 30px;">
+        <div class="col-md-12 d-flex align-items-stretch grid-margin">
+            <div class="container">
+
+                <div class="row">
+                    <h4>Data Perguruan Tinggi</h4>
+                    <div class="col-12">
+                        <div class="">
+
+                            <div class="form-group {% if has_error('nama_perguruan_tinggi') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Nama Perguruan Tinggi</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="nama_perguruan_tinggi" class="form-control" id="nama_perguruan_tinggi" placeholder="Nama LPK"
+                                        value="{{ pt.nama_perguruan_tinggi }}">
+                                    <span class="help-block">{{ error('nama_perguruan_tinggi') }}</span>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="form-group {% if has_error('slug') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Slug</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="slug" class="form-control" id="slug" placeholder="Slug"
+                                        value="{{ pt.slug }}">
+                                    <span class="help-block">{{ error('slug') }}</span>
+                                </div>
+                            </div>
+                            -->
+                            <div class="form-group {% if has_error('no_izin') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Nomor Izin</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="no_izin" class="form-control" id="no_izin" placeholder="Nomor Izin"
+                                        value="{{ pt.no_izin }}">
+                                    <span class="help-block">{{ error('no_izin') }}</span>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row"> -->
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group {% if has_error('tanggal_izin_dari') %} has-error{% endif %} row">
+                                        <label for="" class="col-sm-11 col-form-label">Dari Tanggal</label>
+                                        <!-- <div class=""> -->
+                                        <input value="{{ pt.tanggal_izin_dari}}" type="date" name="tanggal_izin_dari"
+                                            class="col-sm-11 form-control" id="tanggal_izin_dari" placeholder="Tanggal Izin Dari">
+                                        <span class="help-block">{{ error('tanggal_izin_dari') }}</span>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group {% if has_error('tanggal_izin_sampai') %} has-error{% endif %} row">
+                                        <label for="" class="col-sm-11 col-form-label">Sampai Tanggal</label>
+                                        <!-- <div class="col-sm-11"> -->
+                                        <input value="{{ pt.tanggal_izin_sampai}}" type="date" name="tanggal_izin_sampai"
+                                            class="col-sm-11 form-control" id="tanggal_izin_sampai" placeholder="Tanggal Izin Sampai">
+                                        <span class="help-block">{{ error('tanggal_izin_sampai') }}</span>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group {% if has_error('tahun_beridiri') %} has-error{% endif %} row">
+                                <label for="" class="col-sm-4 col-form-label">Tahun Berdiri</label>
+                               <div class="col-sm-8">
+                                    <input value="{{ pt.tahun_beridiri}}" type="text" name="tahun_beridiri"
+                                    class="form-control" id="tahun_beridiri" placeholder="Tahun Berdiri">
+                                    <span class="help-block">{{ error('tahun_beridiri') }}</span>
+                                </div>
+                            </div>
+                            <div class="form-group {% if has_error('akreditasi') %} has-error{% endif %} row">
+                                <label for="akreditasi" class="col-sm-4 col-form-label">Akreditasi</label>
+                                <div class="col-sm-8">
+                                    <select name="akreditasi" id="akreditasi" class="form-control" required>
+                                        <option></option>
+                                        {% for opt in ['A', 'B', 'C', 'Belum Diakreditasi'] %}
+                                            <option value="{{opt}}"{% if pt.akreditasi == opt %} selected{% endif %}>{{opt}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="help-block">{{ error('akreditasi') }}</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <h4>Pimpinan Perguruan Tinggi</h4>
+                    <div class="col-12">
+                        <div class="form-group {% if has_error('nama_pimpinan') %} has-error{% endif %} row">
+                            <label for="" class="col-sm-4 col-form-label">Nama Pimpinan</label>
+                            <div class="col-sm-8">
+                                <input value="{{ pt.nama_pimpinan}}" type="text" name="nama_pimpinan" class="form-control"
+                                    id="nama_pimpinan" placeholder="Nama Kepala Perguruan Tinggi">
+                                <span class="help-block">{{ error('nama_pimpinan') }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group {% if has_error('no_telp_pimpinan') %} has-error{% endif %} row">
+                            <label for="" class="col-sm-4 col-form-label">No Tlp Pimpinan</label>
+                            <div class="col-sm-8">
+                                <input value="{{ pt.no_telp_pimpinan }}" type="number" name="no_telp_pimpinan"
+                                    class="form-control" id="no_telp_pimpinan" placeholder="Nomor Telepon">
+                                <span class="help-block">{{ error('no_telp_pimpinan') }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group {% if has_error('email_pimpinan') %} has-error{% endif %} row">
+                            <label for="" class="col-sm-4 col-form-label">Email Pimpinan</label>
+                            <div class="col-sm-8">
+                                <input value="{{ pt.email_pimpinan }}" type="email" name="email_pimpinan" class="form-control"
+                                    id="email_pimpinan" placeholder="Email Kepala Perguruan Tinggi">
+                                <span class="help-block">{{ error('email_pimpinan') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 d-flex align-items-stretch grid-margin">
+            <div class="container">
+                <div class="row flex-grow">
+                    <h4>Data Kontak</h4>
+                    <div class="col-12">
+                        <div class="">
+                            <div class="">
+                                <div class="form-group row">
+                                    <label for="provinsi" class="col-sm-4 col-form-label">Provinsi</label>
+                                    <div class="col-sm-8">
+                                        <select name="provinsi_id" id="provinsi" class="form-control" required="required">
+                                            <option value="{{pt.provinsi_id}}">{{pt.provinsi.lokasi_nama}}</option>
+                                            {% for daerahs in daerahs %}
+                                            <option name="provinsi_id" value="{{ daerahs.id }}" id="{{ daerahs.lokasi_provinsi }}">{{
+                                                daerahs.lokasi_nama }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="kabupatenkota">Kabupaten/Kota</label>
+                                    <div class="col-sm-8">
+                                        <select name="kabupatenkota_id" id="kabupatenkota" class="form-control">
+                                            <option value="{{pt.kabupatenkota_id}}">{{pt.kabupatenkota.lokasi_nama}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="kecamatan">Kecamatan</label>
+                                    <div class="col-sm-8">
+                                        <select name="kecamatan_id" id="kecamatan" class="form-control">
+                                            <option value="{{pt.kecamatan_id}}">{{pt.kecamatan.lokasi_nama}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="kelurahan">Kelurahan</label>
+                                    <div class="col-sm-8">
+                                        <select name="kelurahan_id" id="kelurahan" class="form-control">
+                                            <option value="{{pt.kelurahan_id}}">{{pt.kelurahan.lokasi_nama}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row{% if has_error('alamat') %} has-error{% endif %}">
+                                    <label class="col-sm-4 col-form-label" for="">Alamat</label>
+                                    <div class="col-sm-8">
+                                        <textarea name="alamat" class="form-control">{{ pt.alamat }}</textarea>
+                                        <span class="help-block">{{ error('alamat') }}</span>
+
+                                        <!-- <div class="row mt-3">
+                                            <div class="col-sm-6">
+                                                <input type="text" name="alamat_lat" placeholder="Latitude" class="form-control" value="{{ pt.alamat_lat }}">
+                                                <span class="help-block">{{ error('alamat_lat') }}</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" name="alamat_long" placeholder="Longitude" class="form-control" value="{{ pt.alamat_long }}">
+                                                <span class="help-block">{{ error('alamat_long') }}</span>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="form-group row{% if has_error('gmap_embed') %} has-error{% endif %}">
+                                    <label class="col-sm-4 col-form-label" for="gmap_embed">Embed Google Map</label>
+                                    <div class="col-sm-8">
+                                        <textarea name="gmap_embed" class="form-control">{{ pt.gmap_embed }}</textarea>
+                                        <span class="help-block">{{ error('gmap_embed') }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row{% if has_error('no_telp') %} has-error{% endif %}">
+                                    <label class="col-sm-4 col-form-label" for="">No Telepon</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" name="no_telp" class="form-control" id="no_telp"
+                                            placeholder="Nomor Telepon" value="{{ pt.no_telp}}">
+                                        <span class="help-block">{{ error('no_telp') }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row{% if has_error('fax') %} has-error{% endif %}">
+                                    <label class="col-sm-4 col-form-label" for="">Fax</label>
+                                    <div class="col-sm-8">
+                                        <input value="{{ pt.fax}}" type="number" name="fax" class="form-control" id="fax"
+                                            placeholder="Fax">
+                                        <span class="help-block">{{ error('fax') }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row{% if has_error('email') %} has-error{% endif %}">
+                                    <label class="col-sm-4 col-form-label" for="">Email</label>
+                                    <div class="col-sm-8">
+                                        <input value="{{ pt.email }}" type="email" name="email" class="form-control"
+                                            id="email" placeholder="Email">
+                                        <span class="help-block">{{ error('email') }}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- <div class="card" style="margin-top: 40px;">
+                            <div class="card-body">
+                                <div class="form-group{% if has_error('keterangan') %} has-error{% endif %}">
+                                    <label for="">Keterangan</label>
+                                    <textarea name="keterangan" class="form-control">
+                                            {{ pt.keterangan }}
+                                        </textarea>
+                                    <span class="help-block">{{ error('keterangan') }}</span>
+                                </div>
+                            </div>
+                        </div> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="border-bottom: 2px solid #5c85e8;margin-bottom: 30px;">
+        <div class="col-md-3">
+            <h4 class="mb-3">Logo Perguruan Tinggi</h4>
+            
+            <div class="form-group logo-image">
+              <label for="item-img" class="placeholder-image center-block">
+                  {% if pt.logo != '' %}
+                  <img src="" class="thumbnails gambar img-fluid" id="item-img-output" style='width:100%; ' />
+
+                  {% else %}
+                    <img src="" class="thumbnails gambar img-fluid" id="item-img-output" style='width:100%;' />
+                    <span>
+                        <i class="menu-icon mdi mdi-plus-circle" style='width:100%;'></i>
+                    </span>
+                  {% endif %}
+              </label>
+              <input id="logo" hidden="hidden" name="logo_upload">
+              <input id="item-img" hidden="hidden" type="file" accept=".png, .jpg, .jpeg" class="item-img file center-block" />
+              <input type="hidden" value="{{ pt.logo }}" name="logo">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h4 class="mb-3">Profil Singkat Perguruan Tinggi</h4>
+            <!-- <div class="card" style="margin-top: 40px;"> -->
+            <!-- <div class="card-body"> -->
+            <div class="form-group{% if has_error('profile') %} has-error{% endif %}">
+                <textarea name="profile" class="simple-editor form-control">{{ pt.profile }}</textarea>
+                <span class="help-block">{{ error('profile') }}</span>
+            </div>
+
+            {# <h4 class="mb-3">Jurusan</h4>
+            <div class="form-group{% if has_error('jurusan_lpk') %} has-error{% endif %}">
+                <textarea name="jurusan_lpk" class="simple-editor form-control">{{ pt.jurusan_lpk }}</textarea>
+                <span class="help-block">{{ error('jurusan_lpk') }}</span>
+            </div> #}
+            <h4 class="mb-3">Fasilitas</h4>
+          <div class="form-group{% if has_error('fasilitas') %} has-error{% endif %}">
+              <textarea name="fasilitas" class="simple-editor form-control">{{ pt.fasilitas }}</textarea>
+              <span class="help-block">{{ error('fasilitas') }}</span>
+          </div>
+
+
+            <!-- </div> -->
+            <!-- </div> -->
+        </div>
+        <button type="submit" class="btn btn-block btn-warning">SIMPAN PERUBAHAN</button>
+        {{ csrf() }}
+    </div>
+     </div>
+</form>
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+
+        <div id="upload-demo" class="center-block"></div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% include 'bkol/js/texteditor.twig' %}
+<script src="{{base_url()}}/libraries/croppie/croppie.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('meta[name="url"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#provinsi').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kabupatenkota/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kabupatenkota').html(val);
+                }
+            });
+        });
+        $('#kabupatenkota').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kecamatan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kecamatan').html(val);
+                }
+            });
+        });
+        $('#kecamatan').change(function () {
+            var id = $(this).children(":selected").attr("id");
+            $.ajax({
+                url: '/daerah/kelurahan/' + id,
+                type: 'GET',
+                success: function (val) {
+                    $('#kelurahan').html(val);
+                }
+            });
+        });
+    });
+
+
+    $('#gallery-photos').change(function (e) {
+        var available_image = $("#multiple-file-preview li").length / 1 - 1;
+        var files = e.target.files;
+        var o = available_image;
+        for (var i = 0; i <= files.length; i++) {
+            // when i == files.length reorder and break
+            if (i == files.length) {
+                // need timeout to reorder beacuse prepend is not done
+                setTimeout(function () {
+                    reorderImages();
+                }, 100);
+                break;
+            }
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = (function (file) {
+                return function (event) {
+                    o += 1;
+                    $('#sortable').prepend('<li style="background-image: url(' + event.target.result +
+                        ')" id="photo' + o +
+                        '" class="thumbnails ui-state-default" data-order=0 data-id="' + file.lastModified +
+                        '"><a href="' + event.target.result +
+                        '" class="images-thumbnails"></a><a href="" class="delete-thumbnails delete-image" data-id="' +
+                        (o / 1) +
+                        '"><i class="menu-icon mdi mdi-window-close"></i></a><input type="hidden" name="gallery_photos_name[]" value="' +
+                        file.name + '"></li>');
+
+                    $('.images-thumbnails').magnificPopup({
+                        gallery: {
+                            enabled: true,
+                        },
+                        type: 'image',
+                    });
+
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+    var element_delete;
+
+    $(document).on('click', 'a.delete-image', function (event) {
+        event.preventDefault();
+        var clicked = $(this); // jQuery wrapper for clicked element
+        // ... click-specific code goes here ...
+        $('#photo' + clicked.data('id')).remove();
+    });
+
+    $('#sortable').sortable();
+
+    $("#delete-confirm").on('click', function () {
+        var deleted_element = $(element_delete);
+        var for_delete = typeof deleted_element.attr('for') ? deleted_element.attr('for') : '';
+        if (for_delete == 'logo') {
+            $("label.placeholder-image[for='logo']").html("<span><i class=\"icon-add-circle\" ></i></span>");
+        } else {
+            deleted_element.parent().remove();
+        }
+        $('#modal-confirmation').hide();
+    });
+
+    $(".close-button,.btn-close").click(function () {
+        $('#modal-confirmation').hide();
+    });
+</script>
+<script type="text/javascript">
+  function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    var blob = new Blob(byteArrays, {
+      type: contentType
+    });
+    return blob;
+  }
+
+  // Start upload preview image
+  $(".gambar").attr("src", "{{ pt.logo }}");
+  var $uploadCrop,
+    tempFilename,
+    rawImg,
+    imageId;
+
+  function readFile(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('.upload-demo').addClass('ready');
+        $('#cropImagePop').modal('show');
+        rawImg = e.target.result;
+      }
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      swal("Sorry - you're browser doesn't support the FileReader API");
+    }
+  }
+  $uploadCrop = $('#upload-demo').croppie({
+    viewport: {
+      width: 200,
+      height: 200
+    },
+    boundary: {
+      width: 300,
+      height: 300
+    },
+    enforceBoundary: false,
+    enableExif: true
+  });
+  $('#cropImagePop').on('shown.bs.modal', function () {
+    // alert('Shown pop');
+    $uploadCrop.croppie('bind', {
+      url: rawImg
+    }).then(function () {
+      console.log('jQuery bind complete');
+    });
+  });
+
+  $('.item-img').on('change', function () {
+    imageId = $(this).data('id');
+    tempFilename = $(this).val();
+    $('#cancelCropBtn').data('id', imageId);
+    readFile(this);
+  });
+  $('#cropImageBtn').on('click', function (ev) {
+    $uploadCrop.croppie('result', {
+      type: 'base64',
+      format: 'jpeg',
+      size: {
+        width: 200,
+        height: 200
+      }
+    }).then(function (resp) {
+      $('#logo').val(resp);
+      $("#form").submit(function (e) {
+        e.preventDefault();
+        appendFileAndSubmit();
+      });
+      $('#item-img-output').attr('src', resp);
+      $('#cropImagePop').modal('hide');
+      function appendFileAndSubmit() {
+        var form = document.getElementById("form");
+        var ImageURL = resp;
+        // Split the base64 string in data and contentType
+        var block = ImageURL.split(";");
+        // Get the content type
+        var contentType = block[0].split(":")[1]; // In this case "image/gif"
+        // get the real base64 content of the file
+        var realData = block[1].split(",")[1]; // In this case "iVBORw0KGg...."
+        // Convert to blob
+        var blob = b64toBlob(realData, contentType);
+        // Create a FormData and append the file
+        var fd = new FormData(form);
+        fd.append("logo_upload", blob);
+        // Submit Form and upload file
+        $.ajax({
+          url: "{{currentRoute}}",
+          data: fd, // the formData function is available in almost all new browsers.
+          type: "POST",
+          contentType: false,
+          processData: false,
+          cache: false,
+          // Change this according to your response from the server.
+          error: function (err) {
+            console.error(err);
+            location.reload(true);
+          },
+          complete: function () {
+            console.log("Request finished.");
+            location.reload(true);
+          }
+        });
+      }
+    });
+  });
+  // End upload preview image
+</script>
+{% endblock %}

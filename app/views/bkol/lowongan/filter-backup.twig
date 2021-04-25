@@ -1,0 +1,96 @@
+
+<div class="col-sm-12 p-3">
+    <form action="{{path_for('searchbkol')}}" method="GET">
+      <div class="form-row align-items-center">
+        <div class="col-12">
+          <label class="sr-only" for="inlineFormInputGroup">Username</label>
+          <div class="input-group mb-2">
+            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Cari lowongan berdasarkan posisi.." name="search">
+            <div class="input-group-prepend">
+              <button type="submit" class="btn search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+</div>
+<form action="{{path_for('filterbkol')}}" method="GET" style="width: 100%">
+<div class="col-sm-12 p-3">
+<div class="hr-theme ">
+  <div class="hr-title"><h5 class="title-section">GOLONGAN JABATAN</h5></div>
+  <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+</div>
+
+    <ul class="kategori-list">
+        {% for jabatan in jobJabatan %}
+          <li class="d-flex justify-content-between align-items-center">
+            <input type="checkbox" onChange="this.form.submit()"  name="jabatan[]" value="{{jabatan.id}}">
+            <label for="{{jabatan.id}}" class='cat-check text-right'>{{jabatan.jenis_golongan}}</label>
+            <span class="badge badge-primary badge-pill">{{category.posts_count}}</span></a>
+          </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="col-sm-12 p-3">
+  <div class="hr-theme ">
+    <div class="hr-title"><h5 class="title-section">JENIS PENDIDIKAN</h5></div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+  </div>
+    <ul class="kategori-list">
+        {% for r in jobPendidikan %}
+          <li class="d-flex justify-content-between align-items-center">
+            <input onChange="this.form.submit()" type="checkbox" class="save-cb-state" name="pendidikan[]" value="{{r.id}}" id="{{r.id}}">
+            <label for="{{r.id}}" class='cat-check text-right'>{{r.jenis_pendidikan}}</label>
+            {# <span class="badge badge-primary badge-pill">{{r.jobpendidikan_count}}</span></a> #}
+          </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="col-sm-12 p-3">
+<div class="hr-theme ">
+  <div class="hr-title"><h5 class="title-section">PROVINSI</h5></div>
+  <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+</div>
+
+    <ul class="kategori-list">
+    {% for r in jobProvinsi %}
+    <li class="d-flex justify-content-between align-items-center">
+      <input onChange="this.form.submit()" type="checkbox" class="save-cb-state" name="provinsi[]" value="{{r.id}}">
+      <label for="{{jabatan.id}}" class='cat-check text-right'>{{r.lokasi_nama}}</label>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="col-sm-12 p-3">
+<div class="hr-theme ">
+  <div class="hr-title"><h5 class="title-section">KABUPATEN/KOTA</h5></div>
+  <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+</div>
+
+    <ul class="kategori-list">
+    {% for r in jobKabupatenkota %}
+    <li class="d-flex justify-content-between align-items-center">
+      <input onChange="this.form.submit()" type="checkbox" class="save-cb-state" name="kabupatenkota[]" value="{{r.id}}">
+      <label for="{{r.id}}" class='cat-check text-right'>{{r.lokasi_nama}}</label>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+</form>
+  <div class="col-sm-12 p-3">
+  <div class="hr-theme d-flex">
+    <div class="hr-title"><h5 class="title-section">KATEGORI LOWONGAN</h5></div>
+    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-2.png')"></div>
+  </div>
+
+  <ul class="kategori-list text-capitalize">
+    {% for category in jobCategories %}
+        <li class="d-flex justify-content-between align-items-center">
+          <a  href="{{path_for('job-category', {'slug': category.slug})}}" style="padding: 0;">{{category.name}}
+          </a>
+          <span class="badge badge-primary badge-pill">{{category.posts_count}}</span>
+        </li>
+      {% endfor %}
+  </ul>
+  </div>

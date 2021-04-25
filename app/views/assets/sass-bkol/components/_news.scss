@@ -1,0 +1,48 @@
+.news {
+    h4,.seemore {
+        text-align: center !important;
+    display: block;
+    width: 100%;
+    
+    }
+    .seemore {
+        color: #02BFF2;
+    }
+}
+.news-list {
+    border: none !important;
+    .thumbnail {
+      position: relative;
+      .category {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        background: #F58634;
+        padding: 5px;
+        color: #fff;
+      }
+    }
+    .card-title {
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .card-text {
+      font-size: 12px;
+      line-height: 20px;
+      margin-top: 5px;
+    }
+    small {
+        font-style: italic;
+        font-size: 12px;
+        margin-bottom: 20px;
+        span {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    }
+    a {
+        color: #02BFF2;
+        font-size: 12px;
+
+    }
+  }

@@ -1,0 +1,217 @@
+{% extends 'bkol/bkol-dashboard.twig' %}
+
+{% block title %}{{config['site-name']}} || Add New gallery Post{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" />
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<div class="bg-white container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <div class="hr-theme">
+                    <div class="hr-title">
+                        {% if form_state != 'edit' %}
+                            <h3 class="title-section">Tambah Riwayat Kompetensi</h3>
+                        {% else %}
+                            <h3 class="title-section">Edit Riwayat Kompetensi</h3>
+                        {% endif %}
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png');top: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form action="{{ currentRoute }}" method="POST" role="form">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group input-group-sm{% if has_error('jurusan_sertifikat') %} has-error{% endif %}">
+                    <label for="jurusan_sertifikat">Jurusan</label>
+                    <input type="text" name="jurusan_sertifikat" class="form-control" id="jurusan_sertifikat" placeholder="Jurusan"
+                        value="{% if requestParams.jurusan_sertifikat %}{{requestParams.jurusan_sertifikat}}{% else %}{{post.jurusan_sertifikat}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('jurusan_sertifikat') }}</span>
+                </div>
+
+                <div class="form-group input-group-sm{% if has_error('no_sertifikat') %} has-error{% endif %}">
+                    <label for="no_sertifikat">No Sertifikat</label>
+                    <input type="text" name="no_sertifikat" class="form-control" id="no_sertifikat" placeholder="No Sertifikat"
+                        value="{% if requestParams.nama_unit %}{{requestParams.no_sertifikat}}{% else %}{{post.no_sertifikat}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('no_sertifikat') }}</span>
+                </div>
+
+                <div class="form-group input-group-sm{% if has_error('no_registrasi') %} has-error{% endif %}">
+                    <label for="no_registrasi">Nomor Registrasi</label>
+                    <input type="text" name="no_registrasi" class="form-control" id="no_registrasi" placeholder="No Registrasi"
+                        value="{% if requestParams.no_registrasi %}{{requestParams.no_registrasi}}{% else %}{{post.no_registrasi}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('no_registrasi') }}</span>
+                </div>
+
+                <div class="form-group input-group-sm{% if has_error('jenis_kompetensi_id') %} has-error{% endif %}">
+                    <label for="jenis_kompetensi_id">Skema Sertifikasi</label>
+                    <select name="jenis_kompetensi_id" class="form-control" required>
+                        <option value="">- select -</option>
+                        {% for jk in jks %}
+                            <option value="{{jk.id}}"{% if requestParams.jenis_kompetensi_id == jk.id or post.jenis_kompetensi_id == jk.id %} selected{% endif %}>{{jk.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('jenis_kompetensi_id') }}</span>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                
+
+                <div class="form-group input-group-sm{% if has_error('masa_berlaku') %} has-error{% endif %}">
+                    <label for="masa_berlaku">Masa Berlaku</label>
+
+                    <div class="row">
+                        <div class="col input-group">
+                            <input type="number" name="masa_berlaku" class="form-control" id="masa_berlaku" placeholder="Masa Berlaku"
+                                value="{% if requestParams.masa_berlaku %}{{requestParams.masa_berlaku}}{% else %}{{post.masa_berlaku}}{% endif %}"
+                                required="required">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><small>Tahun</small></div>
+                            </div>
+                        </div>  
+                    </div>  
+                    <span class="help-block">{{ error('masa_berlaku') }}</span>
+                </div>
+
+                <div class="form-group input-group-sm{% if has_error('tanggal_terbit') %} has-error{% endif %}">
+                    <label for="tanggal_terbit">Tanggal Terbit Sertifikat</label>
+                    <input type="date" name="tanggal_terbit" class="form-control" id="tanggal_terbit" placeholder="Tanggal Terbit Sertifikat"
+                        value="{% if requestParams.tanggal_terbit %}{{requestParams.tanggal_terbit}}{% else %}{{post.tanggal_terbit}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('tanggal_sertifikat') }}</span>
+                </div>
+
+                <div class="form-group input-group-sm{% if has_error('diterbitkan_oleh') %} has-error{% endif %}">
+                    <label for="diterbitkan_oleh">Diterbitkan Oleh</label>
+                    <select name="diterbitkan_oleh" class="form-control" required>
+                        <option value="">- select -</option>
+                        {% for i in ['BNSP', 'LSP'] %}
+                            <option value="{{i}}"{% if requestParams.diterbitkan_oleh == i or post.diterbitkan_oleh == i %} selected{% endif %}>{{i}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="help-block">{{ error('diterbitkan_oleh') }}</span>
+                </div>
+
+                <div class="form-group input-group-sm{% if has_error('nama_lsp') %} has-error{% endif %}">
+                    <label for="nama_instansi">Nama Instansi/LSP</label>
+                    <input type="text" name="nama_lsp" class="form-control" id="nama_lsp"
+                        placeholder="Nama Instansi/LSP" value="{% if requestParams.nama_lsp %}{{requestParams.nama_lsp}}{% else %}{{post.nama_lsp}}{% endif %}"
+                        required="required">
+                    <span class="help-block">{{ error('nama_lsp') }}</span>
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <div class="form-group input-group-sm">
+                    <button type="submit" class="btn btn-third">SIMPAN</button>
+                    <a style="margin-left:10px;font-size:1rem;" data-toggle="collapse" href="#collapseExample"
+                        role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-third btn-secondary">BATAL</a>
+                </div>
+            </div>
+            {{ csrf() }}
+        </div>
+    </form>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<!-- Select2 Dropdowns -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.1/tinymce.min.js" type="text/javascript"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="{{ asset('dashboard/js/tinymce-init.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/video-parser.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('dashboard/js/blog.min.js') }}" type="text/javascript"></script>
+{% if hasCloudinary %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-jquery-file-upload/2.3.0/cloudinary-jquery-file-upload.min.js"></script>
+{{ cloudinaryJsConfig() }}
+<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var generateSignature = function (callback, params_to_sign) {
+        $.ajax({
+            url: "/dashboard/media/cloudinary-sign",
+            type: "GET",
+            dataType: "text",
+            data: {
+                data: params_to_sign
+            },
+            success: function (signature, textStatus, xhr) {
+                callback(signature);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr, status, error);
+            }
+        });
+    }
+
+    $('.upload-featured-cloudinary').cloudinary_upload_widget({
+            cloud_name: 'codesains',
+            thumbnails: false,
+            upload_signature: generateSignature,
+            api_key: '{{ cloudinarySignature.api_key|raw }}',
+            button_class: 'btn btn-info form-control',
+            button_caption: '<span class="fa fa-upload"></span> Cloudinary',
+            cropping: 'server',
+            // cropping_aspect_ratio: 1.90476190476, 
+            // cropping_validate_dimensions: true, 
+            // cropping_show_dimensions: true,
+            // cropping_coordinates_mode: 'custom',
+            folder: 'gallery/',
+            // min_image_width: 1200,
+            // min_image_height: 630, 
+            show_powered_by: false,
+            sources: [
+                'local',
+                'url',
+                'camera',
+            ],
+            multiple: false,
+            theme: 'white'
+        },
+        function (error, result) {
+            if (result) {
+
+                var deleteToken = $("#featured_thumbnail").attr('delete-token');
+                if (deleteToken != "") {
+                    $.cloudinary.delete_by_token(deleteToken);
+                }
+
+                $("#featured_image").val(result[0].secure_url);
+                $("#featured_thumbnail").html('<img src="' + result[0].secure_url +
+                    '" class="img-responsive" alt="Featured Image" style="width: 100%;">');
+                $("#featured_thumbnail").attr('delete-token', result[0].delete_token);
+            }
+        }
+    );
+</script>
+{% endif %}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+    });
+</script>
+{% endblock %}

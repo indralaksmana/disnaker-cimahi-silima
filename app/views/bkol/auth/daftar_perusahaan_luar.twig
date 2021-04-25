@@ -1,0 +1,98 @@
+{% extends 'bkol/bkol.twig' %}
+{% block stylesheets %}
+<link href="{{ asset('bkol/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style>
+	#companies-registration{
+padding-top: 50px !important;
+padding-bottom: 50px !important;
+padding: 20px;
+}
+
+	#companies-registration .title-section {
+font-size: 30px;
+font-weight: bold;
+line-height: 30px;
+letter-spacing: normal;
+}
+.col-form-label {
+  background: none;
+}
+</style>
+<div id="companies-registration" class="container card">
+	<div class="row">
+		<div class="col-12">
+			<div class="hr-theme d-flex" style="margin-bottom: 50px;">
+				<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+				<div class="hr-title">
+					<h5 class="title-section" style="margin-left: 10px;">Daftar Sebagai Perusahaan</h5>
+				</div>
+				<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+			</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link" href="{{ path_for('registerPerusahaanDalam') }}">Dalam Kota Cimahi</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link active" href="{{ path_for('registerPerusahaanLuar') }}">Luar Kota Cimahi</a>
+		</li>
+	</ul>
+
+	<div class="tab-content">
+		{% include 'bkol/auth/luar-kota.twig' %}
+	</div>
+
+	
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ recaptchaJs() }}
+    <script type="text/javascript">
+  $(document).ready(function () {
+    var url = $('meta[name="url"]').attr('content');
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $('#provinsi').change(function () {
+      var id = $(this).children(":selected").attr("id");
+      $.ajax({
+        url: '/daerah/kabupatenkota/' + id,
+        type: 'GET',
+        success: function (val) {
+          $('#kabupatenkota').html(val);
+        }
+      });
+    });
+
+    $('#kabupatenkota').change(function () {
+      var id = $(this).children(":selected").attr("id");
+      $.ajax({
+        url: '/daerah/kecamatan/' + id,
+        type: 'GET',
+        success: function (val) {
+          $('#kecamatan').html(val);
+        }
+      });
+    });
+
+    $('#kecamatan').change(function () {
+      var id = $(this).children(":selected").attr("id");
+      $.ajax({
+        url: '/daerah/kelurahan/' + id,
+        type: 'GET',
+        success: function (val) {
+          $('#kelurahan').html(val);
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

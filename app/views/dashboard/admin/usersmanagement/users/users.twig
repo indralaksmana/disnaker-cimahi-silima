@@ -1,0 +1,122 @@
+{% extends 'dashboard/base.twig' %}
+
+{% block title %}{{config['site-name']}} || User Management{% endblock %}
+
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% if config['oauth2-enabled'] %}
+<link href="{{ asset('disnaker/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endif %}
+{% endblock %}
+
+{% block page %}
+
+<div class="row clearfix">
+    <div class="col-lg-12">
+
+            <div class="card">
+
+                <ul class="nav nav-tabs tab-nav-right users-admin-tabs text-uppercase">
+                    <li class="active"><a href="#tab1" data-toggle="tab">Admin</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Pencari Kerja</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Perusahaan</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Bursa Kerja Khusus</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Lembaga Pelatihan Kerja</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Perguruan Tinggi</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <div class="header clearfix">
+                            <a href="{{ path_for('admin-users-add') }}" class="btn bg-teal pull-right">
+                                <i class="material-icons">add</i><span>Tambah User</span>
+                            </a>
+                            <h2>User Management Admin dan Staf</h1>
+                        </div>
+
+                        <div class="body">
+                            <table width="100%" class="table table-bordered table-hover table-responsive" id="users_table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Roles</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        {# <div class="d-flex justify-content-between mb-2">
+                            <h1 class="h2">User Pencari Kerja</h1>
+                            <div class="mb-2">
+                                <a href="{{ path_for('admin-users-add') }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-fw fa-plus"></span> tambah  User</a>
+                            </div>
+                        </div> #}
+
+                        <div class="header">
+                            <h2>User Pencari Kerja</h1>
+                        </div>
+
+                        <div class="body">
+                            {% include 'dashboard/admin/usersmanagement/users/pencarikerja.twig' %}
+                        </div>     
+                    </div>
+                    <div id="tab3" class="tab-pane">
+                        {# <div class="d-flex justify-content-between mb-2">
+                            <h1 class="h2">User Perusahaan</h1>
+                            <div class="mb-2">
+                                <a href="{{ path_for('admin-users-add') }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-fw fa-plus"></span> tambah  User</a>
+                            </div>
+                        </div> #}
+                        <div class="header">
+                            <h2>User Perusahaan</h2>
+                        </div>
+                        <div class="body">
+                            {% include 'dashboard/admin/usersmanagement/users/perusahaan.twig' %}
+                        </div>
+                    </div>
+                    <div id="tab4" class="tab-pane">
+                        <div class="header clearfix">
+                            <a href="{{ path_for('admin-users-bkk-add') }}" class="btn bg-teal pull-right"><i class="material-icons">add</i> <span>Tambah User BKK</span></a>
+                            <h2>User Bursa Kerja Khusus</h2>
+                        </div>
+                        <div class="body">
+                            {% include 'dashboard/admin/usersmanagement/users/bkk.twig' %}
+                        </div>
+                    </div>
+                    <div id="tab5" class="tab-pane">
+                        <div class="header clearfix">
+                            <a href="{{ path_for('admin-users-lpk-add') }}" class="btn bg-teal pull-right"><i class="material-icons">add</i> <span>Tambah User LPK</span></a>
+                            <h2>User Lembaga Pelatihan Kerja</h2>
+                        </div>
+                        <div class="body">
+                            {% include 'dashboard/admin/usersmanagement/users/lpk.twig' %}
+                        </div>
+                    </div>
+                    <div id="tab6" class="tab-pane">
+                        <div class="header">
+                            <h2>User Perguruan Tinggi</h2>
+                        </div>
+                        <div class="body">
+                            {% include 'dashboard/admin/usersmanagement/users/perguruan-tinggi.twig' %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+{% include 'dashboard/admin/usersmanagement/users/js.twig' %}
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+{% endblock %}

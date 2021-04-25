@@ -1,0 +1,285 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+{% if categoryPage %}
+    {% set append = " || Category: " ~ category.name %}
+{% elseif tagPage %}
+	{% set append = " || Tag: " ~ tag.name %}
+{% elseif companiesPage %}
+	{% set append = " || Author: " ~ companies.username %}
+{% else %}
+    {% set append = "" %}
+{% endif %}
+
+
+{% block page %}
+<div id="carouselExampleSlidesOnly" class="carousel slide d-none d-xl-block" data-ride="carousel">
+	<div class="panel search-field">
+		<form action="/bursa-kerja-online/result">
+			<div class="form-row align-items-center">
+				<div class="col-12">
+					<label class="sr-only" for="inlineFormInputGroup">Username</label>
+					<div class="input-group">
+						<input type="text" name="search" id="search" value="" class="form-control" id="inlineFormInputGroup" placeholder="Cari lowongan berdasarkan posisi..">
+						<div class="input-group-prepend">
+							<button type="submit" name="search" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="carousel-inner">
+		<div class="carousel-item active">
+			<img class="d-block w-100" src="/img/bkol/woman-play-phone.jpg" alt="First slide">
+		</div>
+	</div>
+
+</div>
+{% include 'bkol/inc/flash.twig' %}
+<div id="home" class="container py-3">
+	<div class="row">
+		<div class="col-xl-4 order-1 col-sm-4 order-2">
+			<div class="row sidebar">
+				<div class="col-sm-12 mb-2">
+					<div class="card">
+						<div class="card-header">
+							<h6>Dapatkan Kartu Pencari Kerja (AK-1) resmi dari Disnaker</h6>
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item"><button class="btn btn-success btn-bkol"><i class="fa fa-arrow-right" aria-hidden="true"></i> Di sini</button></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 mb-2">
+					<div class="card">
+						<div class="card-header">
+							<h6>Telusuri Lowongan</h6>
+						</div>
+						<ul class="list-group text-capitalize">
+							{% for category in jobCategories %}
+							  	<li class="list-group-item d-flex justify-content-between align-items-center">
+							  		<a class="btn btn-light" href="{{path_for('job-category', {'slug': category.slug})}}" class="btn btn-light">{{category.name}}
+							  		<span class="badge badge-primary badge-pill">{{category.posts_count}}</span></a>
+							  	</li>
+				    		{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 mb-2">
+					<div class="card">
+						<div class="card-header">
+							<h6>Bursa Kerja</h6>
+						</div>
+						<ul class="list-group">
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								Jumlah Lowongan Pekerjaan
+								<span class="badge badge-primary badge-pill">14</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								Jumlah Pencari Kerja Terdaftar
+								<span class="badge badge-primary badge-pill">2</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								Jumlah Penempatan
+								<span class="badge badge-primary badge-pill">1</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-8 col-sm-8">
+			<div class="row">
+				<div class="col">
+					<div class="card list-job">
+						<div class="card-header">
+							<h6>Lowongan Pekerjaan Terbaru</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="card list-job">
+						{% if jobs|length == 0 %}
+							<div class="text-center">
+								<h1>Belum Ada Lowongan</h1>
+							</div>
+						{% endif %}
+						{% for post in jobs %}
+							{% set content = post.content|split(' ') %}
+                            {% set content = content[0] ~ ' ' ~ content[1] ~ ' ' ~ content[2] ~ ' ' ~ content[3] ~ ' ' ~ content[4] ~ ' ' ~ content[5] ~ ' ' ~ content[6] ~ ' ' ~ content[7] ~ ' ' ~ content[8] ~ '...' %}
+						<div class="card-body">
+						<div class="d-none d-lg-block pull-right" id="company_logo">
+							<a href="#" title="{{post.jobtitle}}" rel="nofollow">								<figure >
+								{% if post.authorCompanies.logo  != "" %}
+				                    <img class="img-company-logo" id="img_company_logo_1" data-original="{{post.authorCompanies.logo}}" alt="{{post.jobtitle}}" src="{{post.authorCompanies.logo}}" style="display: inline;">
+				                {% else %}
+				                	{# <img id="company_logo" src="{{ base_url() }}/img/nologo.jpg" class="img-responsive"> #}
+				                    
+				                {% endif %}
+
+							</figure></a>
+						</div>
+							<h5 class="card-title job-name"><a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}" class="card-link font-weight-light">{{post.jobtitle}}</a></h5>
+							<h5 class="card-title job-company text-capitalize"><a href="{{path_for('job-companies', {'companyname': post.authorCompanies.companyname})}}" class="card-link font-weight-light text-muted">{{post.authorCompanies.companyname}}</a></h5>
+							<ul class="fa-ul job-address text-muted">
+								<li class="job-location"><i class="fa-li fa fa-map-marker"></i>{{post.address | raw}}</li>
+								<li><i class="fa-li fa fa-user-plus"></i>{{post.numberofpeople}} orang</li>
+
+							</ul>
+							<div class="card-text job-desc" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+								{% if post.content|length > 250 %} {{ content | raw }} {% else %}{{ content | raw}} {% endif %}
+							</div>
+							<div class="d-flex justify-content-between flex-lg-row flex-sm-column flex-column">
+								<span class="job-date text-muted mb-2">{{post.publish_at| time_diff }}</span>
+								<div class="btn-group ml-auto" role="group" aria-label="Basic example">
+									<a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}" class="btn btn-small btn-info" role="button">Lihat Detail</a>
+
+									{# {% if auth.check() %}
+									<a href="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}/application" class="btn btn-small btn-success">Lamar Sekarang</a>
+									{% else %} #}
+									<a href="#" class="btn btn-small btn-success" data-toggle="modal" data-target="#lamarSekarang{{post.id}}" role="button">Lamar Sekarang</a>
+									{# {% endif %}  #}
+								</div>
+							</div>
+						</div>
+						 
+
+						{% if auth.check() %}
+						<!-- Modal Lamar Sekarang-->
+						<div class="modal fade" id="lamarSekarang{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="lamarSekarangLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg" role="document">
+						    	<div class="modal-content">
+						      		<div class="modal-header">
+						        		<h5 class="modal-title" id="exampleModalLabel">Lamaran untuk posisi {{post.jobtitle}}</h5>
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+						      		</div>
+						      		<form action="{{path_for('job_detail', {'year': post.publish_at|date("Y"), 'month': post.publish_at|date("m"), 'day': post.publish_at|date("d"), 'slug': post.slug})}}/application/lamaranterkirim" method="post">
+						      		<div class="modal-body" id="comments">
+									    <div class="card">
+										<div class="card-body">
+											<div class="resume-summary" id="resume_summary">
+												<div class="media mb-2">
+													<div class="media-left">
+														<img class="resume-photo" id="resume_photo" src="{{ auth.user.photoprofile }}">
+													</div>
+													<div class="media-body">
+														<h3 class="candidate-name" id="candidate_name"> <strong>{{ auth.user.fullname }}</strong> </h3>
+														<ul class="list-inline">
+															<li class="candidate-info" id="candidate_expected_salary">
+																<i class="fa fa-usd" aria-hidden="true"></i>
+																IDR <span class="number">{{ auth.user.expectedsalary }}</span>
+															</li>
+															<li class="candidate-info" id="candidate_email">
+																<i class="fa fa-envelope-open" aria-hidden="true"></i>
+																{{ auth.user.email }}
+															</li>
+															<li class="candidate-info" id="candidate_handphone_no">
+																<i class="fa fa-phone" aria-hidden="true"></i>
+																{{ auth.user.phonenumber }}
+															</li>
+														</ul>
+													</div>
+													{{csrf()}}
+													<p class="resume-action font-weight-normal" id="resume_action">
+														<a id="resume_view" href="#" onclick="window.open('{{ base_url() }}/bursa-kerja-online/jobseeker/{{ auth.user.username }}','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Lihat</a>
+														<span> | </span>
+														<a id="resume_edit" href="#" onclick="window.open('{{ base_url() }}/bursa-kerja-online/resume','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Ubah</a>
+													</p>
+												</div>
+												<hr class="py-0">
+												<div class="resume-attachment" id="resume_attachment">
+													<p class="pull-left"> Resume yang diunggah <span class="text-muted"> - Diunggah pada 16 Jul 2018</span></p> 
+													<p class="pull-right">
+														<a id="uploaded_resume_view" href="#" onclick="window.open('http://docs.google.com/gview?url={{ auth.user.resume.upload_resume }}','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Lihat</a> 
+														<span class="hidden-xs"> | </span>
+														<a class="hidden-xs" id="uploaded_resume_edit" href="#" onclick="window.open('{{ base_url() }}/bursa-kerja-online/resume/resume-upload','_blank','resizable=1,scrollbars=1,width=1050,height=600')">Ubah</a>
+													</p>
+													<div class="clearfix"></div>
+												</div>
+												<div class="bg-info container py-2">
+												<div class="form-group text-light">
+													<label for="coverletter"><h6>Promosikan diri Anda! (Disarankan)</h6></label>
+													<textarea class="form-control" rows="5" name="coverletter" id="coverletter" placeholder="Beritahu perusahaan mengapa Anda paling cocok untuk posisi ini. Sebutkan keterampilan khusus dan bagaimana Anda berkontribusi. Hindari hal generik seperti Saya bertanggung jawab."></textarea>
+												</div>
+												<p class="font-weight-light text-light small">Dengan menekan tombol "Kirim Lamaran", Saya telah membaca dan menyetujui peraturan Bursa Kerja Online (BKOL) Kota Cimahi tentang pemanggilan interview</p>
+												<div class="btn-responsive mx-auto">
+													{# <button type="button" class="btn btn-warning btn-block">Kirim Lamaran</button> #}
+													<input type="submit" name="add_apply" value="Kirim Lamaran" class="btn btn-warning btn-block" />
+												</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									</div>
+									<div class="modal-footer">
+								        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+								        <!-- <input type="submit" name="add_apply" value="Kirim Lamaran" class="btn btn-warning" /> -->
+								    </div>
+								    </form>
+						    	</div>
+						  	</div>
+						</div>
+						{% else %}
+						<div class="modal fade" id="lamarSekarang{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="lamarSekarangLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-body" id="comments">
+									    <h4>Silahkan Login Terlebih Dahulu Untuk Melamar Pekerjaan ini</h4>
+									    <form action="{{ path_for('login') }}" method="post">
+									        <div class="row">
+									            <div class="col-sm-12">
+									                {{ form.text('login', null, 'login', 'Username or Email') }}
+									                {{ form.text('password', null, 'password', 'Password', null, 'password') }}
+									                <div class="row">
+									                    <div class="col-sm-12">
+									                        <div class="checkbox pull-left">
+									                            <label>
+									                                <input type="checkbox" name="remember"> Remember me
+									                            </label>
+									                        </div>
+									                        <div class="pull-right" style="padding-top: 10px;">
+									                            <a class="pull-right" href="{{ path_for('forgot-password') }}">Forgot Password?</a>
+									                        </div>
+									                        <div style="clear: both;"></div>
+									                    </div>
+									                </div>
+									            </div>
+									            <div class="col-sm-12">
+									                <div class="form-group" style="padding-top: 13px;">
+									                    <input type="submit" class="form-control btn btn-primary" name="login_submit" value="Login">
+									                </div>
+									                <div class="form-group" style="padding-top: 13px;">
+									                    <a href="{{ path_for('register') }}" class="form-control btn btn-success">Register</a>
+									                </div>
+									            </div>
+									            <input type="hidden" name="redirect" value="{{currentRoute}}?comment_login=1" />
+									            {{ csrf() }}
+									        </div>
+									    </form>
+									    <div style="clear: both;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<div class="text-center" style="{% if pagination is empty %}height: 20px;{% endif %}">
+			{{pagination|raw}}
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+
+{% endblock %}

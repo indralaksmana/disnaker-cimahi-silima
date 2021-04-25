@@ -1,0 +1,124 @@
+<style>
+ul.resume-preview li+li.candidate-info:before {
+	content: "\0399";
+	padding-right: 15px;
+}
+</style>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="media mb-2">
+						<div class="row">
+							<div class="col-md-4">
+								<img width="100%" class="resume-photo mb-2" id="resume_photo" src="{{ pk.userpencarikerja.photoprofile }}">
+							</div>
+							<div class="col-md-8">
+								<h5 class="candidate-name mb-1 text-primary" id="candidate_name"> <strong>{{ userpencarikerja.fullname }}</strong> </h5>
+								{% for post in pekerjaan|slice(0, 1)%}
+									<p class="font-weight-bold mb-0 text-secondary">{{post.position}}</p>
+									<p class="font-weight-bold mb-0 text-secondary">{{post.companyname}}</p>	
+								{% endfor %}
+								<small>
+									<ul class="resume-preview list-inline mt-2 text-muted">
+										<li class="candidate-info" id="candidate_handphone_no">
+											<i class="fa fa-phone" aria-hidden="true"></i>
+											{{  pk.userpencarikerja.phonenumber }}
+										</li>
+										<li class="candidate-info" id="candidate_email">
+											<i class="fa fa-envelope-open" aria-hidden="true"></i>
+											{{  pk.userpencarikerja.email }}
+										</li>
+										<li class="candidate-info" id="candidate_expected_salary">
+											<i class="fa fa-usd" aria-hidden="true"></i>
+											IDR <span class="number">{{  pk.userpencarikerja.expectedsalary }}</span>
+										</li>
+										<li class="candidate-info" id="candidate_districts">
+											<i class="fa fa-map-marker" aria-hidden="true"></i>
+											{{  pk.userpencarikerja.districts }}
+										</li>
+									</ul>
+								</small>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr class="p-0 m-0">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm-12 mb-4" style="border-bottom: 1px solid #ddd;">
+							<h5 class="mb-4"><i class="fa fa-briefcase" aria-hidden="true"></i> Riwayat Pekerjaan</h5>
+							<div class="row no-gutters">
+								{% for post in pekerjaan  %}
+								<div class="col-sm-4">
+									<p class="text-muted">{{post.startmonth}} {{post.startyear}} - {{post.finishedmonth}} {{post.finishedyear}}</p>
+								</div>	
+								<div class="col-sm-8">
+									{% if pekerjaan|length == 0 %}
+									<span class="text-center">Belum Ada Pelamar Baru</span>
+									{% endif %}
+									<h5>{{post.typeofwork}}</h5>
+									<h6>{{post.companyname}}</h6>
+									<div class="form-group">
+										<div class="row no-gutters py-2">
+											<label class="col-sm-3 text-muted text-small m-0">Posisi</label>
+											<label class="col-sm-9">{{post.position}}</label>
+											<label class="col-sm-3 text-muted text-small m-0">Salary</label>
+											<label class="col-sm-9">IDR <span class="number">{{post.salary}}</span></label>
+											<p>{{post.descjob}}</p>
+										</div>
+									</div>
+								</div>	
+								{% endfor %}
+							</div>
+						</div>
+						<div class="col-sm-12 mb-4" style="border-bottom: 1px solid #ddd;">
+							<h5 class="mb-4"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Pendidikan</h5>
+							<div class="row no-gutters">
+								{% for post in pendidikan  %}
+								<div class="col-sm-4">
+									<p class="text-muted">{{post.graduationyear}}</p>
+								</div>	
+								<div class="col-sm-8">
+									{% if pendidikan|length == 0 %}
+									<span class="text-center">Belum Ada data Riwayat Pendidikan</span>
+									{% endif %}
+									<h5>{{post.schoolname}}</h5>
+									<h6>{{post.schoolmajors}}</h6>
+									<div class="form-group">
+										<div class="row no-gutters py-2">
+											<label class="col-sm-3 text-muted text-small m-0">Tingkat Pendidikan</label>
+											<label class="col-sm-9">{{post.level}}</label>
+											<label class="col-sm-3 text-muted text-small m-0">Nilai / IPK</label>
+											<label class="col-sm-9">{{post.schoolgrades}}</label>
+											{# <label class="col-sm-3 text-muted text-small m-0">Nomor Ijazah</label>
+											<label class="col-sm-9">{{post.numberofdiplomas}}</label> #}
+										</div>
+									</div>
+								</div>	
+								{% endfor %}
+							</div>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<h5 class="mb-4"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Pendidikan Non Formal</h5>
+							<div class="row no-gutters">
+								{% for post in nonformal  %}
+								<div class="col-sm-4">
+									<p class="text-muted">{{post.startingmonth}} {{post.startyear}} - {{post.finishedmonth}} {{post.finishedyear}}</p>
+								</div>	
+								<div class="col-sm-8">
+									{% if nonformal|length == 0 %}
+									<span class="text-center">Belum Ada data Riwayat Pendidikan Non formal</span>
+									{% endif %}
+									<h5>{{post.nameofeducation}}</h5>
+								</div>	
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+

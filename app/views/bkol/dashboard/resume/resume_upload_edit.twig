@@ -1,0 +1,26 @@
+<form action="{{ currentRoute }}" method="POST" role="form" method="POST" role="form" enctype="multipart/form-data">
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Tambah Dokumen Pendukung</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+      <label>Nama Dokumen</label>
+      <input type="text" class="form-control" name="nama_file" value="{{r.nama_file}}">
+      <label>File Dokumen</label>
+
+      <input accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"  type="file" class="form-control form-control-sm" name="upload_doc"/>
+      {% if r.upload_file != '' %}
+        <input type="text" hidden class="form-control" name="upload_file" value="{{r.upload_file}}">
+      {% else %}
+      {% endif %}
+    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+  <button type="submit" class="btn btn-primary">Edit dan Upload</button>
+</div>
+{{ csrf() }}
+</form>

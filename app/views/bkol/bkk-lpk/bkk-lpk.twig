@@ -1,0 +1,121 @@
+{% extends "bkol/bkol.twig" %}
+{% block stylesheets %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+{% include 'bkol/inc/flash.twig' %}
+<div id="bkk-lpk" class="container pt-3 pb-5">
+	<div class="row">
+		<div class="col-xl-12 col-sm-12">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+          <div class="hr-theme text-center d-flex  align-items-center">
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-big.png')"></div>
+            <div class="hr-title"><h5 class="title-section">Lembaga Pelatihan Kerja dan <br> Bursa Kerja Khusus</h5></div>
+            <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line-big.png')"></div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+			<div class="row bkk-lpk">
+				<div class="col">
+					<div class="card">
+          <div class="card-body">
+          <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">BURSA KERJA KHUSUS</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">LEMBAGA PELATIHAN KERJA</a>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <table width="100%" class="table table-striped table-bordered table-hover" id="bkk-table">
+                <thead>
+                    <tr>
+                        <th>Nama BKK</th>
+                        <th>Alamat</th>
+                        <th>No Tel</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for r in bkk %}
+                    <tr>
+                    <td><a href="{{path_for('minisite-bkk-detail',{'slug' : r.slug}  )}}">{{r.nama_bkk}}</a></td>
+                    <td>{{r.alamat}}</td>
+                    <td>
+											{% if r.no_telp != ''%}
+												0{{r.no_telp}}
+										 {% endif %}
+											</td>
+                    </tr>
+                  {% endfor %}
+
+                </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <table width="100%" class="table table-striped table-bordered table-hover" id="lpk-table">
+                <thead>
+                    <tr>
+                        <th>Nama LPK</th>
+                        <th>Alamat</th>
+                        <th>No Tel</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for r in lpk %}
+                    <tr>
+                    <td><a href="{{path_for('minisite-lpk-detail',{'slug' : r.slug}  )}}">{{r.nama_lpk}}</a></td>
+                    <td>{{r.alamat}}</td>
+                    <td>
+										{% if r.no_telp != ''%}
+											0{{r.no_telp}}
+									 	{% endif %}
+										</td>
+                    </tr>
+                  {% endfor %}
+
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+          </div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap4.min.js"></script>
+<script src="{{base_url()}}/js/vuejs-datatable.js"></script>
+<script>
+$('#lpk-table').DataTable({
+      responsive: true,
+      stateSave: true,
+  });
+  $('#bkk-table').DataTable({
+        responsive: true,
+        stateSave: true,
+    });
+</script>
+
+{% endblock %}

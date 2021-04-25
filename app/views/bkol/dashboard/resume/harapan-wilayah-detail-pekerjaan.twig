@@ -1,0 +1,87 @@
+<div class="row">
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold">Harapan Wilayah Pekerjaan</h5>
+                        <div class="form-group input-group-sm">
+                            <label for="nilai_ijazah_ipk">Dalam Negeri
+                                <input id="dalam" type="radio" name="harapan_wilayah_pekerjaan" value="Dalam Negeri" />
+                            </label>
+                            <br>
+                            <label for="nilai_ijazah_ipk">Luar Negeri
+                                <input id="luar" type="radio" name="harapan_wilayah_pekerjaan" value="Luar Negeri" />
+                            </label>
+                            <br>
+                            <label for="nilai_ijazah_ipk">Dalam dan Luar Negeri
+                                <input id="dalamluar" type="radio" name="harapan_wilayah_pekerjaan" value="Dalam dan Luar Negeri" />
+                            </label>
+                        </div>
+                        <div class="form-group input-group-sm" id="dalamnegeri">
+                            <label for="provinsi_dalam_negeri">Provinsi</label>
+                            <select name="provinsi_dalam_negeri_id" id="provinsi_dalam" class="form-control" {# required="required"
+                                #}>
+                                <option value="{{auth.user.datapencarikerja.provinsi_dalam_negeri_id}}">{{auth.user.datapencarikerja.provinsidalam.lokasi_nama}}</option>
+                                {% for daerahs in daerahs %}
+                                <option name="provinsi" value="{{ daerahs.id }}" id="{{ daerahs.lokasi_provinsi }}">{{
+                                    daerahs.lokasi_nama }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="kabupatenkota_">Kabupaten/Kota</label>
+                            <select name="kabupatenkota_dalam_negeri_id" id="kabupatenkota_dalam" class="form-control" {#
+                                required="required" #}>
+                                <option value="{{auth.user.datapencarikerja.kabupatenkota_dalam_negeri_id}}">{{auth.user.datapencarikerja.kabupatenkota.lokasi_nama}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group input-group-sm" id="luarnegeri">
+                            <label for="kabupatenkota">Negara</label>
+                            <select name="negara_luar_negeri_id" id="negara_luar_negeri" class="form-control" {# required="required"
+                                #}>
+                                <option value="{{auth.user.datapencarikerja.negara_luar_negeri_id}}">{{auth.user.datapencarikerja.negaraluarnegeri.nama_negara}}</option>
+
+                                {% for negara in negara %}
+                                <option name="negara_luar_negeri_id" value="{{ negara.id }}">{{
+                                    negara.nama_negara }}</option>
+
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="font-weight-bold">Detail Pekerjaan</h5>
+                        <div class="form-group input-group-sm">
+                            <label for="jenis_jabatan_yang_diminati_id">Jenis Jabatan yang Diminati
+                                <span class="require">*</span>
+                            </label>
+                            <select name="jenis_jabatan_yang_diminati_id" id="jenisgoljabatanharapan" class="form-control">
+                                <option value="{{auth.user.datapencarikerja.jenis_jabatan_yang_diminati_id}}">{{auth.user.datapencarikerja.jabatan.jenis_golongan}}
+                                </option>
+                                {% for golonganjabatan in golonganjabatan %}
+                                    <option  value="{{ golonganjabatan.id }}">{{golonganjabatan.jenis_golongan}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="nama_instansi_pendidikan">Sistem Pembayaran
+                                <span class="require">*</span>
+                            </label>
+                            <select name="sistem_pembayaran" class="form-control" id="sistem_pembayaran">
+                                <option value="{{auth.user.datapencarikerja.sistem_pembayaran}}">{{auth.user.datapencarikerja.sistem_pembayaran}}</option>
+                                {% for i in ['Borongan','Harian','Mingguan','Bulanan'] %}
+                                <option value="{{ i }}" {% if requestParams[ 'sistem_pembayaran' ]==i %}selected{%
+                                    endif %}>{{i
+                                    }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label for="nama_instansi_pendidikan">Harapan Gaji Minimum
+                                <span class="require">*</span>
+                            </label>
+                            <select name="harapan_gaji_minimum_id" class="form-control" id="harapan_gaji_minimum_id">
+                                <option value="{{auth.user.datapencarikerja.harapan_gaji_minimum_id}}">{{auth.user.datapencarikerja.gaji.name}}</option>
+                                {% for gaji in gaji %}
+                                <option value="{{ gaji.id }}">{{
+                                    gaji.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    </div>

@@ -1,0 +1,114 @@
+{% extends "bkol/bkol.twig" %}
+{% import 'bkol/macros/form.twig' as form %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block page %}
+<style>
+    .hr-theme .hr-title .title-section {
+            padding-left: 10px;
+        }
+        #tentang .title-section.pencari-kerja {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 24px;
+            letter-spacing: normal;
+            color: #333333;
+            padding-left: 0;
+        }
+        ul.tentang-page_list.pencari-kerja {
+            padding-left: 60px;
+        }
+        ul.tentang-page_list.pencari-kerja li {
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 22px;
+            margin-bottom: 15px;
+        }
+        ul.tentang-page_list.pencari-kerja li::before {
+            position: absolute;
+            margin-top: 5px;
+            font-family: 'icon-bkol';
+            content: '\e805';
+            color: #de8a43;
+            font-size: 35px !important;
+            margin-left: -3.1rem;
+        }
+</style>
+<div id="tentang" class="tentang-page container">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="hr-theme d-flex" style="margin-bottom: 50px;">
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+                    <div class="hr-title">
+                        <h5 class="title-section">Daftar Sebagai Pencari Kerja</h5>
+                    </div>
+                    <div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="tentang-page_section" style="padding-left: 0 !important;">
+                            <div class="hr-theme d-flex">
+                                <div class="hr-title">
+                                    <h3 class="title-section pencari-kerja">Manfaat menjadi member SILIMA :</h3>
+                                </div>
+                            </div>
+                            <ul class="tentang-page_list pencari-kerja">
+                                <li>Link menuju halaman profil anda dalam bentuk QR Code yang dapat dengan mudah disebarkan ke perusahaan.</li>
+                                <li>Mendapatkan informasi lowongan kerja di Kota Cimahi atau dari luar kota hingga luar negeri langsung ke email anda yang sesuai dengan minat anda.</li>
+                                <li>Mengelola resume dan biodata cukup mudah dan akan tersimpan dalam sistem yang bisa dilihat oleh Perusahaan saat mencari pekerja.</li>
+                                <li>Dapat kesempatan untuk mengikuti pelatihan yang diadakan oleh Dinas Tenaga Kerja Kota Cimahi.</li>
+                                <li>Pengajuan pembuatan Kartu AK-1 atau Kartu Daftar Pencari Kerja dapat dilakukan online dan juga laporan secara online didalam halaman profile.</li>
+                                <li>Terdapat riwayat melamar kerja dan riwayat pelatihan yang pernah dilakukan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="tentang-page_section_right">
+                            <div class="hr-theme d-flex">
+                                <div class="hr-title">
+                                    <h3 class="title-section pencari-kerja">Isi Form Untuk Mendaftar</h3>
+                                </div>
+                            </div>
+                            <form id="form" action="{{ path_for('registerjobseeker') }}" method="POST" style="padding-top: 20px;">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ form.text('no_ktp', requestParams['no_ktp'], 'identity_number',
+                                        'Nomor Identitas', null, 'text', 'fa-user-circle', 16, true) }}                                        
+                                        {{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email',
+                                        'fa-envelope') }}
+                                        {{ form.text('phonenumber', requestParams['phonenumber'], 'phonenumber', 'Nomor Handphone',
+                                        null, 'phonenumber', 'fa-phone') }}
+                                        {{ form.custom('recaptcha', recaptcha()) }}
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-sm btn-block btn-orange">DAFTAR
+                                                SEKARANG</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ csrf() }}
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block javascript %}
+    {{ recaptchaJs() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#identity_number').mask('9999999999999999');
+            $('#phonenumber').mask('9999999999999');
+        });
+    </script>
+{% endblock %}

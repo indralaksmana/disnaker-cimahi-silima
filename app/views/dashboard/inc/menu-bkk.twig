@@ -1,0 +1,71 @@
+{% if auth.hasAccess('bkk.view') %}
+<div class="menu">
+        <ul class="list">
+            <li class="header">Dashboard BKK</li>
+            <li class="{% if currentRoute == 'bkk/dashboard' %}active{% endif %}" href="{{ path_for('dashboard')}}">
+                <a href="{{ path_for('bkk-dashboard')}}">
+                    <i class="material-icons">dashboard</i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Profile</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Mata Pelajaran / Kurikulum</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Berita</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Kegiatan</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Album Foto</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Lulusan</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="">
+                    <i class="material-icons">view_list</i>
+                    <span>Laporan Penempatan</span>
+                </a>
+            </li>
+
+            <li class="header">PENGATURAN</li>
+            <li>
+                <a href="{{ path_for('logout') }}">
+                    <i class="material-icons">refresh</i>
+                    <span>Keluar</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- #Menu -->
+
+{% endif %}

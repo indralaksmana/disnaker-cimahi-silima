@@ -1,0 +1,43 @@
+.header {
+	background: #fff;
+	.header-logo {
+		img {
+			width: 65px;
+			height: auto;
+		}
+		
+	}
+	h2 {
+		font-size: 20px;
+		font-weight: bold;
+		color: #535353;
+	}
+}
+.header_pilar {
+	color: #000;
+	margin-right: 5px;
+	text-align: right;
+	h4 {
+		margin: 0px;
+		font-weight: bold;
+		font-size: 30px;
+	}
+	small {
+		font-size: 12px;
+	}
+	@include media-breakpoint-down(sm) {
+       display: none;
+    }
+}
+.form-search {
+	position: relative;
+	button {
+		position: absolute;
+		right: 0;
+		background: none;
+		border: none;
+	}
+	&-input {
+		border-radius: 20px !important;
+	}
+}

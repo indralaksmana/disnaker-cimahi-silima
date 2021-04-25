@@ -1,0 +1,134 @@
+{% extends 'bkol/bkol.twig' %}
+{% import 'bkol/macros/form.twig' as form %}
+{% block stylesheets %}
+<link href="{{ asset('bkol/css/bootstrap-social.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block page %}
+<style>
+	#companies-registration{
+padding-top: 50px !important;
+padding-bottom: 50px !important;
+padding: 20px;
+}
+
+	#companies-registration .title-section {
+font-size: 30px;
+font-weight: bold;
+line-height: 30px;
+letter-spacing: normal;
+}
+</style>
+<div id="companies-registration" class="container card">
+	<div class="row">
+		<div class="col-12">
+			<div class="hr-theme d-flex" style="margin-bottom: 50px;">
+				<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+				<div class="hr-title">
+					<h5 class="title-section" style="margin-left: 10px;">Daftar Sebagai Perusahaan</h5>
+				</div>
+				<div class="hr-line flex-grow-1" style="background-image: url('{{base_url()}}/img/bkol/line.png')"></div>
+			</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link active" href="{{ path_for('registerPerusahaanDalam') }}">Dalam Kota Cimahi</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ path_for('registerPerusahaanLuar') }}">Luar Kota Cimahi</a>
+		</li>
+	</ul>
+
+	<div class="tab-content">
+		
+<div class="row no-gutters">
+				<div class="col-xs-12 col-md-6 col-lg-6 alert-info companies-registration-info">
+					<div class="alert alert-info mb-0 p-4" role="alert">
+						<h4 class="alert-heading mb-3"><i class="fa fa-info-circle" aria-hidden="true"></i> Perhatian !</h4>
+						<hr>
+						<ol>
+							<li class="mb-2">Akun ini akan digunakan untuk keperluan anda memberikan informasi lowongan pekerjaan, penempatan
+								kerja .</li>
+							<li> Setelah pendaftaran Akun selesai anda harus datang ke disnaker untuk verifikasi data dengan membawa
+								kelengkapan sbb : </li>
+							<ul class="fa-ul py-2">
+								<li><i class="fa-li fa fa-check"></i>Cap Perusahaan</li>
+								<li><i class="fa-li fa fa-check"></i>Surat Permohonan Pengajuan Kebutuhan Tenaga Kerja Dari Perusahaan
+									Yang
+									Ditujukan Kepada Disnaker Kota Cimahi</li>
+								<li><i class="fa-li fa fa-check"></i>KTP Penanggung Jawab Perusahaan</li>
+								<li><i class="fa-li fa fa-check"></i>Fotocopy SIUP</li>
+							</ul>
+
+							<li>Setelah verifikasi data selesai maka administrator disnaker akan mengaktifkan akun anda.</li>
+						</ol>
+					</div>
+				</div>
+				<div class="col-xs-12 col-md-6 col-lg-6 companies-registration-form bg-light">
+					<div class="alert mb-0 p-4" role="alert">
+						<h4 class="alert-heading mb-3">Akun Perusahaan Dalam Kota Cimahi</h4>
+						<hr>
+						<form action="{{ path_for('registerPerusahaanDalam') }}" method="POST">
+
+							{{ form.text('companyname', requestParams['companyname'], 'companyname', 'Nama Perusahaan', null, null,
+							'fa-user-circle')
+							}}
+
+							{{ form.text('email', requestParams['email'], 'email', 'Email', null, 'email', 'fa-envelope') }}
+
+							{{ form.textarea('companysaddress', requestParams['companysaddress'], 'companysaddress', 'Alamat Perusahaan',
+							null,
+							'3', 'fa-map-marker') }}
+							
+							<div class="form-group input-group-sm">
+								<label for="kecamatan">Kecamatan
+									<span class="require">*</span>
+								</label>
+								
+								<select name="kecamatan_id" id="kecamatan" class="form-control" required="required">
+									<option selected value="{{auth.user.datapencarikerja.kecamatan}}">{{auth.user.datapencarikerja.kecamatan}}</option>
+									<option value="1477" id="32/77/1">CIMAHI SELATAN</option>
+									<option value="1478" id="32/77/2">CIMAHI TENGAH</option>
+									<option value="1479" id="32/77/3">CIMAHI UTARA</option>
+								</select>
+                                <input name="provinsi_id" value="12" hidden />
+								<input name="kabupatenkota_id" value="176" hidden />
+							</div>
+							<div class="form-group input-group-sm">
+								<label for="kecamatan">Kelurahan
+									<span class="require">*</span>
+								</label>
+								<select name="kelurahan_id" id="kelurahan" class="form-control" required="required">
+
+								</select>
+							</div>
+
+							<hr style="border-bottom: 2px solid #3b3d93;margin-bottom: 1rem;">
+
+							{{ form.text('username', requestParams['username'], 'username', 'Username', null, 'username', 'fa-user-circle-o')
+							}}
+
+							{{ form.text('password', null, 'password', 'Password', null, 'password', 'fa-key') }}
+
+							{{ form.text('password-confirm', null, 'password-confirm', 'Confirm password', null, 'password', 'fa-key') }}
+
+
+							{{ form.custom('recaptcha', recaptcha()) }}
+							{{ csrf() }}
+							<div class="form-group">
+								<button type="submit" class="btn btn-sm btn-block btn-orange">DAFTAR SEKARANG</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+
+	
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ recaptchaJs() }}
+{% endblock %}
