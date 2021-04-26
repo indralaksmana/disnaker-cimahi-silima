@@ -25,11 +25,14 @@ $app->group('/perguruan-tinggi/dashboard', function () use ($app, $container) {
         });
 
     
-        $app->get('/upload[/{id}/{nama}]', 'ProgramStudiDikti:upload')
+        $app->map(['GET', 'POST'], '/upload[/{id}/{nama}]', 'ProgramStudiDikti:upload')
         ->setName('pt-dashboard-program-studi-upload');
 
-         $app->post('/uploadaction', 'ProgramStudiDikti:uploadAction')
+        $app->post('/uploadaction', 'ProgramStudiDikti:uploadAction')
         ->setName('pt-dashboard-program-studi-uploadaction');
+
+        $app->post('/create-pencaker', 'ProgramStudiDikti:createPencakerAlumni')
+        ->setName('pt-dashboard-program-studi-createpencaker');
         
     });
 

@@ -6,3 +6,5 @@ yarn-error.log
 settings.json
 __MACOSX
 /.well-known
+/public/uploads/*
+/storage/
