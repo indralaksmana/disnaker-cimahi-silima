@@ -1,0 +1,55 @@
+{% extends 'bkol/bkol-dashboard2.twig' %}
+
+{% block page %}
+
+<div class="px-3">
+  <div class="hr-theme d-flex  align-items-center">
+    <div class="hr-title">
+      <h3 class="title-section">Alumni Prodi {{nama}}</h3>
+    </div>
+  </div>
+  <br/> 
+  <form id="form_upload" action="{{ path_for('pt-dashboard-program-studi-createpencaker') }}" method="post">
+    <input type="hidden" name="id" value="{{data.id}}" />
+    <input type="hidden" name="nama" value="{{nama}}" />
+    <input type="hidden" name="ps_id" value="{{ps_id}}" />
+    {{csrf()}}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="posts-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NIK</th>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>No Telpon</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if alumni|length == 0 %}
+                    <tr class="text-center">
+                        <td colspan="6">Belum ada data alumni diupload</td>
+                    </tr>
+                {% endif %}
+                {% set count = 0 %}
+                {% for u in alumni %}
+                    {% set count = count + 1 %}
+                <input type="hidden" name="id_alumni[]" value="{{u.id}}" />
+                <tr>
+                    <td>{{ count }}</td>
+                    <td><input type="text" name="no_ktp[]" value="{{u.no_ktp}}" class="form-control"></td>
+                    <th><input type="text" name="nisn[]" value="{{u.nisn}}" class="form-control"></th>
+                    <th><input type="text" name="nama_lengkap[]" value="{{u.nama_lengkap}}" class="form-control"></th>
+                    <th><input type="text" name="email[]" value="{{u.email}}" class="form-control"></th>
+                    <th><input type="text" name="no_telpon[]" value="{{u.no_telpon}}" class="form-control"></th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    <button type="submit" class="btn btn-primary">Simpan</button>
+</form>
+</div>
+{% endblock %}
+
